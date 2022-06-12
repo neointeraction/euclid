@@ -1,0 +1,13 @@
+/*  === ==  == AUTHOR: 01010011 01001000 01000001 01001101 01000101 01000101 01010010  == == ==  */
+/* Reset  */
+@import url(./reset.css);
+/* FONT  */
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
