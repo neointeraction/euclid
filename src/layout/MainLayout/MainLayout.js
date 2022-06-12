@@ -10,7 +10,7 @@ export default function MainLayout() {
   return (
     <Layout>
       <Header />
-      <Container maxWidth="xl">
+      <Container maxWidth={false}>
         <LayoutMain>
           <Outlet />
         </LayoutMain>
