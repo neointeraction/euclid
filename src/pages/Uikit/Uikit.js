@@ -3,15 +3,17 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import { Divider } from "@mui/material";
 
-import Input from "../../components/Input";
-import Dropdown from "../../components/Dropdown";
-import Button from "../../components/Button";
-import IconButton from "../../components/IconButton";
-import Card from "../../components/Card/Card";
-import Header from "../../components/Header";
-import PointBanner from "../../components/PointBanner";
-import PageHeader from "../../components/PageHeader";
+import Input from "components/Input";
+import Dropdown from "components/Dropdown";
+import Button from "components/Button";
+import IconButton from "components/IconButton";
+import Card from "components/Card/Card";
+import Header from "components/Header";
+import Footer from "components/Footer";
+import PointBanner from "components/PointBanner";
+import PageHeader from "components/PageHeader";
 import TripleHistoryTable from "../Contributor/ContributorDashboard/components/TripleHistoryTable/TripleHistoryTable";
 
 import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
@@ -21,7 +23,6 @@ import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { Divider } from "@mui/material";
 
 const Uikit = () => {
   const [age, setAge] = React.useState("");
@@ -173,6 +174,26 @@ const Uikit = () => {
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={12}>
             <Header />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 4,
+          border: "1px dashed grey",
+          marginBottom: 2,
+          borderRadius: 2,
+          backgroundColor: "#f4f4f4",
+        }}
+      >
+        <Typography variant="h6" gutterBottom component="div">
+          Footer
+        </Typography>
+
+        <Grid container spacing={2} alignItems="baseline">
+          <Grid item xs={12}>
+            <Footer />
           </Grid>
         </Grid>
       </Box>

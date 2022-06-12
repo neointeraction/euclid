@@ -74,9 +74,13 @@ export const NameTag = styled.div`
     font-weight: 400;
     font-size: 16px;
     line-height: 21px;
-    color: #676767;
+    color: #595959;
     display: block;
     margin-bottom: 5px;
+  }
+  .custom-chip {
+    background-color: #005585;
+    color: #fff;
   }
 `;
 export const MenuArrow = styled.div`
