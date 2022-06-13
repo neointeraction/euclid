@@ -1,31 +1,32 @@
-import React from "react";
+import React from 'react';
 
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import { Divider } from "@mui/material";
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import { Divider } from '@mui/material';
 
-import Input from "components/Input";
-import Dropdown from "components/Dropdown";
-import Button from "components/Button";
-import IconButton from "components/IconButton";
-import Card from "components/Card/Card";
-import Header from "components/Header";
-import Footer from "components/Footer";
-import PointBanner from "components/PointBanner";
-import PageHeader from "components/PageHeader";
-import TripleHistoryTable from "../Contributor/ContributorDashboard/components/TripleHistoryTable/TripleHistoryTable";
+import Input from 'components/Input';
+import Dropdown from 'components/Dropdown';
+import Button from 'components/Button';
+import IconButton from 'components/IconButton';
+import Card from 'components/Card/Card';
+import Header from 'components/Header';
+import Footer from 'components/Footer';
+import PointBanner from 'components/PointBanner';
+import PageHeader from 'components/PageHeader';
+import TripleHistoryTable from '../Contributor/ContributorDashboard/components/TripleHistoryTable/TripleHistoryTable';
+import Tag from 'components/Tag';
 
-import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
-import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
-import AddIcon from "@mui/icons-material/Add";
-import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
-import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
-import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import AddCommentOutlinedIcon from '@mui/icons-material/AddCommentOutlined';
+import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
+import AddIcon from '@mui/icons-material/Add';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
+import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 const Uikit = () => {
-  const [age, setAge] = React.useState("");
+  const [age, setAge] = React.useState('');
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -37,10 +38,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: "1px dashed grey",
+          border: '1px dashed grey',
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: "#fff",
+          backgroundColor: '#fff',
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -60,12 +61,12 @@ const Uikit = () => {
               value={age}
               options={[
                 {
-                  id: "option a",
-                  optionText: "Option A",
+                  id: 'option a',
+                  optionText: 'Option A',
                 },
                 {
-                  id: "option b",
-                  optionText: "Option B",
+                  id: 'option b',
+                  optionText: 'Option B',
                 },
               ]}
             />
@@ -77,10 +78,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: "1px dashed grey",
+          border: '1px dashed grey',
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: "#fff",
+          backgroundColor: '#fff',
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -91,21 +92,21 @@ const Uikit = () => {
             <Button
               btnText="Button Primary"
               variant="contained"
-              onClick={() => console.log("clicked")}
+              onClick={() => console.log('clicked')}
             />
           </Grid>
           <Grid item xs={2}>
             <Button
               btnText="Button Outlined"
               variant="outlined"
-              onClick={() => console.log("clicked")}
+              onClick={() => console.log('clicked')}
             />
           </Grid>
           <Grid item xs={2}>
             <Button
               btnText="Button Secondary"
               variant="secondary"
-              onClick={() => console.log("clicked")}
+              onClick={() => console.log('clicked')}
             />
           </Grid>
           <Grid item xs={1}>
@@ -113,7 +114,7 @@ const Uikit = () => {
               btnText="Back"
               variant="text"
               startIcon={<ChevronLeftOutlinedIcon />}
-              onClick={() => console.log("clicked")}
+              onClick={() => console.log('clicked')}
             />
           </Grid>
           <Grid item xs={1}>
@@ -121,7 +122,7 @@ const Uikit = () => {
               btnText="Next"
               variant="text"
               endIcon={<ChevronRightOutlinedIcon />}
-              onClick={() => console.log("clicked")}
+              onClick={() => console.log('clicked')}
             />
           </Grid>
         </Grid>
@@ -161,10 +162,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: "1px dashed grey",
+          border: '1px dashed grey',
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: "#f4f4f4",
+          backgroundColor: '#f4f4f4',
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -181,10 +182,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: "1px dashed grey",
+          border: '1px dashed grey',
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: "#f4f4f4",
+          backgroundColor: '#f4f4f4',
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -201,7 +202,7 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: "1px dashed grey",
+          border: '1px dashed grey',
           marginBottom: 2,
           borderRadius: 2,
         }}
@@ -236,10 +237,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: "1px dashed grey",
+          border: '1px dashed grey',
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: "#fff",
+          backgroundColor: '#fff',
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -265,10 +266,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: "1px dashed grey",
+          border: '1px dashed grey',
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: "#fff",
+          backgroundColor: '#fff',
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -290,10 +291,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: "1px dashed grey",
+          border: '1px dashed grey',
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: "#fff",
+          backgroundColor: '#fff',
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -303,6 +304,38 @@ const Uikit = () => {
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={12}>
             <TripleHistoryTable />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 4,
+          border: '1px dashed grey',
+          marginBottom: 2,
+          borderRadius: 2,
+          backgroundColor: '#fff',
+        }}
+      >
+        <Typography variant="h6" gutterBottom component="div">
+          Tags
+        </Typography>
+
+        <Grid container spacing={2} alignItems="baseline">
+          <Grid item xs={2}>
+            <Tag label="All" type="all" />
+          </Grid>
+          <Grid item xs={2}>
+            <Tag label="Reverted" type="reverted" />
+          </Grid>
+          <Grid item xs={2}>
+            <Tag label="Approved" type="approved" />
+          </Grid>
+          <Grid item xs={2}>
+            <Tag label="In Draft" type="in-draft" />
+          </Grid>
+          <Grid item xs={2}>
+            <Tag label="Committed" type="committed" />
           </Grid>
         </Grid>
       </Box>

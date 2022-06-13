@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   useTable,
   useResizeColumns,
@@ -7,21 +7,21 @@ import {
   useExpanded,
   useRowSelect,
   usePagination,
-} from "react-table";
+} from 'react-table';
 // import "./table.css";
 
 // import Loader from "../Loader";
-import Input from "../Input";
-import Dropdown from "../Dropdown";
+import Input from '../Input';
+import Dropdown from '../Dropdown';
 
-import SortIcon from "../../assets/images/icons/sort.svg";
-import LeftStart from "../../assets/images/icons/LeftArrow.svg";
-import RightEnd from "../../assets/images/icons/RightArrow.svg";
-import Left from "../../assets/images/icons/left.svg";
-import Right from "../../assets/images/icons/right.svg";
-import Nodata from "../../assets/images/icons/file-nodata.svg";
+import SortIcon from '../../assets/images/icons/sort.svg';
+import LeftStart from '../../assets/images/icons/LeftArrow.svg';
+import RightEnd from '../../assets/images/icons/RightArrow.svg';
+import Left from '../../assets/images/icons/left.svg';
+import Right from '../../assets/images/icons/right.svg';
+import Nodata from '../../assets/images/icons/file-nodata.svg';
 
-import { TableSubContainer, ObjectFlex, CustomTable } from "./table.styles";
+import { TableSubContainer, ObjectFlex, CustomTable } from './table.styles';
 
 const Table = ({
   columns,
@@ -80,13 +80,13 @@ const Table = ({
 
   const cellProps = (props, { cell }) => getStyles(props, cell.column.align);
 
-  const getStyles = (props, align = "left") => [
+  const getStyles = (props, align = 'left') => [
     props,
     {
       style: {
-        justifyContent: align === "right" ? "flex-end" : "flex-start",
-        alignItems: "flex-start",
-        display: "flex",
+        justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
+        alignItems: 'flex-start',
+        display: 'flex',
       },
     },
   ];
@@ -96,9 +96,9 @@ const Table = ({
     ({ row }) => (
       <TableSubContainer>
         {row.allCells
-          .filter((item) => item.column.Header !== "#")
+          .filter((item) => item.column.Header !== '#')
           .map((item) => (
-            <ObjectFlex>
+            <ObjectFlex key={item.value}>
               <h4>{item.column.Header}</h4>
               <p>{item.value}</p>
             </ObjectFlex>
@@ -122,13 +122,13 @@ const Table = ({
                   )}
                   className="th"
                 >
-                  {column.render("Header")}
+                  {column.render('Header')}
                   {/* Use column.getResizerProps to hook up the events correctly */}
                   {column.canResize && (
                     <div
                       {...column.getResizerProps()}
                       className={`resizer ${
-                        column.isResizing ? "isResizing" : ""
+                        column.isResizing ? 'isResizing' : ''
                       }`}
                     />
                   )}
@@ -154,7 +154,7 @@ const Table = ({
         </div>
         <div className="tbody">
           {isLoading ? (
-            "loading"
+            'loading'
           ) : page.length === 0 ? (
             <div className="empty-table">
               <div className="empty-table-content">
@@ -174,10 +174,10 @@ const Table = ({
                           <div
                             {...cell.getCellProps(cellProps)}
                             className={`td ${
-                              row.isSelected ? "highlight" : ""
+                              row.isSelected ? 'highlight' : ''
                             }`}
                           >
-                            {cell.render("Cell")}
+                            {cell.render('Cell')}
                           </div>
                         );
                       })}
