@@ -15,7 +15,13 @@ const Tag = ({ variant = 'outlined', label, type, ...rest }) => {
 Tag.propTypes = {
   variant: PropTypes.string,
   label: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.oneOf([
+    'all',
+    'reverted',
+    'approved',
+    'in-draft',
+    'committed',
+  ]),
 };
 
 export default Tag;

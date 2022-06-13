@@ -27,6 +27,7 @@ import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import Tooltip from 'components/Tooltip';
 
 const Uikit = () => {
   const [age, setAge] = React.useState('');
@@ -406,6 +407,37 @@ const Uikit = () => {
               labelValue="Chip"
               onRemove={() => console.log('To be removed')}
             />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 4,
+          border: '1px dashed grey',
+          marginBottom: 2,
+          borderRadius: 2,
+          backgroundColor: '#fff',
+        }}
+      >
+        <Typography variant="h6" gutterBottom component="div">
+          Tooltips
+        </Typography>
+        <Grid container spacing={2} alignItems="baseline">
+          <Grid item xs={3}>
+            <Tooltip message="Duplicate" position="bottom">
+              Hover to show tooltip at bottom
+            </Tooltip>
+          </Grid>
+          <Grid item xs={3}>
+            <Tooltip message="Duplicate" position="top">
+              Hover to show tooltip at top
+            </Tooltip>
+          </Grid>
+          <Grid item xs={3}>
+            <Tooltip message="Duplicate" position="right">
+              Hover to show tooltip at right
+            </Tooltip>
           </Grid>
         </Grid>
       </Box>
