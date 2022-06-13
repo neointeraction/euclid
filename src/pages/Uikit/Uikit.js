@@ -28,6 +28,11 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import Tooltip from 'components/Tooltip';
+import {
+  ConfirmCommitModalBox,
+  EvidenceDetailModalBox,
+  ProvideEvidenceModalBox,
+} from 'components/ModalBoxes';
 
 const Uikit = () => {
   const [age, setAge] = React.useState('');
@@ -438,6 +443,33 @@ const Uikit = () => {
             <Tooltip message="Duplicate" position="right">
               Hover to show tooltip at right
             </Tooltip>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 4,
+          border: '1px dashed grey',
+          marginBottom: 2,
+          borderRadius: 2,
+          backgroundColor: '#fff',
+        }}
+      >
+        <Typography variant="h6" gutterBottom component="div">
+          Modal Boxes
+        </Typography>
+        <Grid container spacing={2} alignItems="baseline">
+          <Grid item xs={6}>
+            <ProvideEvidenceModalBox
+              onClose={() => console.log('Close modal box')}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <ConfirmCommitModalBox />
+          </Grid>
+          <Grid item xs={6}>
+            <EvidenceDetailModalBox />
           </Grid>
         </Grid>
       </Box>
