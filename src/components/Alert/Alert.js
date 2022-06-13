@@ -40,7 +40,7 @@ const CusAlert = ({ type, onClose, message }) => {
 };
 
 CusAlert.propTypes = {
-  type: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['success', 'warning', 'error']),
   onClose: PropTypes.func,
   message: PropTypes.string.isRequired,
 };
