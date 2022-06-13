@@ -16,6 +16,8 @@ import PointBanner from 'components/PointBanner';
 import PageHeader from 'components/PageHeader';
 import Tag from 'components/Tag';
 import Alert from 'components/Alert';
+import Chip from 'components/Chip';
+
 import TripleHistoryTable from '../Contributor/ContributorDashboard/components/TripleHistoryTable/TripleHistoryTable';
 
 import AddCommentOutlinedIcon from '@mui/icons-material/AddCommentOutlined';
@@ -374,6 +376,35 @@ const Uikit = () => {
               type="error"
               message="This is error alert"
               onClose={() => console.log('close alert')}
+            />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 4,
+          border: '1px dashed grey',
+          marginBottom: 2,
+          borderRadius: 2,
+          backgroundColor: '#fff',
+        }}
+      >
+        <Typography variant="h6" gutterBottom component="div">
+          Chips
+        </Typography>
+        <Grid container spacing={2} alignItems="baseline">
+          <Grid item xs={4}>
+            <Chip labelKey="Species" labelValue="Human Biengs" />
+          </Grid>
+          <Grid item xs={4}>
+            <Chip labelKey="Key" labelValue="Value" />
+          </Grid>
+          <Grid item xs={4}>
+            <Chip
+              labelKey="Removeable"
+              labelValue="Chip"
+              onRemove={() => console.log('To be removed')}
             />
           </Grid>
         </Grid>
