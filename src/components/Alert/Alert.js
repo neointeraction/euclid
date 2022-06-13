@@ -30,7 +30,11 @@ const CusAlert = ({ type, onClose, message }) => {
         />
         <p>{message}</p>
       </div>
-      <CloseIcon onClick={onClose} fontSize="small" />
+      <CloseIcon
+        style={{ cursor: 'pointer' }}
+        onClick={onClose}
+        fontSize="small"
+      />
     </AlertContainer>
   );
 };
