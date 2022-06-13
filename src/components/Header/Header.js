@@ -1,18 +1,18 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-import Logo from "assets/images/logo.svg";
-import { ReactComponent as Home } from "assets/images/icons/home.svg";
-import Logout from "@mui/icons-material/Logout";
-import Arrow from "assets/images/icons/menu-down.svg";
-import ListItemIcon from "@mui/material/ListItemIcon";
+import Logo from 'assets/images/logo.svg';
+import { ReactComponent as Home } from 'assets/images/icons/home.svg';
+import Logout from '@mui/icons-material/Logout';
+import Arrow from 'assets/images/icons/menu-down.svg';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
-import Avatar from "@mui/material/Avatar";
-import Chip from "@mui/material/Chip";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
-import { contributorRoutes } from "./routes/routes.config";
+import { contributorRoutes } from './routes/routes.config';
 
 import {
   HeaderContainer,
@@ -25,18 +25,18 @@ import {
   ProfileSection,
   NameTag,
   MenuArrow,
-} from "./header.styles";
+} from './header.styles';
 
 const Header = () => {
   const location = useLocation();
   const { pathname } = location;
 
-  const url = pathname.split("/");
+  const url = pathname.split('/');
 
   const checkActive = (menu) => {
     if (
-      (url[1] === "contributor-dashboard" && menu === "Dashboard") ||
-      (url[1] === "add-triple" && menu === "Add Triple")
+      (url[1] === 'contributor-dashboard' && menu === 'Dashboard') ||
+      (url[1] === 'add-triple' && menu === 'Add Triple')
     ) {
       return true;
     }
@@ -58,9 +58,9 @@ const Header = () => {
       </LogoContainer>
       <LeftMenuBlock>
         {contributorRoutes.map((item) => (
-          <Link to={item.link} className="link">
+          <Link key={item.menu} to={item.link} className="link">
             <MenuItemList isActive={checkActive(item.menu) ? true : false}>
-              {item.menu === "Dashboard" ? (
+              {item.menu === 'Dashboard' ? (
                 <Home className="home-icon" />
               ) : (
                 item.menu
@@ -92,31 +92,31 @@ const Header = () => {
             PaperProps={{
               elevation: 0,
               sx: {
-                overflow: "visible",
-                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.10))",
+                overflow: 'visible',
+                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.10))',
                 mt: 1.5,
-                "& .MuiAvatar-root": {
+                '& .MuiAvatar-root': {
                   width: 32,
                   height: 32,
                   ml: -0.5,
                   mr: 1,
                 },
-                "&:before": {
+                '&:before': {
                   content: '""',
-                  display: "block",
-                  position: "absolute",
+                  display: 'block',
+                  position: 'absolute',
                   top: 0,
                   right: 14,
                   width: 10,
                   height: 10,
-                  bgcolor: "background.paper",
-                  transform: "translateY(-50%) rotate(45deg)",
+                  bgcolor: 'background.paper',
+                  transform: 'translateY(-50%) rotate(45deg)',
                   zIndex: 0,
                 },
               },
             }}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             <MenuItem disableRipple onClick={() => {}}>
               <ListItemIcon>
