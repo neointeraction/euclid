@@ -1,5 +1,4 @@
-// import PropTypes from 'prop-types';
-import { ButtonGroupContainer } from './button.styles';
+import { ButtonGroupContainer } from './buttonGrp.styles';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
 const CustomButtonGroup = ({ children, variant = '', ...rest }) => {
@@ -15,7 +14,5 @@ const CustomButtonGroup = ({ children, variant = '', ...rest }) => {
     </ButtonGroupContainer>
   );
 };
-
-CustomButtonGroup.propTypes = {};
 
 export default CustomButtonGroup;
