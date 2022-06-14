@@ -62,9 +62,7 @@ const EvidenceDetailModalBox = () => {
                   padding: '3px',
                 }}
               >
-                <span style={{ marginTop: '-32px', background: 'red' }}>
-                  {index + 1}
-                </span>
+                {index + 1}
               </TableCell>
               <TableCell style={{ padding: '3px' }} component="th" align="left">
                 <span style={{ textTransform: 'uppercase', fontSize: '16px' }}>
