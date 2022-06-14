@@ -2,11 +2,12 @@ import Chip from '@mui/material/Chip';
 import PropTypes from 'prop-types';
 
 import ChipCloseIcon from 'assets/images/icons/chip-close.svg';
+import React from 'react';
 
-const CustomChip = ({ labelKey, labelValue, onRemove }) => {
+const CustomChip = ({ content, onRemove, ...rest }) => {
   return (
     <div className="MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorDefault MuiChip-filledDefault css-1fenuxh-MuiChip-root">
-      <Chip style={{ display: 'none' }} />
+      <Chip style={{ display: 'none' }} {...rest} />
       <div
         style={{
           padding: '10px',
@@ -16,8 +17,14 @@ const CustomChip = ({ labelKey, labelValue, onRemove }) => {
           gap: '4px',
         }}
       >
-        (<span>{labelKey}:</span>
-        <b style={{ fontWeight: 'bold' }}> {labelValue}</b>)
+        (
+        {content.map(({ labelKey, labelValue }) => (
+          <React.Fragment>
+            <span>{labelKey}:</span>
+            <b style={{ fontWeight: 'bold' }}> {labelValue}</b>
+          </React.Fragment>
+        ))}
+        )
         {onRemove && (
           <img
             src={ChipCloseIcon}
@@ -32,9 +39,8 @@ const CustomChip = ({ labelKey, labelValue, onRemove }) => {
 };
 
 CustomChip.propTypes = {
-  labelKey: PropTypes.string.isRequired,
-  labelValue: PropTypes.string.isRequired,
   onRemove: PropTypes.func, // func to remove the chip if it is removeable
+  content: PropTypes.array, // array of object eg, [{labelKey:"key",labelValue:"Value"}]
 };
 
 export default CustomChip;

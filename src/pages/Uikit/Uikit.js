@@ -35,6 +35,7 @@ import {
   ProvideEvidenceModalBox,
 } from 'components/ModalBoxes';
 import ButtonGroup from 'components/ButtonGroup';
+import TrippleCollapsed from 'components/TrippleCollapsed';
 
 const Uikit = () => {
   const [age, setAge] = React.useState('');
@@ -403,15 +404,18 @@ const Uikit = () => {
         </Typography>
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={4}>
-            <Chip labelKey="Species" labelValue="Human Biengs" />
-          </Grid>
-          <Grid item xs={4}>
-            <Chip labelKey="Key" labelValue="Value" />
+            <Chip
+              content={[{ labelKey: 'Species', labelValue: 'Human Beings' }]}
+            />
           </Grid>
           <Grid item xs={4}>
             <Chip
-              labelKey="Removeable"
-              labelValue="Chip"
+              content={[{ labelKey: 'Disease', labelValue: 'Alziehmers' }]}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <Chip
+              content={[{ labelKey: 'Removeable', labelValue: 'Chip' }]}
               onRemove={() => console.log('To be removed')}
             />
           </Grid>
@@ -494,6 +498,40 @@ const Uikit = () => {
               <MuiButton>Duplicate</MuiButton>
               <MuiButton>Edit</MuiButton>
             </ButtonGroup>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 4,
+          border: '1px dashed grey',
+          marginBottom: 2,
+          borderRadius: 2,
+          backgroundColor: '#fff',
+        }}
+      >
+        <Typography variant="h6" gutterBottom component="div">
+          Tripple Collapsed
+        </Typography>
+        <Grid container spacing={2} alignItems="baseline">
+          <Grid item xs={12}>
+            <TrippleCollapsed
+              chipContent={[
+                { labelKey: 'Protein', labelValue: 'GSK3B' },
+                {
+                  labelKey: 'protein_modification',
+                  labelValue: 'Phosphorylation',
+                },
+                { labelKey: ' Amino_acid', labelValue: 'Threonine' },
+                { labelKey: 'Protein', labelValue: 'GSK3B' },
+                {
+                  labelKey: 'protein_modification',
+                  labelValue: 'Phosphorylation',
+                },
+                { labelKey: ' Amino_acid', labelValue: 'Threonine' },
+              ]}
+            />
           </Grid>
         </Grid>
       </Box>
