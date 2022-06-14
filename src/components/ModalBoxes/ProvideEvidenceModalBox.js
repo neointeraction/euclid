@@ -40,7 +40,11 @@ const ProvideEvidenceModalBox = ({ onClose }) => {
               marginTop: '8px',
             }}
           >
-            <Button variant="outlined" btnText="Cancel" />
+            <Button
+              style={{ background: '#E3E6E8' }}
+              variant="primary"
+              btnText="Cancel"
+            />
             <Button variant="contained" btnText="Save" />
           </div>
         </div>

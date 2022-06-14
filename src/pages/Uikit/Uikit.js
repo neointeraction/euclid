@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { Divider } from '@mui/material';
+import { Button as MuiButton } from '@mui/material';
 
 import Input from 'components/Input';
 import Dropdown from 'components/Dropdown';
@@ -33,6 +34,7 @@ import {
   EvidenceDetailModalBox,
   ProvideEvidenceModalBox,
 } from 'components/ModalBoxes';
+import ButtonGroup from 'components/ButtonGroup';
 
 const Uikit = () => {
   const [age, setAge] = React.useState('');
@@ -470,6 +472,28 @@ const Uikit = () => {
           </Grid>
           <Grid item xs={6}>
             <EvidenceDetailModalBox />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 4,
+          border: '1px dashed grey',
+          marginBottom: 2,
+          borderRadius: 2,
+          backgroundColor: '#fff',
+        }}
+      >
+        <Typography variant="h6" gutterBottom component="div">
+          Button Groups
+        </Typography>
+        <Grid container spacing={2} alignItems="baseline">
+          <Grid item xs={3}>
+            <ButtonGroup>
+              <MuiButton>Duplicate</MuiButton>
+              <MuiButton>Edit</MuiButton>
+            </ButtonGroup>
           </Grid>
         </Grid>
       </Box>
