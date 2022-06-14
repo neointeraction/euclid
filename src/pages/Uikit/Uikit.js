@@ -37,7 +37,9 @@ import {
 import ButtonGroup from 'components/ButtonGroup';
 import TrippleCollapsed from 'components/TrippleCollapsed';
 import SearchWithIcon from 'components/SearchWithIcon';
-import ExtendableSubjectType from 'components/ExtendableSubjectType';
+// import ExtendableSubjectType from 'components/ExtendableSubjectType';
+import ExtendableSubjectTypeForm from 'components/ExtendableSubjectType/ExtendableSubjectTypeForm';
+import { ExtendableSubjectTypeContainer } from 'components/ExtendableSubjectType';
 
 const Uikit = () => {
   const [age, setAge] = React.useState('');
@@ -557,7 +559,13 @@ const Uikit = () => {
         </Typography>
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={12}>
-            <ExtendableSubjectType />
+            <ExtendableSubjectTypeContainer>
+              <ExtendableSubjectTypeForm
+                onAddToLeft={() => console.log('Add another the left')}
+                onAddToRight={() => console.log('Add another to the right')}
+                options={['Option One', 'Option Two']}
+              />
+            </ExtendableSubjectTypeContainer>
           </Grid>
         </Grid>
       </Box>

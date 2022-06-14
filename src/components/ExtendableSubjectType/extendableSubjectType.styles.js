@@ -10,4 +10,8 @@ export const ExtendableSubjectTypeContainer = styled.div`
   padding: 8px 16px;
   width: 260px;
   min-height: 120px;
+
+  & img {
+    cursor: pointer;
+  }
 `;
