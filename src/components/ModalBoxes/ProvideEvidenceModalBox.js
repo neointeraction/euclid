@@ -1,26 +1,15 @@
 import PropTypes from 'prop-types';
-import CloseIcon from '@mui/icons-material/Close';
+import { Typography } from '@mui/material';
 
 import { ProvideEvidenceModalBoxContainer } from './modalboxes.styles';
-import { Typography } from '@mui/material';
 import Input from 'components/Input';
 import Button from 'components/Button';
+import ModalCloseIcon from './ModalCloseIcon';
 
 const ProvideEvidenceModalBox = ({ onClose }) => {
   return (
     <ProvideEvidenceModalBoxContainer>
-      <div style={{ position: 'relative' }}>
-        <CloseIcon
-          style={{
-            cursor: 'pointer',
-            position: 'absolute',
-            top: '0px',
-            right: '0px',
-          }}
-          onClick={onClose}
-          fontSize="small"
-        />
-      </div>
+      <ModalCloseIcon onCloseIconClick={onClose} />
       <Typography
         variant="h5"
         style={{ marginTop: '25px', marginBottom: '10px' }}
