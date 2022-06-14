@@ -37,6 +37,7 @@ import {
 import ButtonGroup from 'components/ButtonGroup';
 import TrippleCollapsed from 'components/TrippleCollapsed';
 import SearchWithIcon from 'components/SearchWithIcon';
+import ExtendableSubjectType from 'components/ExtendableSubjectType';
 
 const Uikit = () => {
   const [age, setAge] = React.useState('');
@@ -524,12 +525,12 @@ const Uikit = () => {
           <Grid item xs={12}>
             <TrippleCollapsed
               chipContent={[
-                { labelKey: 'Protein', labelValue: 'GSK3B' },
+                { labelKey: 'Protein', labelValue: 'GSK3BB' },
                 {
                   labelKey: 'protein_modification',
-                  labelValue: 'Phosphorylation',
+                  labelValue: 'Phosphorylationn',
                 },
-                { labelKey: ' Amino_acid', labelValue: 'Threonine' },
+                { labelKey: ' Amino_acid', labelValue: 'Threoninee' },
                 { labelKey: 'Protein', labelValue: 'GSK3B' },
                 {
                   labelKey: 'protein_modification',
@@ -538,6 +539,25 @@ const Uikit = () => {
                 { labelKey: ' Amino_acid', labelValue: 'Threonine' },
               ]}
             />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 4,
+          border: '1px dashed grey',
+          marginBottom: 2,
+          borderRadius: 2,
+          backgroundColor: '#fff',
+        }}
+      >
+        <Typography variant="h6" gutterBottom component="div">
+          Extendable Subject Type
+        </Typography>
+        <Grid container spacing={2} alignItems="baseline">
+          <Grid item xs={12}>
+            <ExtendableSubjectType />
           </Grid>
         </Grid>
       </Box>

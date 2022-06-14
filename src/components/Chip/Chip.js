@@ -19,7 +19,7 @@ const CustomChip = ({ content, onRemove, ...rest }) => {
       >
         (
         {content.map(({ labelKey, labelValue }) => (
-          <React.Fragment>
+          <React.Fragment key={labelValue}>
             <span>{labelKey}:</span>
             <b style={{ fontWeight: 'bold' }}> {labelValue}</b>
           </React.Fragment>
