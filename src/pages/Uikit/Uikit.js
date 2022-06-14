@@ -36,6 +36,7 @@ import {
 } from 'components/ModalBoxes';
 import ButtonGroup from 'components/ButtonGroup';
 import TrippleCollapsed from 'components/TrippleCollapsed';
+import SearchWithIcon from 'components/SearchWithIcon';
 
 const Uikit = () => {
   const [age, setAge] = React.useState('');
@@ -83,7 +84,12 @@ const Uikit = () => {
               ]}
             />
           </Grid>
-          <Grid item xs={4}></Grid>
+          <Grid item xs={3}>
+            <Typography variant="h6" gutterBottom component="div">
+              input with search icon
+            </Typography>
+            <SearchWithIcon />
+          </Grid>
         </Grid>
       </Box>
       <Box
