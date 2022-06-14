@@ -2,7 +2,7 @@ import Tooltip from '@mui/material/Tooltip';
 import PropTypes from 'prop-types';
 import { CustomTooltipContainer } from './tooltip.styles';
 
-const CustomTooltip = ({ message, children, position = 'top' }) => {
+const CustomTooltip = ({ message, children, position = 'top', ...rest }) => {
   return (
     <CustomTooltipContainer>
       <Tooltip
@@ -24,6 +24,7 @@ const CustomTooltip = ({ message, children, position = 'top' }) => {
           },
         }}
         placement={position}
+        {...rest}
       >
         <div>{children}</div>
       </Tooltip>
