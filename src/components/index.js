@@ -14,4 +14,4 @@ export { default as ConfirmCommitModalBox } from './ModalBoxes/ConfirmCommitModa
 export { default as EvidenceDetailModalBox } from './ModalBoxes/EvidenceDetailModalBox';
 export { default as ButtonGroup } from './ButtonGroup';
 export { default as TrippleCollapsed } from './TrippleCollapsed';
-// export { default as ExtendableSubjectType } from './ExtendableSubjectType';
+export { default as BarChart } from './BarChart';

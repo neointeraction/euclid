@@ -9,7 +9,6 @@ ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 const CustomDoughnut = ({
   data,
-  labels,
   datalabelStyles = {
     color: 'white',
     labels: {
@@ -25,6 +24,7 @@ const CustomDoughnut = ({
   // extract the value and bg colors
   const dataValues = data.map((item) => item.value);
   const dataColors = data.map((item) => `${item.color}`);
+  const labels = data.map((item) => `${item.label}`);
 
   return (
     <div>
@@ -53,8 +53,7 @@ const CustomDoughnut = ({
 };
 
 CustomDoughnut.propTypes = {
-  labels: PropTypes.array, // should be of the same length as data
-  data: PropTypes.array, // actual data array of object values like {value:string|number;color:colorCode}
+  data: PropTypes.array, // actual data array of object values like {value:string|number;color:colorCode,label:string}
   datalabelStyles: PropTypes.object, // refer to https://chartjs-plugin-datalabels.netlify.app/guide/labels.html for more
 };
 
