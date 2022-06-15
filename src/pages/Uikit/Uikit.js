@@ -43,6 +43,44 @@ import { ExtendableSubjectTypeContainer } from 'components/ExtendableSubjectType
 
 const Uikit = () => {
   const [age, setAge] = React.useState('');
+  const [multipleSubjectTypes, setMultipleSubjectTypes] = React.useState([
+    {
+      id: 0, // todo: use unique id. eg uuid library
+      selectedValue: '',
+      options: ['Option one for el one', 'Option two for el two'],
+    },
+  ]);
+
+  const onAddToLeftOfSubjectType = (element) => {
+    console.log('element to add to', element);
+    const newData = [...multipleSubjectTypes];
+    // todo: Add constrain to only element to the left
+    newData.unshift({
+      id: element.id + 1,
+      selectedValue: '',
+      options: element.options,
+    });
+    setMultipleSubjectTypes(newData);
+  };
+
+  const onAddToRightOfSubjectType = (element) => {
+    console.log('element to add to', element);
+    const newData = [...multipleSubjectTypes];
+    newData.push({
+      id: element.id + 1,
+      selectedValue: '',
+      options: element.options,
+    });
+    setMultipleSubjectTypes(newData);
+  };
+
+  const onRemoveFromMultipleSubjectType = (elementId) => {
+    if (multipleSubjectTypes.length <= 1) return;
+    const filteredList = multipleSubjectTypes.filter(
+      (item) => item.id !== elementId
+    );
+    setMultipleSubjectTypes(filteredList);
+  };
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -560,11 +598,28 @@ const Uikit = () => {
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={12}>
             <ExtendableSubjectTypeContainer>
-              <ExtendableSubjectTypeForm
-                onAddToLeft={() => console.log('Add another the left')}
-                onAddToRight={() => console.log('Add another to the right')}
-                options={['Option One', 'Option Two']}
-              />
+              {multipleSubjectTypes.map((subjectType) => (
+                <React.Fragment key={subjectType.id}>
+                  <ExtendableSubjectTypeForm
+                    onAddToLeft={() => onAddToLeftOfSubjectType(subjectType)}
+                    onAddToRight={() => onAddToRightOfSubjectType(subjectType)}
+                    onChange={(_e, value) =>
+                      console.log('selected value === ', {
+                        value,
+                        selectedValue: value,
+                      })
+                    }
+                    options={subjectType.options}
+                    onRemove={
+                      multipleSubjectTypes.length > 1
+                        ? () => {
+                            onRemoveFromMultipleSubjectType(subjectType.id);
+                          }
+                        : undefined
+                    }
+                  />
+                </React.Fragment>
+              ))}
             </ExtendableSubjectTypeContainer>
           </Grid>
         </Grid>
