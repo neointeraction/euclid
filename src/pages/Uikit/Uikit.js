@@ -41,6 +41,7 @@ import SearchWithIcon from 'components/SearchWithIcon';
 import ExtendableSubjectTypeForm from 'components/ExtendableSubjectType/ExtendableSubjectTypeForm';
 import { ExtendableSubjectTypeContainer } from 'components/ExtendableSubjectType';
 import Doughnut from 'components/Doughnut';
+import { BarChart } from 'components';
 
 const Uikit = () => {
   const [age, setAge] = React.useState('');
@@ -639,22 +640,30 @@ const Uikit = () => {
           Graphs and Charts
         </Typography>
         <Grid container spacing={2} alignItems="baseline">
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <Doughnut
-              labels={[
-                'Protein one',
-                'Protein two',
-                'Protein three',
-                'Protein four',
-                'Protein five',
-              ]}
               data={[
-                { value: '30', color: '#77E982' },
-                { value: '20', color: '#F89090' },
-                { value: '17', color: '#FFC25F' },
-                { value: '23', color: '#3AA1FF' },
-                { value: '23', color: '#F79E5F' },
+                { value: '30', color: '#77E982', label: 'Protein one' },
+                { value: '20', color: '#F89090', label: 'Protein two' },
+                { value: '17', color: '#FFC25F', label: 'Protein three' },
+                { value: '23', color: '#3AA1FF', label: 'Protein four' },
+                { value: '23', color: '#F79E5F', label: 'Protein five' },
               ]}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <BarChart
+              data={[
+                { value: 150, label: '2017' },
+                { value: 250, label: '2018' },
+                { value: 350, label: '2019' },
+                { value: 320, label: '2020' },
+                { value: 130, label: '2021' },
+                { value: 150, label: '2022' },
+              ]}
+              chartLabel="Tripple"
+              chartColor="#12A8FD"
+              aspectRatio={1}
             />
           </Grid>
         </Grid>
