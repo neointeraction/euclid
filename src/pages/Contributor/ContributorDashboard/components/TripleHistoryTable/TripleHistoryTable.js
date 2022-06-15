@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Table from "components/Table";
+
+import { Tag, Table } from "components";
 
 // import Menu from "@mui/material/Menu";
 // import MenuItem from "@mui/material/MenuItem";
@@ -19,7 +20,15 @@ const TripleHistoryTable = () => {
       },
       {
         Header: "Triple status",
-        accessor: "Triple status",
+        accessor: "status",
+        Cell: (row) => {
+          return (
+            <Tag
+              label={row.row.original.status}
+              type={row.row.original.status.toLowerCase()}
+            />
+          );
+        },
       },
       {
         Header: "Date and time",
@@ -34,22 +43,22 @@ const TripleHistoryTable = () => {
     setData([
       {
         Triple: "134678 (12 Evidences, 20 Triples)",
-        "Triple status": "Approved",
+        status: "Approved",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "234678 (12 Evidences, 20 Triples)",
-        "Triple status": "Committed",
+        status: "Committed",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "334678 (12 Evidences, 20 Triples)",
-        "Triple status": "In Draft",
+        status: "In Draft",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "434678 (12 Evidences, 20 Triples)",
-        "Triple status": "Approved",
+        status: "Reverted",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
     ]);
