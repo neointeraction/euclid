@@ -10,6 +10,7 @@ export const ExtendableSubjectTypeContainer = styled.div`
   border-radius: 4px;
   overflow-x: auto;
   transition: all;
+  padding: 8px 100px;
 `;
 
 export const ExtendableSubjectTypeFormContainer = styled.div`
@@ -18,8 +19,7 @@ export const ExtendableSubjectTypeFormContainer = styled.div`
   gap: 15px;
   padding: 8px 16px;
   min-width: 260px;
-  min-height: 120px;
-
+  max-height: 120px;
   & img {
     cursor: pointer;
   }
