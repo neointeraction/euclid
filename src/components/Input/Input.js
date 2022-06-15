@@ -93,7 +93,7 @@ const Input = ({
           />
         )}
 
-        {rest.error ? <ErrorText>{errorText}</ErrorText> : null}
+        {errorText ? <ErrorText>{errorText}</ErrorText> : null}
       </FormControl>
     </InputContainer>
   );
