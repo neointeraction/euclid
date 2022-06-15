@@ -40,6 +40,7 @@ import SearchWithIcon from 'components/SearchWithIcon';
 // import ExtendableSubjectType from 'components/ExtendableSubjectType';
 import ExtendableSubjectTypeForm from 'components/ExtendableSubjectType/ExtendableSubjectTypeForm';
 import { ExtendableSubjectTypeContainer } from 'components/ExtendableSubjectType';
+import Doughnut from 'components/Doughnut';
 
 const Uikit = () => {
   const [age, setAge] = React.useState('');
@@ -621,6 +622,40 @@ const Uikit = () => {
                 </React.Fragment>
               ))}
             </ExtendableSubjectTypeContainer>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 4,
+          border: '1px dashed grey',
+          marginBottom: 2,
+          borderRadius: 2,
+          backgroundColor: '#fff',
+        }}
+      >
+        <Typography variant="h6" gutterBottom component="div">
+          Graphs and Charts
+        </Typography>
+        <Grid container spacing={2} alignItems="baseline">
+          <Grid item xs={4}>
+            <Doughnut
+              labels={[
+                'Protein one',
+                'Protein two',
+                'Protein three',
+                'Protein four',
+                'Protein five',
+              ]}
+              data={[
+                { value: '30', color: '#77E982' },
+                { value: '20', color: '#F89090' },
+                { value: '17', color: '#FFC25F' },
+                { value: '23', color: '#3AA1FF' },
+                { value: '23', color: '#F79E5F' },
+              ]}
+            />
           </Grid>
         </Grid>
       </Box>
