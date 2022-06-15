@@ -1,3 +1,3 @@
-import Temp from './Login';
+import Login from './Login';
 
-export default Temp;
+export default Login;
