@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Tag, Table } from "components";
+import { TableTagContainer } from "assets/styles/main.styles";
 
 // import Menu from "@mui/material/Menu";
 // import MenuItem from "@mui/material/MenuItem";
@@ -23,10 +24,12 @@ const TripleHistoryTable = () => {
         accessor: "status",
         Cell: (row) => {
           return (
-            <Tag
-              label={row.row.original.status}
-              type={row.row.original.status.toLowerCase()}
-            />
+            <TableTagContainer>
+              <Tag
+                label={row.row.original.status}
+                type={row.row.original.status.toLowerCase()}
+              />
+            </TableTagContainer>
           );
         },
       },
@@ -59,6 +62,11 @@ const TripleHistoryTable = () => {
       {
         Triple: "434678 (12 Evidences, 20 Triples)",
         status: "Reverted",
+        "Date and time": "19-05-2022 at 5:30 PM",
+      },
+      {
+        Triple: "534678 (12 Evidences, 20 Triples)",
+        status: "Approved",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
     ]);

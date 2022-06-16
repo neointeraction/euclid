@@ -2,6 +2,7 @@ export { default as Button } from "./Button";
 export { default as Dropdown } from "./Dropdown";
 export { default as IconButton } from "./IconButton";
 export { default as Input } from "./Input";
+export { default as AutoComplete } from "./AutoComplete";
 export { default as PointBanner } from "./PointBanner";
 export { default as PageHeader } from "./PageHeader";
 export { default as Card } from "./Card";
@@ -16,3 +17,4 @@ export { default as EvidenceDetailModalBox } from "./ModalBoxes/EvidenceDetailMo
 export { default as ButtonGroup } from "./ButtonGroup";
 export { default as TrippleCollapsed } from "./TrippleCollapsed";
 export { default as BarChart } from "./BarChart";
+export { default as ExtendableSubjectTypeForm } from "./ExtendableSubjectTypeForm";

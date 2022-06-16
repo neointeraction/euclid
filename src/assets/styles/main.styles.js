@@ -9,9 +9,13 @@ export const Box = styled.div`
   border: 1px solid #e5e5e5;
   border-radius: 8px;
   padding: ${(props) => (props.noPadding ? 0 : "24px")};
+  border: ${(props) =>
+    props.bordered ? "2px solid #005585" : "1px solid #E5E5E5"};
+  box-shadow: ${(props) =>
+    props.bordered ? "0px 4px 24px rgba(0, 0, 0, 0.08)" : "none"};
 `;
 
-export const SectionTitle = styled.div`
+export const SectionTitle = styled.h1`
   font-weight: 700;
   font-size: 20px;
   line-height: 33px;
@@ -19,13 +23,52 @@ export const SectionTitle = styled.div`
   margin-bottom: 20px;
 `;
 
+export const BodyText = styled.p`
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  color: #000000;
+`;
 
-// for login 
+export const BodyTextLight = styled.p`
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 28px;
+  color: #8c8c8c;
+  margin-top: 5px;
+`;
+
 export const FullPageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('https://res.cloudinary.com/dhs3t6x02/image/upload/v1655280230/samples/Bg_rq6ksx.png');
+  background-image: url("https://res.cloudinary.com/dhs3t6x02/image/upload/v1655280230/samples/Bg_rq6ksx.png");
   background-size: cover;
   height: 100vh;
+`;
+
+export const TableTagContainer = styled.div`
+  margin: -5px 0;
+`;
+
+export const ActionBox = styled.div`
+  margin: 26px 0;
+`;
+
+export const MultiFormContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
+export const TypesBlock = styled.div`
+  margin: 26px 0;
+  ${MultiFormContainer} {
+    margin-bottom: 20px;
+  }
+`;
+
+export const InfoWithActions = styled.div`
+  padding: 10px 0;
 `;

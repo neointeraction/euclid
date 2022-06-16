@@ -2,5 +2,5 @@
   "compilerOptions": {
     "baseUrl": "src"
   },
-  "include": ["src", "src/components/ExtendableSubjectType/.js"]
+  "include": ["src", "src/components/ExtendableSubjectTypeForm/.js"]
 }

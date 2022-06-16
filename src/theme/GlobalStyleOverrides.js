@@ -76,6 +76,21 @@ export default function GlobalStyleOverrides() {
           },
         ],
       },
+      MuiAutocomplete: {
+        styleOverrides: {
+          root: {
+            "& label": {
+              fontSize: 12,
+            },
+          },
+          input: {
+            fontSize: 14,
+          },
+          listbox: {
+            fontSize: 14,
+          },
+        },
+      },
     },
   });
 

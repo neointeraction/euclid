@@ -1,83 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import { Divider } from '@mui/material';
-import { Button as MuiButton } from '@mui/material';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import { Divider } from "@mui/material";
+import { Button as MuiButton } from "@mui/material";
 
-import Input from 'components/Input';
-import Dropdown from 'components/Dropdown';
-import Button from 'components/Button';
-import IconButton from 'components/IconButton';
-import Card from 'components/Card/Card';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
-import PointBanner from 'components/PointBanner';
-import PageHeader from 'components/PageHeader';
-import Tag from 'components/Tag';
-import Alert from 'components/Alert';
-import Chip from 'components/Chip';
+import Input from "components/Input";
+import Dropdown from "components/Dropdown";
+import Button from "components/Button";
+import IconButton from "components/IconButton";
+import Card from "components/Card/Card";
+import Header from "components/Header";
+import Footer from "components/Footer";
+import PointBanner from "components/PointBanner";
+import PageHeader from "components/PageHeader";
+import Tag from "components/Tag";
+import Alert from "components/Alert";
+import Chip from "components/Chip";
 
-import TripleHistoryTable from '../Contributor/ContributorDashboard/components/TripleHistoryTable/TripleHistoryTable';
+import TripleHistoryTable from "../Contributor/ContributorDashboard/components/TripleHistoryTable/TripleHistoryTable";
 
-import AddCommentOutlinedIcon from '@mui/icons-material/AddCommentOutlined';
-import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-import AddIcon from '@mui/icons-material/Add';
-import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
-import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import Tooltip from 'components/Tooltip';
+import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
+import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
+import AddIcon from "@mui/icons-material/Add";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
+import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import Tooltip from "components/Tooltip";
 import {
   ConfirmCommitModalBox,
   EvidenceDetailModalBox,
   ProvideEvidenceModalBox,
-} from 'components/ModalBoxes';
-import ButtonGroup from 'components/ButtonGroup';
-import TrippleCollapsed from 'components/TrippleCollapsed';
-import SearchWithIcon from 'components/SearchWithIcon';
+} from "components/ModalBoxes";
+import ButtonGroup from "components/ButtonGroup";
+import TrippleCollapsed from "components/TrippleCollapsed";
+import SearchWithIcon from "components/SearchWithIcon";
 // import ExtendableSubjectType from 'components/ExtendableSubjectType';
-import ExtendableSubjectTypeForm from 'components/ExtendableSubjectType/ExtendableSubjectTypeForm';
-import { ExtendableSubjectTypeContainer } from 'components/ExtendableSubjectType';
-import Doughnut from 'components/Doughnut';
-import { BarChart } from 'components';
-import ModalContainer from 'components/ModalContainer';
+import ExtendableSubjectTypeForm from "components/ExtendableSubjectTypeForm/ExtendableSubjectTypeForm";
+import { MultiFormContainer } from "assets/styles/main.styles";
+import Doughnut from "components/Doughnut";
+import { BarChart } from "components";
+import ModalContainer from "components/ModalContainer";
+import AutoComplete from "components/AutoComplete";
 
 const Uikit = () => {
-  const [age, setAge] = React.useState('');
+  const [age, setAge] = React.useState("");
   const [multipleSubjectTypes, setMultipleSubjectTypes] = React.useState([
     {
       id: 0, // todo: use unique id. eg uuid library
-      selectedValue: '',
-      options: ['Option one for el one', 'Option two for el two'],
+      selectedValue: "",
+      options: ["Option one for el one", "Option two for el two"],
     },
   ]);
   const [showModal, setShowModal] = useState(false); // to controll modal state
-  const [modalContentToShow, setModalContentToShow] = useState('');
+  const [modalContentToShow, setModalContentToShow] = useState("");
 
   const toggleModal = () => {
     setShowModal(!showModal);
   };
 
   const onAddToLeftOfSubjectType = (element) => {
-    console.log('element to add to', element);
+    console.log("element to add to", element);
     const newData = [...multipleSubjectTypes];
     // todo: Add constrain to only element to the left
     newData.unshift({
       id: element.id + 1,
-      selectedValue: '',
+      selectedValue: "",
       options: element.options,
     });
     setMultipleSubjectTypes(newData);
   };
 
   const onAddToRightOfSubjectType = (element) => {
-    console.log('element to add to', element);
+    console.log("element to add to", element);
     const newData = [...multipleSubjectTypes];
     newData.push({
       id: element.id + 1,
-      selectedValue: '',
+      selectedValue: "",
       options: element.options,
     });
     setMultipleSubjectTypes(newData);
@@ -101,10 +102,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -118,18 +119,21 @@ const Uikit = () => {
             <Input isMulti label="Textarea" />
           </Grid>
           <Grid item xs={3}>
+            <AutoComplete label="AutoComplete" />
+          </Grid>
+          <Grid item xs={3}>
             <Dropdown
               label="Dropdown"
               onChange={handleChange}
               value={age}
               options={[
                 {
-                  id: 'option a',
-                  optionText: 'Option A',
+                  id: "option a",
+                  optionText: "Option A",
                 },
                 {
-                  id: 'option b',
-                  optionText: 'Option B',
+                  id: "option b",
+                  optionText: "Option B",
                 },
               ]}
             />
@@ -146,10 +150,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -160,21 +164,21 @@ const Uikit = () => {
             <Button
               btnText="Button Primary"
               variant="contained"
-              onClick={() => console.log('clicked')}
+              onClick={() => console.log("clicked")}
             />
           </Grid>
           <Grid item xs={2}>
             <Button
               btnText="Button Outlined"
               variant="outlined"
-              onClick={() => console.log('clicked')}
+              onClick={() => console.log("clicked")}
             />
           </Grid>
           <Grid item xs={2}>
             <Button
               btnText="Button Secondary"
               variant="secondary"
-              onClick={() => console.log('clicked')}
+              onClick={() => console.log("clicked")}
             />
           </Grid>
           <Grid item xs={1}>
@@ -182,7 +186,7 @@ const Uikit = () => {
               btnText="Back"
               variant="text"
               startIcon={<ChevronLeftOutlinedIcon />}
-              onClick={() => console.log('clicked')}
+              onClick={() => console.log("clicked")}
             />
           </Grid>
           <Grid item xs={1}>
@@ -190,7 +194,7 @@ const Uikit = () => {
               btnText="Next"
               variant="text"
               endIcon={<ChevronRightOutlinedIcon />}
-              onClick={() => console.log('clicked')}
+              onClick={() => console.log("clicked")}
             />
           </Grid>
         </Grid>
@@ -230,10 +234,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#f4f4f4',
+          backgroundColor: "#f4f4f4",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -250,10 +254,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#f4f4f4',
+          backgroundColor: "#f4f4f4",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -270,7 +274,7 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
         }}
@@ -305,10 +309,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -334,10 +338,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -359,10 +363,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -379,10 +383,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -411,10 +415,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -426,21 +430,21 @@ const Uikit = () => {
             <Alert
               type="success"
               message="This is Success alert"
-              onClose={() => console.log('close alert')}
+              onClose={() => console.log("close alert")}
             />
           </Grid>
           <Grid item xs={4}>
             <Alert
               type="warning"
               message="This is warning alert"
-              onClose={() => console.log('close alert')}
+              onClose={() => console.log("close alert")}
             />
           </Grid>
           <Grid item xs={4}>
             <Alert
               type="error"
               message="This is error alert"
-              onClose={() => console.log('close alert')}
+              onClose={() => console.log("close alert")}
             />
           </Grid>
         </Grid>
@@ -449,10 +453,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -461,18 +465,18 @@ const Uikit = () => {
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={4}>
             <Chip
-              content={[{ labelKey: 'Species', labelValue: 'Human Beings' }]}
+              content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
             />
           </Grid>
           <Grid item xs={4}>
             <Chip
-              content={[{ labelKey: 'Disease', labelValue: 'Alziehmers' }]}
+              content={[{ labelKey: "Disease", labelValue: "Alziehmers" }]}
             />
           </Grid>
           <Grid item xs={4}>
             <Chip
-              content={[{ labelKey: 'Removeable', labelValue: 'Chip' }]}
-              onRemove={() => console.log('To be removed')}
+              content={[{ labelKey: "Removeable", labelValue: "Chip" }]}
+              onRemove={() => console.log("To be removed")}
             />
           </Grid>
         </Grid>
@@ -481,10 +485,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -512,10 +516,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -523,22 +527,19 @@ const Uikit = () => {
         </Typography>
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={6}>
-            <ProvideEvidenceModalBox
-              onClose={() => console.log('Close modal box')}
-            />
             <Button
-              btnText="Show Modal"
+              btnText="Show Evidence Modal"
               variant="contained"
               onClick={() => {
-                setModalContentToShow('provide-evidence');
+                setModalContentToShow("provide-evidence");
                 toggleModal();
               }}
             />
             <ModalContainer modalIsOpen={showModal} toggleModal={toggleModal}>
-              <div style={{ minWidth: '500px' }}>
-                {modalContentToShow === 'provide-evidence' ? (
+              <div style={{ minWidth: "500px" }}>
+                {modalContentToShow === "provide-evidence" ? (
                   <ProvideEvidenceModalBox onClose={toggleModal} />
-                ) : modalContentToShow === 'confirm-commit' ? (
+                ) : modalContentToShow === "confirm-commit" ? (
                   <ConfirmCommitModalBox onClose={toggleModal} />
                 ) : (
                   <EvidenceDetailModalBox onClose={toggleModal} />
@@ -547,12 +548,11 @@ const Uikit = () => {
             </ModalContainer>
           </Grid>
           <Grid item xs={6}>
-            <ConfirmCommitModalBox />
             <Button
-              btnText="Show Modal"
+              btnText="Show Confirm Modal"
               variant="contained"
               onClick={() => {
-                setModalContentToShow('confirm-commit');
+                setModalContentToShow("confirm-commit");
                 toggleModal();
               }}
             />
@@ -563,7 +563,7 @@ const Uikit = () => {
               btnText="Show Modal"
               variant="contained"
               onClick={() => {
-                setModalContentToShow('evidence-details');
+                setModalContentToShow("evidence-details");
                 toggleModal();
               }}
             />
@@ -574,10 +574,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -596,10 +596,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -609,21 +609,21 @@ const Uikit = () => {
           <Grid item xs={12}>
             <TrippleCollapsed
               chipContent={[
-                { labelKey: 'Protein', labelValue: 'GSK3BB' },
+                { labelKey: "Protein", labelValue: "GSK3BB" },
                 {
-                  labelKey: 'protein_modification',
-                  labelValue: 'Phosphorylationn',
+                  labelKey: "protein_modification",
+                  labelValue: "Phosphorylationn",
                 },
-                { labelKey: ' Amino_acid', labelValue: 'Threoninee' },
-                { labelKey: 'Protein', labelValue: 'GSK3B' },
+                { labelKey: " Amino_acid", labelValue: "Threoninee" },
+                { labelKey: "Protein", labelValue: "GSK3B" },
                 {
-                  labelKey: 'protein_modification',
-                  labelValue: 'Phosphorylation',
+                  labelKey: "protein_modification",
+                  labelValue: "Phosphorylation",
                 },
-                { labelKey: ' Amino_acid', labelValue: 'Threonine' },
+                { labelKey: " Amino_acid", labelValue: "Threonine" },
               ]}
             >
-              <div style={{ margin: '20px' }}>
+              <div style={{ margin: "20px" }}>
                 Click again to Collapse me. I am the child to hide :)
               </div>
             </TrippleCollapsed>
@@ -634,10 +634,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -645,14 +645,14 @@ const Uikit = () => {
         </Typography>
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={12}>
-            <ExtendableSubjectTypeContainer>
+            <MultiFormContainer>
               {multipleSubjectTypes.map((subjectType) => (
                 <React.Fragment key={subjectType.id}>
                   <ExtendableSubjectTypeForm
                     onAddToLeft={() => onAddToLeftOfSubjectType(subjectType)}
                     onAddToRight={() => onAddToRightOfSubjectType(subjectType)}
                     onChange={(_e, value) =>
-                      console.log('selected value === ', {
+                      console.log("selected value === ", {
                         value,
                         selectedValue: value,
                       })
@@ -668,7 +668,7 @@ const Uikit = () => {
                   />
                 </React.Fragment>
               ))}
-            </ExtendableSubjectTypeContainer>
+            </MultiFormContainer>
           </Grid>
         </Grid>
       </Box>
@@ -676,10 +676,10 @@ const Uikit = () => {
         sx={{
           flexGrow: 1,
           p: 4,
-          border: '1px dashed grey',
+          border: "1px dashed grey",
           marginBottom: 2,
           borderRadius: 2,
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         }}
       >
         <Typography variant="h6" gutterBottom component="div">
@@ -689,23 +689,23 @@ const Uikit = () => {
           <Grid item xs={6}>
             <Doughnut
               data={[
-                { value: '30', color: '#77E982', label: 'Protein one' },
-                { value: '20', color: '#F89090', label: 'Protein two' },
-                { value: '17', color: '#FFC25F', label: 'Protein three' },
-                { value: '23', color: '#3AA1FF', label: 'Protein four' },
-                { value: '23', color: '#F79E5F', label: 'Protein five' },
+                { value: "30", color: "#77E982", label: "Protein one" },
+                { value: "20", color: "#F89090", label: "Protein two" },
+                { value: "17", color: "#FFC25F", label: "Protein three" },
+                { value: "23", color: "#3AA1FF", label: "Protein four" },
+                { value: "23", color: "#F79E5F", label: "Protein five" },
               ]}
             />
           </Grid>
           <Grid item xs={6}>
             <BarChart
               data={[
-                { value: 150, label: '2017' },
-                { value: 250, label: '2018' },
-                { value: 350, label: '2019' },
-                { value: 320, label: '2020' },
-                { value: 130, label: '2021' },
-                { value: 150, label: '2022' },
+                { value: 150, label: "2017" },
+                { value: 250, label: "2018" },
+                { value: 350, label: "2019" },
+                { value: 320, label: "2020" },
+                { value: 130, label: "2021" },
+                { value: 150, label: "2022" },
               ]}
               chartLabel="Tripple"
               chartColor="#12A8FD"

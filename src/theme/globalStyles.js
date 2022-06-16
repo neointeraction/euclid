@@ -12,6 +12,9 @@ const GlobalStyle = createGlobalStyle`
   .MuiMenuItem-root {
       font-size: 14px !important;
     }
+ .MuiAutocomplete-popper {
+    font-size: 14px !important;
+  }
 `;
 
 export default GlobalStyle;

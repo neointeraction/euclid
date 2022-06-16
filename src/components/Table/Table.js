@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   useTable,
   useResizeColumns,
@@ -7,21 +7,25 @@ import {
   useExpanded,
   useRowSelect,
   usePagination,
-} from 'react-table';
+  useFilters,
+  useGlobalFilter,
+} from "react-table";
 // import "./table.css";
 
+import Filter from "./Filter";
+
 // import Loader from "../Loader";
-import Input from '../Input';
-import Dropdown from '../Dropdown';
+import Input from "../Input";
+import Dropdown from "../Dropdown";
 
-import SortIcon from '../../assets/images/icons/sort.svg';
-import LeftStart from '../../assets/images/icons/LeftArrow.svg';
-import RightEnd from '../../assets/images/icons/RightArrow.svg';
-import Left from '../../assets/images/icons/left.svg';
-import Right from '../../assets/images/icons/right.svg';
-import Nodata from '../../assets/images/icons/file-nodata.svg';
+import SortIcon from "../../assets/images/icons/sort.svg";
+import LeftStart from "../../assets/images/icons/LeftArrow.svg";
+import RightEnd from "../../assets/images/icons/RightArrow.svg";
+import Left from "../../assets/images/icons/left.svg";
+import Right from "../../assets/images/icons/right.svg";
+import Nodata from "../../assets/images/icons/file-nodata.svg";
 
-import { TableSubContainer, ObjectFlex, CustomTable } from './table.styles';
+import { TableSubContainer, ObjectFlex, CustomTable } from "./table.styles";
 
 const Table = ({
   columns,
@@ -29,6 +33,7 @@ const Table = ({
   isLoading,
   setSelectedRow,
   hidePagination,
+  filter,
 }) => {
   const defaultColumn = React.useMemo(
     () => ({
@@ -55,6 +60,7 @@ const Table = ({
     nextPage,
     previousPage,
     setPageSize,
+    setFilter,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -65,6 +71,8 @@ const Table = ({
     },
     useResizeColumns,
     useFlexLayout,
+    useFilters,
+    useGlobalFilter,
     useSortBy,
     useExpanded,
     usePagination,
@@ -80,13 +88,13 @@ const Table = ({
 
   const cellProps = (props, { cell }) => getStyles(props, cell.column.align);
 
-  const getStyles = (props, align = 'left') => [
+  const getStyles = (props, align = "left") => [
     props,
     {
       style: {
-        justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
-        alignItems: 'flex-start',
-        display: 'flex',
+        justifyContent: align === "right" ? "flex-end" : "flex-start",
+        alignItems: "flex-start",
+        display: "flex",
       },
     },
   ];
@@ -96,7 +104,7 @@ const Table = ({
     ({ row }) => (
       <TableSubContainer>
         {row.allCells
-          .filter((item) => item.column.Header !== '#')
+          .filter((item) => item.column.Header !== "#")
           .map((item) => (
             <ObjectFlex key={item.value}>
               <h4>{item.column.Header}</h4>
@@ -108,53 +116,67 @@ const Table = ({
     []
   );
 
+  const [filterValue, setFilterValue] = useState("");
+
+  useEffect(() => {
+    setFilter("status", filterValue);
+  }, [filterValue, setFilter]);
+
   return (
     <CustomTable>
+      <Filter setFilterValue={setFilterValue} />
       <div {...getTableProps()} className="table">
         <div>
-          {headerGroups.map((headerGroup) => (
-            <div {...headerGroup.getHeaderGroupProps()} className="tr">
-              {headerGroup.headers.map((column) => (
-                <div
-                  {...column.getHeaderProps(
-                    column.getSortByToggleProps(),
-                    headerProps
-                  )}
-                  className="th"
-                >
-                  {column.render('Header')}
-                  {/* Use column.getResizerProps to hook up the events correctly */}
-                  {column.canResize && (
-                    <div
-                      {...column.getResizerProps()}
-                      className={`resizer ${
-                        column.isResizing ? 'isResizing' : ''
-                      }`}
-                    />
-                  )}
-                  <span className="sort-icon">
-                    {column.isSorted ? (
-                      column.isSortedDesc ? (
-                        <img src={SortIcon} alt="SortIcon" />
-                      ) : (
-                        <img src={SortIcon} alt="SortIcon" />
-                      )
-                    ) : (
-                      <img
-                        src={SortIcon}
-                        alt="SortIcon"
-                        // style={{ visibility: "hidden" }}
+          {headerGroups.map((headerGroup, index) => (
+            <div
+              {...headerGroup.getHeaderGroupProps()}
+              className="tr"
+              key={index}
+            >
+              {headerGroup.headers.map((column, index) => (
+                <>
+                  <div
+                    {...column.getHeaderProps(
+                      column.getSortByToggleProps(),
+                      headerProps
+                    )}
+                    className="th"
+                    key={index}
+                  >
+                    {column.render("Header")}
+                    {/* Use column.getResizerProps to hook up the events correctly */}
+                    {column.canResize && (
+                      <div
+                        {...column.getResizerProps()}
+                        className={`resizer ${
+                          column.isResizing ? "isResizing" : ""
+                        }`}
                       />
                     )}
-                  </span>
-                </div>
+                    <span className="sort-icon">
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <img src={SortIcon} alt="SortIcon" />
+                        ) : (
+                          <img src={SortIcon} alt="SortIcon" />
+                        )
+                      ) : (
+                        <img
+                          src={SortIcon}
+                          alt="SortIcon"
+                          // style={{ visibility: "hidden" }}
+                        />
+                      )}
+                    </span>
+                  </div>
+                </>
               ))}
             </div>
           ))}
         </div>
         <div className="tbody">
           {isLoading ? (
-            'loading'
+            "loading"
           ) : page.length === 0 ? (
             <div className="empty-table">
               <div className="empty-table-content">
@@ -164,20 +186,21 @@ const Table = ({
             </div>
           ) : (
             <>
-              {page.map((row) => {
+              {page.map((row, index) => {
                 prepareRow(row);
                 return (
-                  <>
+                  <div key={index}>
                     <div {...row.getRowProps()} className="tr">
-                      {row.cells.map((cell) => {
+                      {row.cells.map((cell, index) => {
                         return (
                           <div
                             {...cell.getCellProps(cellProps)}
                             className={`td ${
-                              row.isSelected ? 'highlight' : ''
+                              row.isSelected ? "highlight" : ""
                             }`}
+                            key={index}
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </div>
                         );
                       })}
@@ -193,7 +216,7 @@ const Table = ({
                         </div>
                       </div>
                     ) : null}
-                  </>
+                  </div>
                 );
               })}
             </>
