@@ -8,10 +8,7 @@ const ConfirmCommitModalBox = ({ onClose }) => {
   return (
     <ProvideEvidenceModalBoxContainer>
       <ModalCloseIcon onCloseIconClick={onClose} />
-      <Typography
-        variant="h5"
-        style={{ marginTop: '25px', marginBottom: '10px' }}
-      >
+      <Typography variant="h5" className="modal-heading">
         Confirm Commit
       </Typography>
       <Typography variant="subtitle1">

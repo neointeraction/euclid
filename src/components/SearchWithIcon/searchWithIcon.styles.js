@@ -14,6 +14,7 @@ export const SearchWithIconContainer = styled.div`
     outline: none;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
+    font-family: 'Nunito Sans', sans-serif;
   }
 
   & button {

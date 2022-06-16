@@ -1,11 +1,16 @@
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
+import { useState } from 'react';
+import Collapse from '@mui/material/Collapse';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import IconButton from 'components/IconButton';
 import Chip from 'components/Chip';
+import { CollapseIconWrap } from './trippledCollapsed.styles';
 
-const TrippleCollapsed = ({ chipContent }) => {
+const TrippleCollapsed = ({ chipContent, children }) => {
+  const [open, setOpen] = useState(false);
   return (
     <Box
       sx={{
@@ -13,17 +18,24 @@ const TrippleCollapsed = ({ chipContent }) => {
         border: '1px solid #E5E5E5',
         marginBottom: 2,
         borderRadius: 2,
-        backgroundColor: '#fff',
+        backgroundColor: '#fff'
       }}
     >
-      <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+      <CollapseIconWrap>
         <IconButton
-          onClick={() => console.log('Expande tripple')}
-          icon={<ChevronRightOutlinedIcon fontSize="medium" />}
+          onClick={() => setOpen((prevState) => !prevState)}
+          style={{ marginRight: '6px' }}
+          icon={
+            !open ? (
+              <ChevronRightOutlinedIcon fontSize="medium" />
+            ) : (
+              <KeyboardArrowUpIcon fontSize="medium" />
+            )
+          }
         />
-
-        <Chip content={chipContent} />
-      </div>
+        {!open && <Chip content={chipContent} />}
+      </CollapseIconWrap>
+      <Collapse in={open}>{children}</Collapse>
     </Box>
   );
 };
