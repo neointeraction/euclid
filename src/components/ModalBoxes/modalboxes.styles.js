@@ -33,6 +33,18 @@ export const ModalCloseIconContainer = styled.div`
 `;
 
 // styles for the evidence details modal component
+export const EvidenceDetailModalBoxWrap = styled.div`
+  position: relative;
+
+  & .close-icon {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+`;
+
 export const CustomTableContainer = styled(TableContainer)`
   padding: 8px;
   box-shadow: 0px 2px 28px rgba(0, 0, 0, 0.12);

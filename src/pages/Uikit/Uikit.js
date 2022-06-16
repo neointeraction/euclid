@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -42,6 +42,7 @@ import ExtendableSubjectTypeForm from 'components/ExtendableSubjectType/Extendab
 import { ExtendableSubjectTypeContainer } from 'components/ExtendableSubjectType';
 import Doughnut from 'components/Doughnut';
 import { BarChart } from 'components';
+import ModalContainer from 'components/ModalContainer';
 
 const Uikit = () => {
   const [age, setAge] = React.useState('');
@@ -52,6 +53,12 @@ const Uikit = () => {
       options: ['Option one for el one', 'Option two for el two'],
     },
   ]);
+  const [showModal, setShowModal] = useState(false); // to controll modal state
+  const [modalContentToShow, setModalContentToShow] = useState('');
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
 
   const onAddToLeftOfSubjectType = (element) => {
     console.log('element to add to', element);
@@ -519,12 +526,47 @@ const Uikit = () => {
             <ProvideEvidenceModalBox
               onClose={() => console.log('Close modal box')}
             />
+            <Button
+              btnText="Show Modal"
+              variant="contained"
+              onClick={() => {
+                setModalContentToShow('provide-evidence');
+                toggleModal();
+              }}
+            />
+            <ModalContainer modalIsOpen={showModal} toggleModal={toggleModal}>
+              <div style={{ minWidth: '500px' }}>
+                {modalContentToShow === 'provide-evidence' ? (
+                  <ProvideEvidenceModalBox onClose={toggleModal} />
+                ) : modalContentToShow === 'confirm-commit' ? (
+                  <ConfirmCommitModalBox onClose={toggleModal} />
+                ) : (
+                  <EvidenceDetailModalBox onClose={toggleModal} />
+                )}
+              </div>
+            </ModalContainer>
           </Grid>
           <Grid item xs={6}>
             <ConfirmCommitModalBox />
+            <Button
+              btnText="Show Modal"
+              variant="contained"
+              onClick={() => {
+                setModalContentToShow('confirm-commit');
+                toggleModal();
+              }}
+            />
           </Grid>
           <Grid item xs={6}>
             <EvidenceDetailModalBox />
+            <Button
+              btnText="Show Modal"
+              variant="contained"
+              onClick={() => {
+                setModalContentToShow('evidence-details');
+                toggleModal();
+              }}
+            />
           </Grid>
         </Grid>
       </Box>
