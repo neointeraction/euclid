@@ -1,6 +1,5 @@
 import { SearchOutlined } from '@mui/icons-material';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { SearchWithIconContainer } from './searchWithIcon.styles';
 
 const SearchWithIcon = ({ placeholder = 'Search', type = 'text', ...rest }) => {

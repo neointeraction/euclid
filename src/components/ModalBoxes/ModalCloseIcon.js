@@ -1,20 +1,17 @@
 import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
+import { ModalCloseIconContainer } from './modalboxes.styles';
 
-const ModalCloseIcon = ({ onCloseIconClick }) => {
+const ModalCloseIcon = ({ onCloseIconClick,...rest }) => {
   return (
-    <div style={{ position: 'relative' }}>
+    <ModalCloseIconContainer>
       <CloseIcon
-        style={{
-          cursor: 'pointer',
-          position: 'absolute',
-          top: '0px',
-          right: '0px',
-        }}
+        className="icon-itself"
         onClick={onCloseIconClick}
         fontSize="small"
+        {...rest}
       />
-    </div>
+    </ModalCloseIconContainer>
   );
 };
 

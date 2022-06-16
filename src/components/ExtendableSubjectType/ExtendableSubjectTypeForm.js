@@ -8,7 +8,10 @@ import NextIcon from '../../assets/images/icons/subject-type-next.svg';
 import BackIcon from '../../assets/images/icons/subject-type-back.svg';
 
 import { CloseOutlined } from '@mui/icons-material';
-import { ExtendableSubjectTypeFormContainer } from './extendableSubjectType.styles';
+import {
+  ExtendableSubjectTypeFormContainer,
+  ExtendableSubjectTypeFormHeaderWrap,
+} from './extendableSubjectType.styles';
 
 const ExtendableSubjectTypeForm = ({
   onAddToRight,
@@ -19,7 +22,7 @@ const ExtendableSubjectTypeForm = ({
 }) => {
   return (
     <ExtendableSubjectTypeFormContainer>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <ExtendableSubjectTypeFormHeaderWrap>
         <Typography variant="body1">Subject type</Typography>
         {onRemove && (
           <CloseOutlined
@@ -28,16 +31,19 @@ const ExtendableSubjectTypeForm = ({
             fontSize="medium"
           />
         )}
-      </div>
+      </ExtendableSubjectTypeFormHeaderWrap>
       <Autocomplete
         disablePortal
         id="combo-box-demo"
         options={options}
-        style={{ width: '100%', background: 'white', padding: '0px' }}
+        style={{
+          width: '100%',
+          background: 'white',
+        }}
         onChange={onChange}
         renderInput={(params) => <TextField {...params} />}
       />
-      <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
+      <div className="action-icons-wrapper">
         <img src={BackIcon} onClick={onAddToLeft} alt="" />
         <img src={NextIcon} onClick={onAddToRight} alt="" />
       </div>

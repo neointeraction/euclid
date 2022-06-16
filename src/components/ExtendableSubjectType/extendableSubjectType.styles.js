@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
 export const ExtendableSubjectTypeContainer = styled.div`
+  & .css-16awh2u-MuiAutocomplete-root .MuiOutlinedInput-root {
+    padding: 0;
+  }
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -11,6 +14,12 @@ export const ExtendableSubjectTypeContainer = styled.div`
   overflow-x: auto;
   transition: all;
   padding: 8px 100px;
+
+  & .action-icons-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
 `;
 
 export const ExtendableSubjectTypeFormContainer = styled.div`
@@ -23,4 +32,9 @@ export const ExtendableSubjectTypeFormContainer = styled.div`
   & img {
     cursor: pointer;
   }
+`;
+
+export const ExtendableSubjectTypeFormHeaderWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;

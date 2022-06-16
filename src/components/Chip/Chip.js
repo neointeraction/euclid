@@ -3,20 +3,13 @@ import PropTypes from 'prop-types';
 
 import ChipCloseIcon from 'assets/images/icons/chip-close.svg';
 import React from 'react';
+import { ChipChildrenWrap } from './chip.styles';
 
 const CustomChip = ({ content, onRemove, ...rest }) => {
   return (
     <div className="MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorDefault MuiChip-filledDefault css-1fenuxh-MuiChip-root">
       <Chip style={{ display: 'none' }} {...rest} />
-      <div
-        style={{
-          padding: '10px',
-          color: '#262626',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-        }}
-      >
+      <ChipChildrenWrap>
         (
         {content.map(({ labelKey, labelValue }) => (
           <React.Fragment key={labelValue}>
@@ -24,16 +17,8 @@ const CustomChip = ({ content, onRemove, ...rest }) => {
             <b style={{ fontWeight: 'bold' }}> {labelValue}</b>
           </React.Fragment>
         ))}
-        )
-        {onRemove && (
-          <img
-            src={ChipCloseIcon}
-            alt=""
-            style={{ marginLeft: '6px', cursor: 'pointer' }}
-            onClick={onRemove}
-          />
-        )}
-      </div>
+        ){onRemove && <img src={ChipCloseIcon} alt="" onClick={onRemove} />}
+      </ChipChildrenWrap>
     </div>
   );
 };
