@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -19,7 +19,7 @@ import Tag from "components/Tag";
 import Alert from "components/Alert";
 import Chip from "components/Chip";
 
-import TripleHistoryTable from "../Contributor/ContributorDashboard/components/TripleHistoryTable/TripleHistoryTable";
+import TripleHistoryTable from "../Contributor/components/TripleHistoryTable/TripleHistoryTable";
 
 import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
@@ -29,11 +29,7 @@ import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import Tooltip from "components/Tooltip";
-import {
-  ConfirmCommitModalBox,
-  EvidenceDetailModalBox,
-  ProvideEvidenceModalBox,
-} from "components/ModalBoxes";
+
 import ButtonGroup from "components/ButtonGroup";
 import TrippleCollapsed from "components/TrippleCollapsed";
 import SearchWithIcon from "components/SearchWithIcon";
@@ -41,8 +37,8 @@ import SearchWithIcon from "components/SearchWithIcon";
 import ExtendableSubjectTypeForm from "components/ExtendableSubjectTypeForm/ExtendableSubjectTypeForm";
 import { MultiFormContainer } from "assets/styles/main.styles";
 import Doughnut from "components/Doughnut";
-import { BarChart } from "components";
-import ModalContainer from "components/ModalContainer";
+import { BarChart, Modal } from "components";
+
 import AutoComplete from "components/AutoComplete";
 
 const Uikit = () => {
@@ -54,12 +50,6 @@ const Uikit = () => {
       options: ["Option one for el one", "Option two for el two"],
     },
   ]);
-  const [showModal, setShowModal] = useState(false); // to controll modal state
-  const [modalContentToShow, setModalContentToShow] = useState("");
-
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
 
   const onAddToLeftOfSubjectType = (element) => {
     console.log("element to add to", element);
@@ -94,6 +84,18 @@ const Uikit = () => {
 
   const handleChange = (event) => {
     setAge(event.target.value);
+  };
+
+  // MODAL
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -528,44 +530,16 @@ const Uikit = () => {
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={6}>
             <Button
-              btnText="Show Evidence Modal"
+              btnText="Show  Modal"
               variant="contained"
-              onClick={() => {
-                setModalContentToShow("provide-evidence");
-                toggleModal();
-              }}
+              onClick={handleClickOpen}
             />
-            <ModalContainer modalIsOpen={showModal} toggleModal={toggleModal}>
-              <div style={{ minWidth: "500px" }}>
-                {modalContentToShow === "provide-evidence" ? (
-                  <ProvideEvidenceModalBox onClose={toggleModal} />
-                ) : modalContentToShow === "confirm-commit" ? (
-                  <ConfirmCommitModalBox onClose={toggleModal} />
-                ) : (
-                  <EvidenceDetailModalBox onClose={toggleModal} />
-                )}
-              </div>
-            </ModalContainer>
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              btnText="Show Confirm Modal"
-              variant="contained"
-              onClick={() => {
-                setModalContentToShow("confirm-commit");
-                toggleModal();
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <EvidenceDetailModalBox />
-            <Button
-              btnText="Show Modal"
-              variant="contained"
-              onClick={() => {
-                setModalContentToShow("evidence-details");
-                toggleModal();
-              }}
+            <Modal
+              size="sm"
+              open={open}
+              close={handleClose}
+              title="Modal Title"
+              children={<div>Modal Content</div>}
             />
           </Grid>
         </Grid>

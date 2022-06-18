@@ -15,7 +15,13 @@ import {
   IconButton,
   TrippleCollapsed,
   ExtendableSubjectTypeForm,
+  Tooltip,
+  Modal,
+  Alert,
 } from "components";
+
+import EvidenceModalContent from "./components/EvidenceModalContent";
+import CommentModalContent from "./components/CommentModalContent";
 
 import {
   Section,
@@ -26,9 +32,37 @@ import {
   TypesBlock,
   MultiFormContainer,
   InfoWithActions,
+  AlertWrapper,
 } from "assets/styles/main.styles";
 
 const AddTriple = () => {
+  // Modal
+  const [openModal, setOpenModal] = useState(false);
+  const [openModalComment, setOpenModalComment] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpenModal(true);
+  };
+  const handleClickOpenConfirm = () => {
+    setOpenModalComment(true);
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+  };
+
+  const handleCloseComment = () => {
+    setOpenModalComment(false);
+  };
+
+  //Alert
+  const [showAlert, setShowAlert] = useState(false);
+
+  const notReleventClick = () => {
+    setShowAlert(true);
+  };
+
+  // Forms
   const [state, setState] = useState({
     context: "",
   });
@@ -37,7 +71,7 @@ const AddTriple = () => {
     setState({ context: event.target.value });
   };
 
-  const [multipleSubjectTypes, setMultipleSubjectTypes] = React.useState([
+  const [multipleSubjectTypes, setMultipleSubjectTypes] = useState([
     {
       id: 0, // todo: use unique id. eg uuid library
       selectedValue: "",
@@ -142,14 +176,14 @@ const AddTriple = () => {
                   <Button
                     btnText="Not relevent/Invalid"
                     variant="secondary"
-                    onClick={() => console.log("clicked")}
+                    onClick={notReleventClick}
                   />
                 </Grid>
                 <Grid item xs={3} textAlign="right">
                   <Button
                     btnText="Add Evidence"
                     variant="secondary"
-                    onClick={() => console.log("clicked")}
+                    onClick={handleClickOpen}
                   />
                 </Grid>
               </Grid>
@@ -298,18 +332,25 @@ const AddTriple = () => {
                   alignItems="center"
                   justifyContent="flex-end"
                 >
-                  <Grid item xs={3} textAlign="right">
-                    <IconButton
-                      icon={<AddCommentOutlinedIcon fontSize="small" />}
-                    />
+                  <Grid item xs={2} textAlign="right">
+                    <Tooltip message="Add Comment" position="top">
+                      <IconButton
+                        onClick={handleClickOpenConfirm}
+                        icon={<AddCommentOutlinedIcon fontSize="small" />}
+                      />
+                    </Tooltip>
                   </Grid>
-                  <Grid item xs={3} textAlign="right">
-                    <IconButton
-                      icon={<ContentCopyOutlinedIcon fontSize="small" />}
-                    />
+                  <Grid item xs={2} textAlign="right">
+                    <Tooltip message="Duplicate" position="top">
+                      <IconButton
+                        icon={<ContentCopyOutlinedIcon fontSize="small" />}
+                      />
+                    </Tooltip>
                   </Grid>
-                  <Grid item xs={3} textAlign="right">
-                    <IconButton icon={<AddIcon fontSize="medium" />} />
+                  <Grid item xs={2} textAlign="right">
+                    <Tooltip message="Add Triple" position="top">
+                      <IconButton icon={<AddIcon fontSize="medium" />} />
+                    </Tooltip>
                   </Grid>
                 </Grid>
               </Grid>
@@ -365,6 +406,32 @@ const AddTriple = () => {
           </Grid>
         </ActionBox>
       </Section>
+      {/* Add Evidence  */}
+      <Modal
+        size="sm"
+        open={openModal}
+        close={handleClose}
+        title="Provide Evidence"
+        children={<EvidenceModalContent />}
+      />
+      {/* Add Comment  */}
+      <Modal
+        size="sm"
+        open={openModalComment}
+        close={handleCloseComment}
+        title="Add Comment"
+        children={<CommentModalContent />}
+      />
+      {/* {Alert } */}
+      {showAlert && (
+        <AlertWrapper>
+          <Alert
+            type="success"
+            message="Evidence marked as Not Relevent"
+            onClose={() => setShowAlert(false)}
+          />
+        </AlertWrapper>
+      )}
     </div>
   );
 };

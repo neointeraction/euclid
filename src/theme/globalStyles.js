@@ -15,6 +15,14 @@ const GlobalStyle = createGlobalStyle`
  .MuiAutocomplete-popper {
     font-size: 14px !important;
   }
+  .table-nav-link{
+    font-weight: 400 ;
+    color: #262626 ;
+    text-decoration: none ;
+    &:hover{
+      text-decoration: underline ;
+    }
+  }
 `;
 
 export default GlobalStyle;

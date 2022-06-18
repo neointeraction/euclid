@@ -3,10 +3,15 @@ import { useNavigate } from "react-router-dom";
 
 import Grid from "@mui/material/Grid";
 
-import { PageHeader, PointBanner, Card } from "components";
-import TripleHistoryTable from "./components/TripleHistoryTable";
+import { PageHeader, PointBanner, Card, Button } from "components";
+import TripleHistoryTable from "../components/TripleHistoryTable";
 
-import { Section, Box, SectionTitle } from "assets/styles/main.styles";
+import {
+  Section,
+  Box,
+  SectionTitle,
+  ViewAllBtn,
+} from "assets/styles/main.styles";
 
 const ContributorDashboard = () => {
   const navigate = useNavigate();
@@ -34,16 +39,41 @@ const ContributorDashboard = () => {
               count={16}
               title="Total No. of Triples Validated"
               color="green"
+              onClick={() =>
+                navigate("/triple-history", {
+                  state: {
+                    filter: "Approved",
+                  },
+                })
+              }
             />
           </Grid>
           <Grid item xs={3}>
-            <Card count={1} title="Total No. of Triples Reverted" color="red" />
+            <Card
+              count={1}
+              title="Total No. of Triples Reverted"
+              color="red"
+              onClick={() =>
+                navigate("/triple-history", {
+                  state: {
+                    filter: "Reverted",
+                  },
+                })
+              }
+            />
           </Grid>
           <Grid item xs={3}>
             <Card
               count={32}
               title="Total No. of Triples Committed"
               color="blue"
+              onClick={() =>
+                navigate("/triple-history", {
+                  state: {
+                    filter: "Committed",
+                  },
+                })
+              }
             />
           </Grid>
         </Grid>
@@ -51,7 +81,14 @@ const ContributorDashboard = () => {
       <Section>
         <Box>
           <SectionTitle>Triple History</SectionTitle>
-          <TripleHistoryTable />
+          <TripleHistoryTable hideSearch />
+          <ViewAllBtn>
+            <Button
+              btnText="See All"
+              variant="text"
+              onClick={() => navigate("/triple-history")}
+            />
+          </ViewAllBtn>
         </Box>
       </Section>
     </div>

@@ -224,3 +224,13 @@ export const FilterChips = styled.div`
     margin-left: 10px;
   }
 `;
+
+export const TableHeader = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 16px;
+  ${FilterChips} {
+    margin-left: ${(props) => (props.hideSearch ? 0 : "26px")};
+  }
+`;

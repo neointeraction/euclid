@@ -13,17 +13,19 @@ import {
   CardFilter,
 } from "./card.styles";
 
-const Card = ({ color, count, title }) => {
+const Card = ({ color, count, title, onClick }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (event) => {
+    event.stopPropagation();
     setAnchorEl(null);
   };
   return (
-    <CardContainer color={color}>
+    <CardContainer color={color} onClick={onClick}>
       <CardCount color={color}>{count}</CardCount>
       <CardFlex>
         <CardText>{title}</CardText>
@@ -42,7 +44,6 @@ const Card = ({ color, count, title }) => {
             }
           />
         </CardFilter>
-
         <Menu
           id="filter-menu"
           anchorEl={anchorEl}

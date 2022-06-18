@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const CardContainer = styled.div`
+  cursor: pointer;
   padding: 12px 20px;
   background: ${(props) =>
     props.color === "purple"
@@ -51,12 +52,12 @@ export const CardText = styled.p`
   margin-bottom: 0;
 `;
 
-export const CardFlex = styled.p`
+export const CardFlex = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-export const CardFilter = styled.p`
+export const CardFilter = styled.div`
   cursor: pointer;
 `;

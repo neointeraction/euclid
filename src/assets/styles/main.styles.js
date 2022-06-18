@@ -72,3 +72,28 @@ export const TypesBlock = styled.div`
 export const InfoWithActions = styled.div`
   padding: 10px 0;
 `;
+
+export const ViewAllBtn = styled.div`
+  margin: 10px 0 0 -5px;
+  width: 100px;
+  & button {
+    text-decoration: underline;
+  }
+`;
+
+export const ProvideEvidenceModalBoxContainer = styled.div`
+  background-color: #fff;
+  color: #262626;
+  border-radius: 4px;
+  overflow-x: hidden;
+`;
+
+export const ModalActionButtons = styled.div`
+  margin: 30px 0 0 0;
+`;
+
+export const AlertWrapper = styled.div`
+  position: fixed;
+  right: 24px;
+  top: 80px;
+`;

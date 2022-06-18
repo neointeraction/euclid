@@ -1,41 +1,38 @@
-import CloseIcon from '@mui/icons-material/Close';
-import PropTypes from 'prop-types';
+import React from "react";
+import Fade from "@mui/material/Fade";
 
-import { AlertContainer, AletBox } from './alert.styles';
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
-import AlertErrorIcon from 'assets/images/icons/alert-error.svg';
-import AlertWarningIcon from 'assets/images/icons/alert-warning.svg';
-import AlertSuccessIcon from 'assets/images/icons/alert-success.svg';
+import { AlertContainer, AletBox } from "./alert.styles";
+
+import AlertErrorIcon from "assets/images/icons/alert-error.svg";
+import AlertWarningIcon from "assets/images/icons/alert-warning.svg";
+import AlertSuccessIcon from "assets/images/icons/alert-success.svg";
 
 const CusAlert = ({ type, onClose, message }) => {
   return (
-    <AlertContainer type={type}>
-      <AletBox>
-        <img
-          src={
-            type === 'success'
-              ? AlertSuccessIcon
-              : type === 'warning'
-              ? AlertWarningIcon
-              : AlertErrorIcon
-          }
-          alt=""
-        />
-        <p>{message}</p>
-      </AletBox>
-      <CloseIcon
-        style={{ cursor: 'pointer' }}
-        onClick={onClose}
-        fontSize="small"
-      />
-    </AlertContainer>
+    <Fade in>
+      <AlertContainer type={type}>
+        <AletBox>
+          <img
+            src={
+              type === "success"
+                ? AlertSuccessIcon
+                : type === "warning"
+                ? AlertWarningIcon
+                : AlertErrorIcon
+            }
+            alt=""
+          />
+          <p>{message}</p>
+        </AletBox>
+        <IconButton aria-label="close" onClick={onClose} size="small">
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      </AlertContainer>
+    </Fade>
   );
-};
-
-CusAlert.propTypes = {
-  type: PropTypes.oneOf(['success', 'warning', 'error']),
-  onClose: PropTypes.func,
-  message: PropTypes.string.isRequired,
 };
 
 export default CusAlert;

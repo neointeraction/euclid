@@ -6,7 +6,7 @@ import { FilterChips } from "../table.styles";
 
 const Filter = ({ setFilterValue }) => {
   return (
-    <div style={{ marginBottom: "16px" }}>
+    <div>
       <FilterChips>
         <span>Filter By:</span>
         <Tag label="All" type="all" onClick={() => setFilterValue("")} />
@@ -18,7 +18,9 @@ const Filter = ({ setFilterValue }) => {
         <Tag
           label="In Draft"
           type="in draft"
-          onClick={() => setFilterValue("In Draft")}
+          onClick={() => {
+            setFilterValue("In Draft");
+          }}
         />
         <Tag
           label="Committed"

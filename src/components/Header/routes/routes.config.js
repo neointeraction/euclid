@@ -9,6 +9,6 @@ export const contributorRoutes = [
   },
   {
     menu: "Triple History",
-    link: "/contributor-dashboard",
+    link: "/triple-history",
   },
 ];

@@ -1,8 +1,8 @@
-import Tooltip from '@mui/material/Tooltip';
-import PropTypes from 'prop-types';
-import { CustomTooltipContainer } from './tooltip.styles';
+import Tooltip from "@mui/material/Tooltip";
+import PropTypes from "prop-types";
+import { CustomTooltipContainer } from "./tooltip.styles";
 
-const CustomTooltip = ({ message, children, position = 'top', ...rest }) => {
+const CustomTooltip = ({ message, children, position = "top", ...rest }) => {
   return (
     <CustomTooltipContainer>
       <Tooltip
@@ -11,15 +11,15 @@ const CustomTooltip = ({ message, children, position = 'top', ...rest }) => {
         componentsProps={{
           tooltip: {
             sx: {
-              bgcolor: '#435055',
-              '& .MuiTooltip-arrow': {
-                color: '#435055',
+              bgcolor: "#435055",
+              "& .MuiTooltip-arrow": {
+                color: "#435055",
               },
-              fontSize: '15px',
-              fontWeight: '500',
-              lineHeight: '19px',
-              padding: '8px',
-              borderRadius: '4px',
+              fontSize: "14px",
+              fontWeight: "500",
+              lineHeight: "19px",
+              padding: "8px 10px",
+              borderRadius: "4px",
             },
           },
         }}
@@ -36,18 +36,18 @@ CustomTooltip.propTypes = {
   message: PropTypes.string.isRequired,
   children: PropTypes.node,
   position: PropTypes.oneOf([
-    'bottom-end',
-    'bottom-start',
-    'bottom',
-    'left-end',
-    'left-start',
-    'left',
-    'right-end',
-    'right-start',
-    'right',
-    'top-end',
-    'top-start',
-    'top',
+    "bottom-end",
+    "bottom-start",
+    "bottom",
+    "left-end",
+    "left-start",
+    "left",
+    "right-end",
+    "right-start",
+    "right",
+    "top-end",
+    "top-start",
+    "top",
   ]),
 };
 

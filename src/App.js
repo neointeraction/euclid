@@ -1,14 +1,20 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "@mui/material/styles";
+import GlobalStyleOverrides from "theme/GlobalStyleOverrides";
 
-import MainLayout from 'layout/MainLayout';
-import MinimalLayout from 'layout/MinimalLayout';
+import MainLayout from "layout/MainLayout";
+import MinimalLayout from "layout/MinimalLayout";
 
-import { ContributorDashboard, AddTriple } from 'pages/Contributor';
-import Uikit from 'pages/Uikit';
-import GlobalStyleOverrides from 'theme/GlobalStyleOverrides';
-import Login from 'pages/Login';
+import {
+  ContributorDashboard,
+  AddTriple,
+  TripleHistory,
+} from "pages/Contributor";
+
+import Login from "pages/Login";
+import UserSettings from "pages/UserSettings";
+import Uikit from "pages/Uikit";
 
 function App() {
   return (
@@ -22,6 +28,8 @@ function App() {
               element={<ContributorDashboard />}
             />
             <Route path="/add-triple" element={<AddTriple />} />
+            <Route path="/triple-history" element={<TripleHistory />} />
+            <Route path="/user-settings" element={<UserSettings />} />
           </Route>
           <Route element={<MinimalLayout />}>
             <Route path="/uikit" element={<Uikit />} />

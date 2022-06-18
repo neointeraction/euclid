@@ -13,6 +13,7 @@ import {
 // import "./table.css";
 
 import Filter from "./Filter";
+import Search from "./Search";
 
 // import Loader from "../Loader";
 import Input from "../Input";
@@ -25,7 +26,12 @@ import Left from "../../assets/images/icons/left.svg";
 import Right from "../../assets/images/icons/right.svg";
 import Nodata from "../../assets/images/icons/file-nodata.svg";
 
-import { TableSubContainer, ObjectFlex, CustomTable } from "./table.styles";
+import {
+  TableSubContainer,
+  ObjectFlex,
+  CustomTable,
+  TableHeader,
+} from "./table.styles";
 
 const Table = ({
   columns,
@@ -33,7 +39,9 @@ const Table = ({
   isLoading,
   setSelectedRow,
   hidePagination,
-  filter,
+  defaultFilter,
+  hideFillter,
+  hideSearch,
 }) => {
   const defaultColumn = React.useMemo(
     () => ({
@@ -61,6 +69,7 @@ const Table = ({
     previousPage,
     setPageSize,
     setFilter,
+    setGlobalFilter,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -120,11 +129,23 @@ const Table = ({
 
   useEffect(() => {
     setFilter("status", filterValue);
-  }, [filterValue, setFilter]);
+  }, [filterValue, setFilter, setFilterValue]);
+
+  useEffect(() => {
+    defaultFilter && setFilterValue(defaultFilter);
+  }, [defaultFilter]);
 
   return (
     <CustomTable>
-      <Filter setFilterValue={setFilterValue} />
+      <TableHeader hideSearch={hideSearch}>
+        {hideSearch ? null : (
+          <Search
+            onChange={(e) => setGlobalFilter(e.target.value || undefined)}
+          />
+        )}
+        {hideFillter ? null : <Filter setFilterValue={setFilterValue} />}
+      </TableHeader>
+
       <div {...getTableProps()} className="table">
         <div>
           {headerGroups.map((headerGroup, index) => (
