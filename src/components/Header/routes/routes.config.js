@@ -12,3 +12,21 @@ export const contributorRoutes = [
     link: "/triple-history",
   },
 ];
+
+export const customerRoutes = [
+  {
+    menu: "Dashboard",
+    link: "/customer-dashboard",
+  },
+  {
+    menu: "Buy Triple",
+    link: "/buy-triple",
+  },
+];
+
+export const reviewerRoutes = [
+  {
+    menu: "Dashboard",
+    link: "/reviewer-dashboard",
+  },
+];

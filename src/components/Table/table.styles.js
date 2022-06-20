@@ -136,10 +136,16 @@ export const CustomTable = styled.div`
     display: flex;
     justify-content: flex-end;
     padding: 20px 0;
+    .MuiInputBase-root {
+      margin-top: 0;
+    }
+    button {
+      border: none;
+    }
   }
 
   .pagination-btn {
-    background: #ff007f;
+    background: #005585;
     padding: 8px;
     width: 32px;
     height: 32px;
@@ -147,10 +153,11 @@ export const CustomTable = styled.div`
     color: #fff;
     margin-left: 5px;
     transition: 0.3s all ease-in-out;
+    cursor: pointer;
   }
 
   .pagination-btn:hover {
-    background: #bf0260;
+    background: #013654;
     transition: 0.3s all ease-in-out;
   }
 
@@ -165,7 +172,7 @@ export const CustomTable = styled.div`
 
   .page-count {
     font-weight: 400;
-    font-size: 14px;
+    font-size: 12px;
     color: #a3a3a3;
     margin-left: 5px;
   }
@@ -191,6 +198,8 @@ export const CustomTable = styled.div`
   .table-label {
     margin-right: 5px;
     color: #435055;
+    font-size: 14px;
+    color: #a3a3a3;
   }
 
   .table-select {

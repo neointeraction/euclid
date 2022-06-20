@@ -7,12 +7,10 @@ export const ExtendableSubjectTypeContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  flex-wrap: wrap;
   gap: 15px;
   background: #daeaf3;
   border: 1px solid #005585;
   border-radius: 4px;
-  overflow-x: auto;
   transition: all;
   margin: 5px 5px;
   &:first-child {
@@ -25,6 +23,14 @@ export const ExtendableSubjectTypeContainer = styled.div`
     display: flex;
     justify-content: center;
     gap: 10px;
+    opacity: 0;
+    margin-top: -5px;
+  }
+  &:hover {
+    & .action-icons-wrapper {
+      opacity: 1;
+      transition: 0.3s all ease-in-out;
+    }
   }
 `;
 

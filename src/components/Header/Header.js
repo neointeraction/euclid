@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import Logo from "assets/images/logo.svg";
@@ -13,7 +13,11 @@ import Chip from "@mui/material/Chip";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-import { contributorRoutes } from "./routes/routes.config";
+import {
+  contributorRoutes,
+  customerRoutes,
+  reviewerRoutes,
+} from "./routes/routes.config";
 
 import {
   HeaderContainer,
@@ -54,13 +58,29 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  // Menu func
+  const [userType, setUseType] = useState("");
+  const [menuRoutes, setMenuRoutes] = useState([]);
+
+  useEffect(() => {
+    setUseType("Contributor"); // Map user type here after login
+  }, [userType]);
+
+  useEffect(() => {
+    userType === "Customer"
+      ? setMenuRoutes(customerRoutes)
+      : userType === "Reviewer"
+      ? setMenuRoutes(reviewerRoutes)
+      : setMenuRoutes(contributorRoutes);
+  }, [userType]);
+
   return (
     <HeaderContainer>
       <LogoContainer>
         <img src={Logo} alt="Logo" />
       </LogoContainer>
       <LeftMenuBlock>
-        {contributorRoutes.map((item) => (
+        {menuRoutes.map((item) => (
           <Link key={item.menu} to={item.link} className="link">
             <MenuItemList isActive={checkActive(item.menu) ? true : false}>
               {item.menu === "Dashboard" ? (
@@ -79,7 +99,7 @@ const Header = () => {
             <Avatar />
             <NameTag>
               <span className="p-user-name">Rob Hawkins</span>
-              <Chip label="Contributor" size="small" className="custom-chip" />
+              <Chip label={userType} size="small" className="custom-chip" />
             </NameTag>
             <MenuArrow>
               <img src={Arrow} alt="Arrow" />

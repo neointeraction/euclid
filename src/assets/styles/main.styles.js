@@ -58,8 +58,35 @@ export const ActionBox = styled.div`
 export const MultiFormContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: auto;
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+  }
+  /* scrollbar */
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #eee;
+    border-radius: 4px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #daeaf3;
+    border-radius: 4px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+  }
 `;
 
 export const TypesBlock = styled.div`

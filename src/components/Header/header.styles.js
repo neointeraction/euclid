@@ -42,6 +42,11 @@ export const MenuItemList = styled.div`
     fill: ${(props) => (props.isActive ? "#005585" : "#8c8c8c")};
     margin-bottom: -4px;
   }
+  &:hover {
+    background: #daeaf3;
+    border-bottom: ${(props) =>
+      props.isActive ? "4px solid #005585" : "4px solid #daeaf3"};
+  }
 `;
 
 export const RightMenuBlock = styled.div`

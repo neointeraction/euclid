@@ -660,7 +660,7 @@ const Uikit = () => {
           Graphs and Charts
         </Typography>
         <Grid container spacing={2} alignItems="baseline">
-          <Grid item xs={6}>
+          <Grid item xs={3}>
             <Doughnut
               data={[
                 { value: "30", color: "#77E982", label: "Protein one" },
@@ -671,7 +671,7 @@ const Uikit = () => {
               ]}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={3}>
             <BarChart
               data={[
                 { value: 150, label: "2017" },

@@ -133,7 +133,7 @@ const TripleHistoryTable = ({
         columns={columns}
         data={isCompleteList ? data : data.slice(0, 5)}
         isLoading={loading}
-        hidePagination
+        hidePagination={isCompleteList ? false : true}
         defaultFilter={filter}
         hideSearch={hideSearch}
       />

@@ -76,7 +76,7 @@ const Table = ({
       columns,
       data,
       defaultColumn,
-      initialState: { pageIndex: 0, pageSize: hidePagination ? 100 : 5 },
+      initialState: { pageIndex: 0, pageSize: hidePagination ? 100 : 10 },
     },
     useResizeColumns,
     useFlexLayout,

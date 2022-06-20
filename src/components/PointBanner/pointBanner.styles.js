@@ -38,7 +38,7 @@ export const PointBlock = styled.div`
       : props.isExpanded === null
       ? "none"
       : CollapseCount};
-  animation-duration: 0.8s;
+  animation-duration: 0.4s;
   animation-fill-mode: forwards;
 `;
 
@@ -106,7 +106,7 @@ export const ExpandContent = styled.div`
   height: 0;
   animation-name: ${(props) =>
     props.isExpanded ? Expand : props.isExpanded === null ? "none" : Collapse};
-  animation-duration: 0.8s;
+  animation-duration: 0.4s;
   animation-fill-mode: forwards;
   overflow: hidden;
 `;

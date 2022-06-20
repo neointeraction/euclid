@@ -8,12 +8,14 @@ export const SearchWithIconContainer = styled.div`
     margin-top: 0;
     margin-left: 0;
   }
+  > div {
+    flex-grow: 1;
+  }
   & input[type="text"] {
     border: 1px solid #8c8c8c;
-
     font-size: 14px;
     color: #595959;
-    width: 90%;
+
     background: rgba(247, 249, 251, 0.5);
     outline: none;
     border-radius: 4px 0 0 4px;
