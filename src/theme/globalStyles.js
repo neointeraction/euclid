@@ -12,9 +12,11 @@ const GlobalStyle = createGlobalStyle`
   .MuiMenuItem-root {
       font-size: 14px !important;
     }
- .MuiAutocomplete-popper {
+    
+  .MuiAutocomplete-popper {
     font-size: 14px !important;
   }
+
   .table-nav-link{
     font-weight: 400 ;
     color: #262626 ;
@@ -22,6 +24,16 @@ const GlobalStyle = createGlobalStyle`
     &:hover{
       text-decoration: underline ;
     }
+  }
+
+  .popper-custom{
+     .MuiPaper-root{
+         box-shadow: 0px 2px 28px rgba(0, 0, 0, 0.12) !important;
+      }
+  }
+
+  .divider-margin{
+    margin: 14px 0 !important;
   }
 `;
 

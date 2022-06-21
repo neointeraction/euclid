@@ -528,7 +528,7 @@ const Uikit = () => {
           Modal Boxes
         </Typography>
         <Grid container spacing={2} alignItems="baseline">
-          <Grid item xs={6}>
+          <Grid item xs={2}>
             <Button
               btnText="Show  Modal"
               variant="contained"
@@ -623,6 +623,7 @@ const Uikit = () => {
               {multipleSubjectTypes.map((subjectType) => (
                 <React.Fragment key={subjectType.id}>
                   <ExtendableSubjectTypeForm
+                    label="label here"
                     onAddToLeft={() => onAddToLeftOfSubjectType(subjectType)}
                     onAddToRight={() => onAddToRightOfSubjectType(subjectType)}
                     onChange={(_e, value) =>

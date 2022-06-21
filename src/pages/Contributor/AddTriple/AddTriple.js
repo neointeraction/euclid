@@ -18,6 +18,8 @@ import {
   Tooltip,
   Modal,
   Alert,
+  PopoverGrid,
+  ConfirmationModal,
 } from "components";
 
 import EvidenceModalContent from "./components/EvidenceModalContent";
@@ -33,18 +35,39 @@ import {
   MultiFormContainer,
   InfoWithActions,
   AlertWrapper,
+  HighlightText,
 } from "assets/styles/main.styles";
+
+// Dummy popover data
+
+function createData(curie, subcurie, prefferedLabel) {
+  return { curie, subcurie, prefferedLabel };
+}
+
+const rows = [
+  createData("SWISSPROT-GRN_HUMAN", "GSK3 beta", "SWISSPROT-GRN_HUMAN"),
+  createData("HGNC:4601", "GSK3 beta", "HGNC:4601"),
+  createData("SWISSPROT-GRN_HUMAN 2", "GSK3 beta", "SWISSPROT-GRN_HUMAN 2"),
+];
+
+// Dummy popover data end
 
 const AddTriple = () => {
   // Modal
   const [openModal, setOpenModal] = useState(false);
   const [openModalComment, setOpenModalComment] = useState(false);
+  const [openModalConfirm, setOpenModalConfirm] = useState(false);
 
   const handleClickOpen = () => {
     setOpenModal(true);
   };
-  const handleClickOpenConfirm = () => {
+
+  const handleClickOpenComment = () => {
     setOpenModalComment(true);
+  };
+
+  const handleClickOpenConfirm = () => {
+    setOpenModalConfirm(true);
   };
 
   const handleClose = () => {
@@ -53,6 +76,10 @@ const AddTriple = () => {
 
   const handleCloseComment = () => {
     setOpenModalComment(false);
+  };
+
+  const handleCloseConfirm = () => {
+    setOpenModalConfirm(false);
   };
 
   //Alert
@@ -110,21 +137,44 @@ const AddTriple = () => {
     setMultipleSubjectTypes(filteredList);
   };
 
+  // PopoverGrid
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <div>
       <PageHeader pageTitleText="Add Triples" />
       <Section>
         <Box bordered>
           <BodyText>
-            This skew talks about the main mechanism Alzhiemers disease.
-            Phosphorylation of Glycogen synthase kinase 3 beta at Theronine, 668
-            increases the degradation of amyloid precursor protein and GSK3 beta
-            also phosphorylates tau protein in intact cells.
+            This skew talks about the main mechanism{" "}
+            <HighlightText
+              onMouseEnter={handlePopoverOpen}
+              onMouseLeave={handlePopoverClose}
+            >
+              Alzhiemers disease
+            </HighlightText>
+            . Phosphorylation of Glycogen synthase kinase 3 beta at Theronine,
+            668 increases the degradation of amyloid precursor protein and GSK3
+            beta also phosphorylates tau protein in intact cells.
           </BodyText>
           <BodyTextLight>
             Sergio CM, Ronaldo CA, Exp Brain Res, 2022 March 2. dol:10,
             1007/a0021 - 0022. Online ahead print, PMID - 234678 Review.
           </BodyTextLight>
+          {/* Popover grid compnent  */}
+          <PopoverGrid
+            anchorEl={anchorEl}
+            handlePopoverClose={handlePopoverClose}
+            data={rows}
+          />
         </Box>
         <ActionBox>
           <Grid
@@ -335,7 +385,7 @@ const AddTriple = () => {
                   <Grid item xs={2} textAlign="right">
                     <Tooltip message="Add Comment" position="top">
                       <IconButton
-                        onClick={handleClickOpenConfirm}
+                        onClick={handleClickOpenComment}
                         icon={<AddCommentOutlinedIcon fontSize="small" />}
                       />
                     </Tooltip>
@@ -398,7 +448,7 @@ const AddTriple = () => {
                   <Button
                     btnText="Commit"
                     variant="contained"
-                    onClick={() => console.log("clicked")}
+                    onClick={handleClickOpenConfirm}
                   />
                 </Grid>
               </Grid>
@@ -412,7 +462,7 @@ const AddTriple = () => {
         open={openModal}
         close={handleClose}
         title="Provide Evidence"
-        children={<EvidenceModalContent />}
+        children={<EvidenceModalContent handleClose={handleClose} />}
       />
       {/* Add Comment  */}
       <Modal
@@ -420,7 +470,7 @@ const AddTriple = () => {
         open={openModalComment}
         close={handleCloseComment}
         title="Add Comment"
-        children={<CommentModalContent />}
+        children={<CommentModalContent handleClose={handleCloseComment} />}
       />
       {/* {Alert } */}
       {showAlert && (
@@ -432,6 +482,12 @@ const AddTriple = () => {
           />
         </AlertWrapper>
       )}
+      <ConfirmationModal
+        openModal={openModalConfirm}
+        handleClose={handleCloseConfirm}
+        title="Confirm Commit"
+        btnText="Commit"
+      />
     </div>
   );
 };

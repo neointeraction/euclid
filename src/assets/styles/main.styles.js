@@ -10,7 +10,7 @@ export const Box = styled.div`
   border-radius: 8px;
   padding: ${(props) => (props.noPadding ? 0 : "24px")};
   border: ${(props) =>
-    props.bordered ? "2px solid #005585" : "1px solid #E5E5E5"};
+    props.bordered ? "1px solid #005585" : "1px solid #E5E5E5"};
   box-shadow: ${(props) =>
     props.bordered ? "0px 4px 24px rgba(0, 0, 0, 0.08)" : "none"};
 `;
@@ -123,4 +123,35 @@ export const AlertWrapper = styled.div`
   position: fixed;
   right: 24px;
   top: 80px;
+`;
+
+export const HighlightText = styled.span`
+  background: #f9d0d0;
+`;
+
+export const ProfileUpload = styled.div`
+  width: fit-content;
+  margin-bottom: 20px;
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
+  label {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  input {
+    display: none;
+  }
+  span {
+    font-size: 14px;
+    text-align: center;
+  }
+`;
+
+export const ProfileRemove = styled.span`
+  margin-left: 14px;
 `;

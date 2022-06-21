@@ -9,7 +9,7 @@ import {
 import Input from "components/Input";
 import Button from "components/Button";
 
-const EvidenceModalContent = () => {
+const EvidenceModalContent = ({ handleClose }) => {
   return (
     <ProvideEvidenceModalBoxContainer>
       <Typography variant="subtitle1">Subject Type</Typography>
@@ -30,7 +30,11 @@ const EvidenceModalContent = () => {
             justifyContent="flex-end"
           >
             <Grid item xs={3} textAlign="right">
-              <Button variant="secondary" btnText="Cancel" />
+              <Button
+                variant="secondary"
+                btnText="Cancel"
+                onClick={handleClose}
+              />
             </Grid>
             <Grid item xs={3} textAlign="right">
               <Button variant="contained" btnText="Save" />
