@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 // import DeleteIcon from "../../../../assets/images/icons/delete.svg";
 // import More from "../../../../assets/images/icons/more.svg";
 
-const TripleHistoryTable = ({
+const PurchaseHistoryTable = ({
   isCompleteList,
   filter,
   hideSearch,
@@ -22,29 +22,8 @@ const TripleHistoryTable = ({
   const columns = React.useMemo(
     () => [
       {
-        Header: "Triple",
-        accessor: "Triple",
-        Cell: (row) => {
-          return (
-            <Link to="/view-triple" className="table-nav-link">
-              {row.row.original.Triple}
-            </Link>
-          );
-        },
-      },
-      {
-        Header: "Triple status",
-        accessor: "status",
-        Cell: (row) => {
-          return (
-            <TableTagContainer>
-              <Tag
-                label={row.row.original.status}
-                type={row.row.original.status.toLowerCase()}
-              />
-            </TableTagContainer>
-          );
-        },
+        Header: "Query",
+        accessor: "Query",
       },
       {
         Header: "Date and time",
@@ -58,68 +37,55 @@ const TripleHistoryTable = ({
     // dummy data
     setData([
       {
-        Triple: "134678 (12 Evidences, 20 Triples)",
-        status: "Approved",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
-        Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
-        Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
-        Triple: "434678 (12 Evidences, 20 Triples)",
-        status: "Reverted",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
-        Triple: "534678 (12 Evidences, 20 Triples)",
-        status: "Approved",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
-        Triple: "534678 (12 Evidences, 20 Triples)",
-        status: "Approved",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
-        Triple: "434678 (12 Evidences, 20 Triples)",
-        status: "Reverted",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
-        Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
-        Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "22-05-2022 at 5:30 PM",
       },
       {
-        Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
-        Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "11-05-2022 at 5:30 PM",
       },
       {
-        Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
-        Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
+        Query: "Disease: Neuro AND Species: Human Beings",
         "Date and time": "22-05-2022 at 5:30 PM",
       },
     ]);
@@ -136,9 +102,10 @@ const TripleHistoryTable = ({
         hidePagination={isCompleteList ? false : true}
         defaultFilter={filter}
         hideSearch={hideSearch}
+        hideFilter={hideFilter}
       />
     </div>
   );
 };
 
-export default TripleHistoryTable;
+export default PurchaseHistoryTable;

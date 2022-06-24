@@ -129,6 +129,25 @@ export const HighlightText = styled.span`
   background: #f9d0d0;
 `;
 
+export const ProfileRemove = styled.span`
+  transition: 0.3s all ease-in-out;
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: -5px;
+  background: #fff;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e5e5;
+  border-radius: 50%;
+  & .MuiButtonBase-root {
+    padding: 2px;
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+`;
+
 export const ProfileUpload = styled.div`
   width: fit-content;
   margin-bottom: 20px;
@@ -142,6 +161,14 @@ export const ProfileUpload = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    transition: 0.3s all ease-in-out;
+
+    & .MuiAvatar-root {
+      &:hover {
+        opacity: 0.7;
+        transition: 0.3s all ease-in-out;
+      }
+    }
   }
   input {
     display: none;
@@ -150,8 +177,34 @@ export const ProfileUpload = styled.div`
     font-size: 14px;
     text-align: center;
   }
+  &:hover {
+    ${ProfileRemove} {
+      display: block;
+      transition: 0.3s all ease-in-out;
+    }
+  }
 `;
 
-export const ProfileRemove = styled.span`
-  margin-left: 14px;
+export const TripleCollapseContainer = styled.span`
+  background: #f9d0d0;
+  ${Box} {
+    border: none;
+    padding: 20px 5px 0 5px;
+  }
+`;
+
+export const PlainTypesBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+export const PlainTypesItem = styled.div`
+  width: 100%;
+  background: ${(props) => (props.noBg ? "#fff" : "#daeaf3")};
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
 `;

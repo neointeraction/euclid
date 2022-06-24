@@ -19,3 +19,4 @@ export { default as SearchWithIcon } from "./SearchWithIcon";
 export { default as Modal } from "./Modal";
 export { default as PopoverGrid } from "./PopoverGrid";
 export { default as ConfirmationModal } from "./ConfirmationModal";
+export { default as TextBlock } from "./TextBlock";

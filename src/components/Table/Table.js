@@ -40,7 +40,7 @@ const Table = ({
   setSelectedRow,
   hidePagination,
   defaultFilter,
-  hideFillter,
+  hideFilter,
   hideSearch,
 }) => {
   const defaultColumn = React.useMemo(
@@ -128,7 +128,7 @@ const Table = ({
   const [filterValue, setFilterValue] = useState("");
 
   useEffect(() => {
-    setFilter("status", filterValue);
+    !hideFilter && setFilter("status", filterValue);
   }, [filterValue, setFilter, setFilterValue]);
 
   useEffect(() => {
@@ -143,7 +143,7 @@ const Table = ({
             onChange={(e) => setGlobalFilter(e.target.value || undefined)}
           />
         )}
-        {hideFillter ? null : <Filter setFilterValue={setFilterValue} />}
+        {hideFilter ? null : <Filter setFilterValue={setFilterValue} />}
       </TableHeader>
 
       <div {...getTableProps()} className="table">

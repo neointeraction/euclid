@@ -16,6 +16,9 @@ const TrippleCollapsed = ({ chipContent, children }) => {
       sx={{
         borderRadius: 2,
         backgroundColor: "#fff",
+        padding: 2,
+        marginBottom: "20px",
+        border: "1px solid #E5E5E5",
       }}
     >
       <CollapseIconWrap>

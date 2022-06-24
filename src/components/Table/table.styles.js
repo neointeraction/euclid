@@ -86,6 +86,7 @@ export const CustomTable = styled.div`
       font-size: 16px;
       line-height: 22px;
       color: #262626;
+      white-space: nowrap;
       &.highlight {
         background: #f2f2f2;
       }

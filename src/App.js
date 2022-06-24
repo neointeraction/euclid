@@ -9,8 +9,10 @@ import MinimalLayout from "layout/MinimalLayout";
 import {
   ContributorDashboard,
   AddTriple,
+  ViewTriple,
   TripleHistory,
 } from "pages/Contributor";
+import { CustomerDashboard } from "pages/Customer";
 
 import Login from "pages/Login";
 import UserSettings from "pages/UserSettings";
@@ -21,7 +23,7 @@ function App() {
     <div className="App">
       <ThemeProvider theme={GlobalStyleOverrides()}>
         <Routes>
-          <Route path="/" exact element={<ContributorDashboard />} />
+          <Route path="/" exact element={<Login />} />
           <Route element={<MainLayout />}>
             <Route
               path="/contributor-dashboard"
@@ -29,6 +31,8 @@ function App() {
             />
             <Route path="/add-triple" element={<AddTriple />} />
             <Route path="/triple-history" element={<TripleHistory />} />
+            <Route path="/view-triple" element={<ViewTriple />} />
+            <Route path="/customer-dashboard" element={<CustomerDashboard />} />
             <Route path="/user-settings" element={<UserSettings />} />
           </Route>
           <Route element={<MinimalLayout />}>

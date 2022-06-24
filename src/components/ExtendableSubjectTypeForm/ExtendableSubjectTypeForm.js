@@ -1,8 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
-// import TextField from "@mui/material/TextField";
-// import Autocomplete from '@mui/material/Autocomplete';
 
 import AutoComplete from "components/AutoComplete";
 
@@ -23,9 +20,10 @@ const ExtendableSubjectTypeForm = ({
   options,
   onRemove,
   onChange,
+  noBg,
 }) => {
   return (
-    <ExtendableSubjectTypeContainer>
+    <ExtendableSubjectTypeContainer noBg={noBg}>
       <ExtendableSubjectTypeFormContainer>
         <ExtendableSubjectTypeFormHeaderWrap>
           <Typography variant="body1">{label} </Typography>
@@ -45,14 +43,6 @@ const ExtendableSubjectTypeForm = ({
       </ExtendableSubjectTypeFormContainer>
     </ExtendableSubjectTypeContainer>
   );
-};
-
-ExtendableSubjectTypeForm.propTypes = {
-  options: PropTypes.array.isRequired,
-  onAddToLeft: PropTypes.func,
-  onAddToRight: PropTypes.func,
-  onRemove: PropTypes.func,
-  onChange: PropTypes.func,
 };
 
 export default ExtendableSubjectTypeForm;

@@ -41,9 +41,12 @@ const Header = () => {
 
   const checkActive = (menu) => {
     if (
-      (url[1] === "contributor-dashboard" && menu === "Dashboard") ||
+      ((url[1] === "contributor-dashboard" ||
+        url[1] === "customer-dashboard") &&
+        menu === "Dashboard") ||
       (url[1] === "add-triple" && menu === "Add Triple") ||
-      (url[1] === "triple-history" && menu === "Triple History")
+      ((url[1] === "triple-history" || url[1] === "view-triple") &&
+        menu === "Triple History")
     ) {
       return true;
     }

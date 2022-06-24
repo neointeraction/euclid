@@ -15,11 +15,12 @@ export const SearchWithIconContainer = styled.div`
     border: 1px solid #8c8c8c;
     font-size: 14px;
     color: #595959;
-
+    padding: 0 10px;
     background: rgba(247, 249, 251, 0.5);
     outline: none;
     border-radius: 4px 0 0 4px;
     font-family: "Nunito Sans", sans-serif;
+    height: 32px;
   }
 
   & button {

@@ -8,7 +8,7 @@ export const ExtendableSubjectTypeContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   gap: 15px;
-  background: #daeaf3;
+  background: ${(props) => (props.noBg ? "#fff" : " #daeaf3")};
   border: 1px solid #005585;
   border-radius: 4px;
   transition: all;

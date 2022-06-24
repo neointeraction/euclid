@@ -8,9 +8,18 @@ import {
   PageHeaderContainer,
   PageTitle,
   ActionButton,
+  SubText,
 } from "./pageHeader.styles";
 
-const PageHeader = ({ isHomePage, user, pageTitleText, btnText, onClick }) => {
+const PageHeader = ({
+  isHomePage,
+  user,
+  subText,
+  pageTitleText,
+  btnText,
+  onClick,
+  rightSideContent,
+}) => {
   return (
     <PageHeaderContainer>
       {isHomePage ? (
@@ -21,13 +30,17 @@ const PageHeader = ({ isHomePage, user, pageTitleText, btnText, onClick }) => {
           </span>
         </PageTitle>
       ) : (
-        <PageTitle>{pageTitleText}</PageTitle>
+        <div>
+          {subText && <SubText>{subText}</SubText>}
+          <PageTitle>{pageTitleText}</PageTitle>
+        </div>
       )}
-      {btnText && (
+      {btnText && !rightSideContent && (
         <ActionButton>
           <Button btnText={btnText} variant="contained" onClick={onClick} />
         </ActionButton>
       )}
+      {rightSideContent && rightSideContent}
     </PageHeaderContainer>
   );
 };

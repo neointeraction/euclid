@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-import { Avatar, Grid, Divider } from "@mui/material";
+import { Avatar, Grid, Divider, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { Input, PageHeader, Dropdown, Button } from "components";
 import {
@@ -18,7 +19,8 @@ const UserSettings = () => {
   const fileHandler = (e) => {
     setPhoto(e.target.files[0]);
   };
-  const clearImage = () => {
+  const clearImage = (e) => {
+    e.preventDefault();
     setPhoto("");
   };
 
@@ -43,14 +45,13 @@ const UserSettings = () => {
                     src={photo ? URL.createObjectURL(photo) : null}
                     className="avatar"
                   />
-                  <ProfileRemove>
-                    <Button
-                      btnText="Remove Image"
-                      variant="outlined"
-                      size="small"
-                      onClick={clearImage}
-                    />
-                  </ProfileRemove>
+                  {photo && (
+                    <ProfileRemove>
+                      <IconButton aria-label="close" onClick={clearImage}>
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </ProfileRemove>
+                  )}
                 </label>
               </ProfileUpload>
             </Grid>
@@ -129,6 +130,18 @@ const UserSettings = () => {
             </Grid>
             <Grid item xs={3}>
               <Input label="State" name="state" />
+            </Grid>
+          </Grid>
+        </Section>
+        <Divider className="divider-margin" />
+        <Section>
+          <SectionTitle>Password Management</SectionTitle>
+          <Grid container spacing={2} alignItems="baseline">
+            <Grid item xs={3}>
+              <Input label="New Password" name="newPwd" />
+            </Grid>
+            <Grid item xs={3}>
+              <Input label="Confirm Password" name="confirmPwd" />
             </Grid>
           </Grid>
         </Section>
