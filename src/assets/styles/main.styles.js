@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import LoginBg from "../images/login-bg.png";
+
 export const Section = styled.div`
   padding: 10px 0;
 `;
@@ -42,9 +44,24 @@ export const FullPageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("https://res.cloudinary.com/dhs3t6x02/image/upload/v1655280230/samples/Bg_rq6ksx.png");
+  background-image: url(${LoginBg});
   background-size: cover;
   height: 100vh;
+`;
+
+export const ImageLogoLogin = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 30%;
+  }
+`;
+
+export const RememberForgotFlex = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const TableTagContainer = styled.div`

@@ -150,7 +150,7 @@ const Header = () => {
               </ListItemIcon>
               User Settings
             </MenuItem>
-            <MenuItem onClick={() => {}}>
+            <MenuItem onClick={() => navigate("/")}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>

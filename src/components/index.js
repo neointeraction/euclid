@@ -13,7 +13,6 @@ export { default as Chip } from "./Chip";
 export { default as Tooltip } from "./Tooltip";
 export { default as ButtonGroup } from "./ButtonGroup";
 export { default as TrippleCollapsed } from "./TrippleCollapsed";
-export { default as BarChart } from "./BarChart";
 export { default as ExtendableSubjectTypeForm } from "./ExtendableSubjectTypeForm";
 export { default as SearchWithIcon } from "./SearchWithIcon";
 export { default as Modal } from "./Modal";

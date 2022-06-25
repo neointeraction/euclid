@@ -1,24 +1,36 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Typography } from '@mui/material';
-import { FullPageContainer } from 'assets/styles/main.styles';
-import { Box } from 'assets/styles/main.styles';
-import { Button, Input } from 'components';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Typography, Checkbox, FormControlLabel } from "@mui/material";
+
+import { Box } from "assets/styles/main.styles";
+import Logo from "assets/images/logo.svg";
+
+import { Button, Input } from "components";
+
+import {
+  FullPageContainer,
+  ImageLogoLogin,
+  RememberForgotFlex,
+} from "assets/styles/main.styles";
 
 const Login = () => {
+  const navigate = useNavigate();
   // using formik for form handling
   const { handleChange, handleSubmit, values, errors, handleBlur } = useFormik({
     initialValues: {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
     },
     validationSchema: Yup.object().shape({
-      username: Yup.string().required('Please enter your username'),
-      password: Yup.string().required('Please enter your password'),
+      username: Yup.string().required("Please enter your username"),
+      password: Yup.string().required("Please enter your password"),
     }),
     onSubmit: (values) => {
       // TODO: Implement login logic here
-      console.log('Trying to login with --- ', values);
+      console.log("Trying to login with --- ", values);
     },
   });
   return (
@@ -26,28 +38,21 @@ const Login = () => {
       <Box noPadding>
         <form
           style={{
-            width: '450px',
-            height: '340px',
-            display: 'flex',
+            width: "400px",
+            display: "flex",
             gap: 22,
-            flexDirection: 'column',
-            padding: '40px 40px',
+            flexDirection: "column",
+            padding: "40px 40px",
           }}
           onSubmit={handleSubmit}
         >
-          <Typography
-            variant="h4"
-            style={{
-              color: '#005585',
-              fontWeight: 'bolder',
-              textAlign: 'center',
-            }}
-          >
-            EUCLID
-          </Typography>
+          <ImageLogoLogin>
+            <img src={Logo} alt="Logo" />
+          </ImageLogoLogin>
+
           <Typography
             variant="h6"
-            style={{ marginTop: '', marginBottom: '6px' }}
+            style={{ marginTop: "", marginBottom: "6px", textAlign: "center" }}
           >
             Welcome to Euclid
           </Typography>
@@ -69,11 +74,24 @@ const Login = () => {
             onBlur={handleBlur}
             errorText={errors.password}
           />
+          <RememberForgotFlex>
+            <FormControlLabel
+              className="custom-checkbox"
+              control={<Checkbox />}
+              label="Remember Me"
+            />
+            <Button
+              btnText="Forgot Password ?"
+              variant="text"
+              onClick={() => console.log("clicked")}
+            />
+          </RememberForgotFlex>
           <Button
-            style={{ width: '100%', marginTop: '10px' }}
+            style={{ width: "100%" }}
             variant="contained"
             btnText="Submit"
             type="submit"
+            onClick={() => navigate("/contributor-dashboard")}
           />
         </form>
       </Box>

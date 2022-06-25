@@ -35,6 +35,14 @@ const GlobalStyle = createGlobalStyle`
   .divider-margin{
     margin: 14px 0 !important;
   }
+
+  .custom-checkbox .MuiFormControlLabel-label{
+    font-size: 14px ;
+  }
+
+  .custom-checkbox .Mui-checked{
+    color: #005585 !important;
+  }
 `;
 
 export default GlobalStyle;

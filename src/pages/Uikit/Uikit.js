@@ -36,10 +36,58 @@ import SearchWithIcon from "components/SearchWithIcon";
 // import ExtendableSubjectType from 'components/ExtendableSubjectType';
 import ExtendableSubjectTypeForm from "components/ExtendableSubjectTypeForm/ExtendableSubjectTypeForm";
 import { MultiFormContainer } from "assets/styles/main.styles";
-import Doughnut from "components/Doughnut";
-import { BarChart, Modal } from "components";
+
+import { Modal } from "components";
 
 import AutoComplete from "components/AutoComplete";
+
+import { BarGraphChart, RadialChart } from "components/Charts";
+
+const radialData = [{ name: "Overall Satisfaction", value: 85 }];
+const dataBar = [
+  {
+    name: "5 Jun",
+    uv: 4000,
+    pv: 10,
+    amt: 20,
+  },
+  {
+    name: "6 Jun",
+    uv: 3000,
+    pv: 20,
+    amt: 10,
+  },
+  {
+    name: "7 Jun",
+    uv: 2000,
+    pv: 30,
+    amt: 26,
+  },
+  {
+    name: "8 Jun",
+    uv: 2780,
+    pv: 34,
+    amt: 30,
+  },
+  {
+    name: "9 Jun",
+    uv: 1890,
+    pv: 20,
+    amt: 40,
+  },
+  {
+    name: "10 Jun",
+    uv: 2390,
+    pv: 40,
+    amt: 15,
+  },
+  {
+    name: "11 Jun",
+    uv: 3490,
+    pv: 15,
+    amt: 20,
+  },
+];
 
 const Uikit = () => {
   const [age, setAge] = React.useState("");
@@ -661,31 +709,11 @@ const Uikit = () => {
           Graphs and Charts
         </Typography>
         <Grid container spacing={2} alignItems="baseline">
-          <Grid item xs={3}>
-            <Doughnut
-              data={[
-                { value: "30", color: "#77E982", label: "Protein one" },
-                { value: "20", color: "#F89090", label: "Protein two" },
-                { value: "17", color: "#FFC25F", label: "Protein three" },
-                { value: "23", color: "#3AA1FF", label: "Protein four" },
-                { value: "23", color: "#F79E5F", label: "Protein five" },
-              ]}
-            />
+          <Grid item xs={6}>
+            <BarGraphChart data={dataBar} />
           </Grid>
-          <Grid item xs={3}>
-            <BarChart
-              data={[
-                { value: 150, label: "2017" },
-                { value: 250, label: "2018" },
-                { value: 350, label: "2019" },
-                { value: 320, label: "2020" },
-                { value: 130, label: "2021" },
-                { value: 150, label: "2022" },
-              ]}
-              chartLabel="Tripple"
-              chartColor="#12A8FD"
-              aspectRatio={1}
-            />
+          <Grid item xs={6}>
+            <RadialChart circleSize={200} data={radialData} />
           </Grid>
         </Grid>
       </Box>

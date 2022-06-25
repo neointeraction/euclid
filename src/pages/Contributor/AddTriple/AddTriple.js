@@ -44,7 +44,7 @@ const rows = [
 // Dummy popover data end
 
 // Dummy Triple Data
-const dummyTripleData = [1, 2];
+const dummyTripleData = [1, 2, 3];
 
 const AddTriple = () => {
   // Modal
@@ -221,13 +221,7 @@ const AddTriple = () => {
                 alignItems="center"
                 justifyContent="flex-start"
               >
-                <Grid item xs={3} textAlign="right">
-                  <Button
-                    btnText="Add new"
-                    variant="outlined"
-                    onClick={() => console.log("clicked")}
-                  />
-                </Grid>
+                <Grid item xs={3} textAlign="right"></Grid>
               </Grid>
             </Grid>
             <Grid item xs={6} textAlign="right">

@@ -129,7 +129,7 @@ const Table = ({
 
   useEffect(() => {
     !hideFilter && setFilter("status", filterValue);
-  }, [filterValue, setFilter, setFilterValue]);
+  }, [filterValue, setFilter, setFilterValue, hideFilter]);
 
   useEffect(() => {
     defaultFilter && setFilterValue(defaultFilter);

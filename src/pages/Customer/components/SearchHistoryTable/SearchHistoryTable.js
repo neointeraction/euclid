@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import { Tag, Table } from "components";
-import { TableTagContainer } from "assets/styles/main.styles";
-import { Link } from "react-router-dom";
+import { Table } from "components";
+// import { TableTagContainer } from "assets/styles/main.styles";
+// import { Link } from "react-router-dom";
 
 // import Menu from "@mui/material/Menu";
 // import MenuItem from "@mui/material/MenuItem";
