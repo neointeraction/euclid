@@ -69,7 +69,7 @@ export const TableTagContainer = styled.div`
 `;
 
 export const ActionBox = styled.div`
-  margin: 26px 0;
+  margin: ${(props) => (props.small ? "10px 0" : "26px 0")};
 `;
 
 export const MultiFormContainer = styled.div`
@@ -224,4 +224,31 @@ export const PlainTypesItem = styled.div`
   padding: 12px;
   border-radius: 4px;
   margin-bottom: 20px;
+`;
+
+export const ActionFlexTitle = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  > div {
+    margin-left: 20px;
+  }
+`;
+
+export const ChipsContainer = styled.div`
+  display: flex;
+  justify-content: ${(props) => (props.moMargin ? "flex-end" : "flex-start")};
+  align-items: center;
+  margin: ${(props) => (props.moMargin ? "0" : "20px 0 0 0")};
+  > div {
+    margin-right: 20px;
+  }
+`;
+
+export const TableMore = styled.div`
+  cursor: pointer;
+`;
+
+export const TableActionImage = styled.img`
+  margin-right: 10px;
 `;

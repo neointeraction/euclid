@@ -212,18 +212,8 @@ const AddTriple = () => {
             container
             spacing={0}
             alignItems="center"
-            justifyContent="flex-start"
+            justifyContent="flex-end"
           >
-            <Grid item xs={6} textAlign="left">
-              <Grid
-                container
-                spacing={2}
-                alignItems="center"
-                justifyContent="flex-start"
-              >
-                <Grid item xs={3} textAlign="right"></Grid>
-              </Grid>
-            </Grid>
             <Grid item xs={6} textAlign="right">
               <Grid
                 container
@@ -273,6 +263,7 @@ const AddTriple = () => {
         openModal={openModalConfirm}
         handleClose={handleCloseConfirm}
         title="Confirm Commit"
+        subtitle={"Are you sure you want to confirm commit ?"}
         btnText="Commit"
       />
     </div>

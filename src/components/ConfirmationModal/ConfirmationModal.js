@@ -9,6 +9,7 @@ const ConfirmationModal = ({
   openModal,
   handleClose,
   title,
+  subtitle,
   btnText,
   onClick,
 }) => {
@@ -21,9 +22,7 @@ const ConfirmationModal = ({
         title={title}
         children={
           <>
-            <Typography variant="subtitle1">
-              Are you sure you want to confirm commit ?
-            </Typography>
+            <Typography variant="subtitle1">{subtitle}</Typography>
             <ModalActionButtons>
               <Grid
                 container

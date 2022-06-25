@@ -5,4 +5,8 @@ export const ButtonContainer = styled.div`
     width: 100%;
     white-space: nowrap;
   }
+  & .Mui-disabled {
+    opacity: 0.4 !important ;
+    color: rgba(255, 255, 255, 1) !important;
+  }
 `;

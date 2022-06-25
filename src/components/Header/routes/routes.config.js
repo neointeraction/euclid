@@ -19,8 +19,8 @@ export const customerRoutes = [
     link: "/customer-dashboard",
   },
   {
-    menu: "Buy Triple",
-    link: "/buy-triple",
+    menu: "Query Triple",
+    link: "/query-triple",
   },
 ];
 
@@ -28,5 +28,12 @@ export const reviewerRoutes = [
   {
     menu: "Dashboard",
     link: "/reviewer-dashboard",
+  },
+];
+
+export const adminRoutes = [
+  {
+    menu: "Dashboard",
+    link: "/admin-dashboard",
   },
 ];

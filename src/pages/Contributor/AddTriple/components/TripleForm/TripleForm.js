@@ -22,6 +22,7 @@ import {
   TypesBlock,
   MultiFormContainer,
   InfoWithActions,
+  ChipsContainer,
 } from "assets/styles/main.styles";
 
 const TripleForm = (data) => {
@@ -118,6 +119,16 @@ const TripleForm = (data) => {
             />
           </Grid>
         </Grid>
+        <ChipsContainer>
+          <Chip
+            content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
+            onRemove={() => {}}
+          />
+          <Chip
+            content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
+            onRemove={() => {}}
+          />
+        </ChipsContainer>
         <TypesBlock>
           <MultiFormContainer>
             {multipleSubjectTypes.map((subjectType) => (

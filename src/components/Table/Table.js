@@ -174,21 +174,23 @@ const Table = ({
                         }`}
                       />
                     )}
-                    <span className="sort-icon">
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <img src={SortIcon} alt="SortIcon" />
+                    {!column.disableSortBy && (
+                      <span className="sort-icon">
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <img src={SortIcon} alt="SortIcon" />
+                          ) : (
+                            <img src={SortIcon} alt="SortIcon" />
+                          )
                         ) : (
-                          <img src={SortIcon} alt="SortIcon" />
-                        )
-                      ) : (
-                        <img
-                          src={SortIcon}
-                          alt="SortIcon"
-                          // style={{ visibility: "hidden" }}
-                        />
-                      )}
-                    </span>
+                          <img
+                            src={SortIcon}
+                            alt="SortIcon"
+                            // style={{ visibility: "hidden" }}
+                          />
+                        )}
+                      </span>
+                    )}
                   </div>
                 </>
               ))}

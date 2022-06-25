@@ -43,6 +43,16 @@ const GlobalStyle = createGlobalStyle`
   .custom-checkbox .Mui-checked{
     color: #005585 !important;
   }
+  .table-checkbox{
+    padding: 0  !important;
+  }
+
+  .table-checkbox.Mui-checked{
+    color: #005585 !important;
+  }
+  .MuiList-root {
+    padding: 0 !important ;
+  }
 `;
 
 export default GlobalStyle;

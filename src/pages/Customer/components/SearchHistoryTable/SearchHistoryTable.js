@@ -26,10 +26,6 @@ const SearchHistoryTable = ({
         accessor: "Query",
       },
       {
-        Header: "Triples",
-        accessor: "Triples",
-      },
-      {
         Header: "Date and time",
         accessor: "Date and time",
       },

@@ -81,14 +81,14 @@ export const CustomTable = styled.div`
     .td {
       background: #fff;
       padding: 14px 20px;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid #f0f0f0 !important;
       font-weight: 300;
       font-size: 16px;
       line-height: 22px;
       color: #262626;
       white-space: nowrap;
       &.highlight {
-        background: #f2f2f2;
+        background: #daeaf3;
       }
 
       &:last-child {

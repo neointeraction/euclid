@@ -17,6 +17,7 @@ import {
   contributorRoutes,
   customerRoutes,
   reviewerRoutes,
+  adminRoutes,
 } from "./routes/routes.config";
 
 import {
@@ -42,11 +43,13 @@ const Header = () => {
   const checkActive = (menu) => {
     if (
       ((url[1] === "contributor-dashboard" ||
-        url[1] === "customer-dashboard") &&
+        url[1] === "customer-dashboard" ||
+        url[1] === "admin-dashboard") &&
         menu === "Dashboard") ||
       (url[1] === "add-triple" && menu === "Add Triple") ||
       ((url[1] === "triple-history" || url[1] === "view-triple") &&
-        menu === "Triple History")
+        menu === "Triple History") ||
+      (url[1] === "query-triple" && menu === "Query Triple")
     ) {
       return true;
     }
@@ -66,7 +69,7 @@ const Header = () => {
   const [menuRoutes, setMenuRoutes] = useState([]);
 
   useEffect(() => {
-    setUseType("Contributor"); // Map user type here after login
+    setUseType("Customer"); // Map user type here after login
   }, [userType]);
 
   useEffect(() => {
@@ -74,6 +77,8 @@ const Header = () => {
       ? setMenuRoutes(customerRoutes)
       : userType === "Reviewer"
       ? setMenuRoutes(reviewerRoutes)
+      : userType === "Admin"
+      ? setMenuRoutes(adminRoutes)
       : setMenuRoutes(contributorRoutes);
   }, [userType]);
 
