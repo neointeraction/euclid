@@ -252,3 +252,16 @@ export const TableMore = styled.div`
 export const TableActionImage = styled.img`
   margin-right: 10px;
 `;
+
+export const TableActionIcon = styled.div`
+  margin-right: 10px;
+  margin-bottom: -4px;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+export const TempImage = styled.img`
+  width: ${(props) => (props.w84 ? "84%" : "100%")};
+`;

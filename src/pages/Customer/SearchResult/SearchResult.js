@@ -4,6 +4,7 @@ import { Grid } from "@mui/material";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 
 import { PageHeader, Tooltip, IconButton, Button, Chip } from "components";
+import { BarGraphChart } from "components/Charts";
 
 import {
   ActionFlexTitle,
@@ -12,7 +13,58 @@ import {
   Section,
   Box,
   SectionTitle,
+  TempImage,
 } from "assets/styles/main.styles";
+
+import Chart1 from "assets/images/temp/chart1.png";
+import Chart2 from "assets/images/temp/chart2.png";
+import Chart3 from "assets/images/temp/chart3.png";
+import Chart4 from "assets/images/temp/chart4.png";
+
+const dataBar = [
+  {
+    name: "8 Jun",
+    uv: 2780,
+    pv: 34,
+    amt: 30,
+  },
+  {
+    name: "9 Jun",
+    uv: 1890,
+    pv: 20,
+    amt: 40,
+  },
+  {
+    name: "10 Jun",
+    uv: 2390,
+    pv: 40,
+    amt: 15,
+  },
+  {
+    name: "11 Jun",
+    uv: 3490,
+    pv: 15,
+    amt: 20,
+  },
+  {
+    name: "12 Jun",
+    uv: 3490,
+    pv: 5,
+    amt: 5,
+  },
+  {
+    name: "13 Jun",
+    uv: 3490,
+    pv: 32,
+    amt: 20,
+  },
+  {
+    name: "14 Jun",
+    uv: 3490,
+    pv: 22,
+    amt: 20,
+  },
+];
 
 const SearchResult = () => {
   const navigate = useNavigate();
@@ -79,6 +131,69 @@ const SearchResult = () => {
       <Section>
         <Box>
           <SectionTitle>Types of Entities:</SectionTitle>
+          <TempImage src={Chart1} alt="Temp1" />
+        </Box>
+      </Section>
+      <Grid container spacing={2} alignItems="baseline">
+        <Grid item xs={6}>
+          <Section>
+            <Box>
+              <SectionTitle>
+                Top 10 Entities & Its Number of occurance:
+              </SectionTitle>
+              <BarGraphChart data={dataBar} />
+            </Box>
+          </Section>
+        </Grid>
+        <Grid item xs={6}>
+          <Section>
+            <Box>
+              <SectionTitle>Types of Relationships::</SectionTitle>
+              <TempImage src={Chart1} alt="Temp1" w84 />
+            </Box>
+          </Section>
+        </Grid>
+      </Grid>
+      <Grid container spacing={2} alignItems="baseline">
+        <Grid item xs={6}>
+          <Section>
+            <Box>
+              <SectionTitle>Types of articles:</SectionTitle>
+              <BarGraphChart data={dataBar} />
+            </Box>
+          </Section>
+        </Grid>
+        <Grid item xs={6}>
+          <Section>
+            <Box>
+              <SectionTitle>Year Distribution of triples:</SectionTitle>
+              <BarGraphChart data={dataBar} />
+            </Box>
+          </Section>
+        </Grid>
+      </Grid>
+      <Section>
+        <Box>
+          <SectionTitle>Entities Relationship with eachother:</SectionTitle>
+          <TempImage src={Chart2} alt="Temp1" />
+        </Box>
+      </Section>
+      <Section>
+        <Box>
+          <SectionTitle>Triples:</SectionTitle>
+          <TempImage src={Chart3} alt="Temp1" />
+        </Box>
+      </Section>
+      <Section>
+        <Box>
+          <SectionTitle>Evidence supporting each Triple:</SectionTitle>
+          <BarGraphChart data={dataBar} layout="vertical" />
+        </Box>
+      </Section>
+      <Section>
+        <Box>
+          <SectionTitle>Triples extracted from various regions:</SectionTitle>
+          <TempImage src={Chart4} alt="Temp1" />
         </Box>
       </Section>
     </div>

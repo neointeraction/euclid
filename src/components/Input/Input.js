@@ -9,6 +9,48 @@ import FormControl from "@mui/material/FormControl";
 
 import { InputContainer, ErrorText } from "./input.styles";
 
+const CustomInput = styled(InputBase)(({ theme }) => ({
+  "label + &": {
+    marginTop: theme.spacing(3),
+    fontSize: 16,
+  },
+  "& .MuiInputBase-input": {
+    borderRadius: 4,
+    position: "relative",
+    backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
+    border: "1px solid #8C8C8C",
+    fontSize: 14,
+    width: "100%",
+    padding: "6px 12px",
+    transition: theme.transitions.create([
+      "border-color",
+      "background-color",
+      "box-shadow",
+    ]),
+    "&:focus": {
+      borderColor: "#005585",
+    },
+  },
+}));
+
+const CustomTextArea = styled(TextareaAutosize)(({ theme }) => ({
+  "label + &": {
+    marginTop: theme.spacing(3),
+    fontFamily: "'Nunito Sans', sans-serif",
+    borderRadius: 4,
+    fontSize: 14,
+    padding: "6px 12px",
+    border: "1px solid #8C8C8C",
+    backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
+    "&:focus": {
+      borderColor: "#005585",
+    },
+    "&:placeholder": {
+      color: "#005585",
+    },
+  },
+}));
+
 const Input = ({
   label,
   placeholder,
@@ -18,50 +60,10 @@ const Input = ({
   isRequired,
   errorText,
   isMulti,
+  onChange,
+  name,
   ...rest
 }) => {
-  const CustomInput = styled(InputBase)(({ theme }) => ({
-    "label + &": {
-      marginTop: label ? theme.spacing(3) : theme.spacing(1),
-      fontSize: 16,
-    },
-    "& .MuiInputBase-input": {
-      borderRadius: 4,
-      position: "relative",
-      backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
-      border: "1px solid #8C8C8C",
-      fontSize: 14,
-      width: "100%",
-      padding: "6px 12px",
-      transition: theme.transitions.create([
-        "border-color",
-        "background-color",
-        "box-shadow",
-      ]),
-      "&:focus": {
-        borderColor: "#005585",
-      },
-    },
-  }));
-
-  const CustomTextArea = styled(TextareaAutosize)(({ theme }) => ({
-    "label + &": {
-      marginTop: label ? theme.spacing(3) : theme.spacing(1),
-      fontFamily: "'Nunito Sans', sans-serif",
-      borderRadius: 4,
-      fontSize: 14,
-      padding: "6px 12px",
-      border: "1px solid #8C8C8C",
-      backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
-      "&:focus": {
-        borderColor: "#005585",
-      },
-      "&:placeholder": {
-        color: "#005585",
-      },
-    },
-  }));
-
   return (
     <InputContainer>
       <FormControl variant="standard" fullWidth>
@@ -78,6 +80,8 @@ const Input = ({
             defaultValue={defaultValue}
             disabled={isDisabled}
             required={isRequired}
+            onChange={onChange}
+            name={name}
             {...rest}
           />
         ) : (
@@ -87,6 +91,8 @@ const Input = ({
             defaultValue={defaultValue}
             disabled={isDisabled}
             required={isRequired}
+            onChange={onChange}
+            name={name}
             id="custom-input"
             size="small"
             {...rest}

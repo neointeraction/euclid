@@ -33,12 +33,13 @@ const Login = () => {
       console.log("Trying to login with --- ", values);
     },
   });
+
   return (
     <FullPageContainer>
       <Box noPadding>
         <form
           style={{
-            width: "400px",
+            width: "340px",
             display: "flex",
             gap: 22,
             flexDirection: "column",
@@ -87,11 +88,27 @@ const Login = () => {
             />
           </RememberForgotFlex>
           <Button
-            style={{ width: "100%" }}
             variant="contained"
             btnText="Submit"
             type="submit"
-            onClick={() => navigate("/contributor-dashboard")}
+            //  For Demo -  To be removed
+            onClick={() =>
+              navigate(
+                values.username === "admin"
+                  ? "/admin-dashboard"
+                  : values.username === "customer"
+                  ? "/customer-dashboard"
+                  : values.username === "reviewer"
+                  ? "/reviewer-dashboard"
+                  : "/contributor-dashboard",
+                {
+                  state: {
+                    user: values.username ? values.username : "contributor",
+                  },
+                }
+              )
+            }
+            //  For Demo -  To be removed
           />
         </form>
       </Box>

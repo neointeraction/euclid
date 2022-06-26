@@ -44,7 +44,8 @@ const Header = () => {
     if (
       ((url[1] === "contributor-dashboard" ||
         url[1] === "customer-dashboard" ||
-        url[1] === "admin-dashboard") &&
+        url[1] === "admin-dashboard" ||
+        url[1] === "reviewer-dashboard") &&
         menu === "Dashboard") ||
       (url[1] === "add-triple" && menu === "Add Triple") ||
       ((url[1] === "triple-history" || url[1] === "view-triple") &&
@@ -68,16 +69,20 @@ const Header = () => {
   const [userType, setUseType] = useState("");
   const [menuRoutes, setMenuRoutes] = useState([]);
 
-  useEffect(() => {
-    setUseType("Customer"); // Map user type here after login
-  }, [userType]);
+  const { state } = useLocation(); // Demo code -  can be removed during implementation
 
   useEffect(() => {
-    userType === "Customer"
+    state?.user && setUseType(state?.user); // Demo code -  can be removed during implementation
+
+    !state?.user && setUseType("Contributor"); // Map user type here after login
+  }, [userType, state]);
+
+  useEffect(() => {
+    userType === "customer"
       ? setMenuRoutes(customerRoutes)
-      : userType === "Reviewer"
+      : userType === "reviewer"
       ? setMenuRoutes(reviewerRoutes)
-      : userType === "Admin"
+      : userType === "admin"
       ? setMenuRoutes(adminRoutes)
       : setMenuRoutes(contributorRoutes);
   }, [userType]);
@@ -107,7 +112,14 @@ const Header = () => {
             <Avatar />
             <NameTag>
               <span className="p-user-name">Rob Hawkins</span>
-              <Chip label={userType} size="small" className="custom-chip" />
+              <Chip
+                label={
+                  userType.charAt(0).toUpperCase() +
+                  userType.slice(1).toLowerCase()
+                }
+                size="small"
+                className="custom-chip"
+              />
             </NameTag>
             <MenuArrow>
               <img src={Arrow} alt="Arrow" />

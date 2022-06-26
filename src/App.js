@@ -22,6 +22,14 @@ import {
   SearchResult,
 } from "pages/Customer";
 
+import {
+  ReviewerDashboard,
+  RecentActivity,
+  Evidences,
+  ReviewerViewTriple,
+  EditTriple,
+} from "pages/Reviewer";
+
 import { AdminDashboard, UserList, CustomerList } from "pages/Admin";
 
 import Login from "pages/Login";
@@ -50,6 +58,12 @@ function App() {
             <Route path="/search-history" element={<SearchHistory />} />
             <Route path="/previous-purchases" element={<PreviousPurchase />} />
             <Route path="/search-result" element={<SearchResult />} />
+            {/* Reviewer  */}
+            <Route path="/reviewer-dashboard" element={<ReviewerDashboard />} />
+            <Route path="/recent-activity" element={<RecentActivity />} />
+            <Route path="/evidences" element={<Evidences />} />
+            <Route path="/triple-view" element={<ReviewerViewTriple />} />
+            <Route path="/edit-triple" element={<EditTriple />} />
             {/* Admin  */}
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/users" element={<UserList />} />
