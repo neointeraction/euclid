@@ -62,11 +62,11 @@ const QueryTriple = () => {
           <ChipsContainer>
             <Chip
               content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-              onRemove={() => {}}
+              onDelete={() => {}}
             />
             <Chip
               content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-              onRemove={() => {}}
+              onDelete={() => {}}
             />
           </ChipsContainer>
         </Box>
@@ -109,7 +109,7 @@ const QueryTriple = () => {
           <ChipsContainer>
             <Chip
               content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-              onRemove={() => {}}
+              onDelete={() => {}}
             />
           </ChipsContainer>
         </Box>

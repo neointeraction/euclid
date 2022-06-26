@@ -92,7 +92,7 @@ const Login = () => {
             btnText="Submit"
             type="submit"
             //  For Demo -  To be removed
-            onClick={() =>
+            onClick={() => {
               navigate(
                 values.username === "admin"
                   ? "/admin-dashboard"
@@ -100,14 +100,13 @@ const Login = () => {
                   ? "/customer-dashboard"
                   : values.username === "reviewer"
                   ? "/reviewer-dashboard"
-                  : "/contributor-dashboard",
-                {
-                  state: {
-                    user: values.username ? values.username : "contributor",
-                  },
-                }
-              )
-            }
+                  : "/contributor-dashboard"
+              );
+              localStorage.setItem(
+                "user",
+                values.username ? values.username : "Contributor"
+              );
+            }}
             //  For Demo -  To be removed
           />
         </form>

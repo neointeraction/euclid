@@ -122,11 +122,11 @@ const TripleForm = (data) => {
         <ChipsContainer>
           <Chip
             content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-            onRemove={() => {}}
+            onDelete={() => {}}
           />
           <Chip
             content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-            onRemove={() => {}}
+            onDelete={() => {}}
           />
         </ChipsContainer>
         <TypesBlock>

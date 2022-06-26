@@ -69,11 +69,12 @@ const Header = () => {
   const [userType, setUseType] = useState("");
   const [menuRoutes, setMenuRoutes] = useState([]);
 
-  const { state } = useLocation(); // Demo code -  can be removed during implementation
-
+  // const { state } = useLocation(); // Demo code -  can be removed during implementation
+  let data = localStorage.user;
+  console.log(data);
   useEffect(() => {
-    state?.user && setUseType(state?.user); // Demo code -  can be removed during implementation
-  }, [userType, state]);
+    data && setUseType(data); // Demo code -  can be removed during implementation
+  }, [userType, data]);
 
   useEffect(() => {
     userType === "customer"

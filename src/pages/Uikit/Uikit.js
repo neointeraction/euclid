@@ -526,7 +526,7 @@ const Uikit = () => {
           <Grid item xs={4}>
             <Chip
               content={[{ labelKey: "Removeable", labelValue: "Chip" }]}
-              onRemove={() => console.log("To be removed")}
+              onDelete={() => console.log("To be removed")}
             />
           </Grid>
         </Grid>
