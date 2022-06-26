@@ -73,8 +73,6 @@ const Header = () => {
 
   useEffect(() => {
     state?.user && setUseType(state?.user); // Demo code -  can be removed during implementation
-
-    !state?.user && setUseType("Contributor"); // Map user type here after login
   }, [userType, state]);
 
   useEffect(() => {
