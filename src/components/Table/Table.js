@@ -180,7 +180,11 @@ const Table = ({
                           column.isSortedDesc ? (
                             <img src={SortIcon} alt="SortIcon" />
                           ) : (
-                            <img src={SortIcon} alt="SortIcon" />
+                            <img
+                              src={SortIcon}
+                              alt="SortIcon"
+                              className="upside"
+                            />
                           )
                         ) : (
                           <img

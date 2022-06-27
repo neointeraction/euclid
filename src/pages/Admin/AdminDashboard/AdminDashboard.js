@@ -2,11 +2,16 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 
-import { PageHeader, Card } from "components";
+import { PageHeader, Card, ChartFilters } from "components";
 
 import { BarGraphChart } from "components/Charts";
 
-import { Section, Box, SectionTitle } from "assets/styles/main.styles";
+import {
+  Section,
+  Box,
+  SectionTitle,
+  SectionFlex,
+} from "assets/styles/main.styles";
 
 const dataBar = [
   {
@@ -140,7 +145,16 @@ const AdminDashboard = () => {
       </Section>
       <Section>
         <Box>
-          <SectionTitle>Performance Overview</SectionTitle>
+          <SectionFlex>
+            <SectionTitle>Performance Overview</SectionTitle>
+            <ChartFilters
+              byType
+              byDuration
+              valueType={"Evidences"}
+              valueDuration={"By days"}
+              averageText={"12 Evidences"}
+            />
+          </SectionFlex>
           <BarGraphChart data={dataBar} />
         </Box>
       </Section>

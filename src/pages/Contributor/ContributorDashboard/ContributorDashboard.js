@@ -3,7 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 import Grid from "@mui/material/Grid";
 
-import { PageHeader, PointBanner, Card, Button } from "components";
+import {
+  PageHeader,
+  PointBanner,
+  Card,
+  Button,
+  ChartFilters,
+} from "components";
 import TripleHistoryTable from "../components/TripleHistoryTable";
 
 import {
@@ -11,6 +17,7 @@ import {
   Box,
   SectionTitle,
   ViewAllBtn,
+  SectionFlex,
 } from "assets/styles/main.styles";
 import { BarGraphChart, RadialChart } from "components/Charts";
 
@@ -98,7 +105,16 @@ const ContributorDashboard = () => {
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={8}>
             <Box>
-              <SectionTitle>Performance Overview</SectionTitle>
+              <SectionFlex>
+                <SectionTitle>Performance Overview</SectionTitle>
+                <ChartFilters
+                  byType
+                  byDuration
+                  valueType={"Evidences"}
+                  valueDuration={"By days"}
+                  averageText={"12 Evidences"}
+                />
+              </SectionFlex>
               <BarGraphChart data={dataBar} />
             </Box>
           </Grid>

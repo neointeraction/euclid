@@ -19,8 +19,6 @@ const UserTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
       {
         Header: "Name",
         accessor: "Name",
-        maxWidth: 600,
-        minWidth: 400,
       },
       {
         Header: "Triples coded",

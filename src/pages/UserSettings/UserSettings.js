@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
-import { Avatar, Grid, Divider, IconButton } from "@mui/material";
+import { Avatar, Grid, IconButton, Chip } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 
 import { Input, PageHeader, Dropdown, Button } from "components";
 import {
@@ -14,14 +15,22 @@ import {
 } from "assets/styles/main.styles";
 
 const UserSettings = () => {
+  const fileInput = React.useRef();
   const [photo, setPhoto] = useState(null);
+  const [files, setFiles] = useState([]);
 
-  const fileHandler = (e) => {
+  const photoHandler = (e) => {
     setPhoto(e.target.files[0]);
   };
+
   const clearImage = (e) => {
     e.preventDefault();
     setPhoto("");
+  };
+
+  const fileHandler = (e) => {
+    setFiles(Array.from(e.target.files));
+    console.log(files);
   };
 
   return (
@@ -30,15 +39,16 @@ const UserSettings = () => {
       <Box>
         <Section>
           <SectionTitle>Profile</SectionTitle>
-          <Grid container spacing={2} alignItems="baseline">
-            <Grid item xs={3}>
+
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={3} textAlign={"center"}>
               <ProfileUpload>
                 <input
                   accept="image/*"
                   id="contained-button-file"
                   multiple
                   type="file"
-                  onChange={fileHandler}
+                  onChange={photoHandler}
                 />
                 <label htmlFor="contained-button-file">
                   <Avatar
@@ -55,8 +65,6 @@ const UserSettings = () => {
                 </label>
               </ProfileUpload>
             </Grid>
-          </Grid>
-          <Grid container spacing={2} alignItems="baseline">
             <Grid item xs={3}>
               <Input label="First Name" name="firstName" />
             </Grid>
@@ -68,7 +76,7 @@ const UserSettings = () => {
             </Grid>
           </Grid>
         </Section>
-        <Divider className="divider-margin" />
+        {/* <Divider className="divider-margin" /> */}
         <Section>
           <SectionTitle>Personal Information</SectionTitle>
           <Grid container spacing={2} alignItems="baseline">
@@ -112,7 +120,7 @@ const UserSettings = () => {
             </Grid>
           </Grid>
         </Section>
-        <Divider className="divider-margin" />
+        {/* <Divider className="divider-margin" /> */}
         <Section>
           <SectionTitle>Address</SectionTitle>
           <Grid container spacing={2} alignItems="baseline">
@@ -133,7 +141,7 @@ const UserSettings = () => {
             </Grid>
           </Grid>
         </Section>
-        <Divider className="divider-margin" />
+        {/* <Divider className="divider-margin" /> */}
         <Section>
           <SectionTitle>Password Management</SectionTitle>
           <Grid container spacing={2} alignItems="baseline">
@@ -143,6 +151,42 @@ const UserSettings = () => {
             <Grid item xs={3}>
               <Input label="Confirm Password" name="confirmPwd" />
             </Grid>
+          </Grid>
+        </Section>
+        <Section>
+          <SectionTitle>Attachments</SectionTitle>
+          <Grid container spacing={2} alignItems="baseline">
+            <Grid item xs={2}>
+              <div>
+                <Button
+                  startIcon={<InsertDriveFileOutlinedIcon fontSize="small" />}
+                  btnText="Upload your Document"
+                  variant="secondary"
+                  onClick={() => fileInput.current.click()}
+                >
+                  upload file
+                </Button>
+
+                <input
+                  onChange={fileHandler}
+                  ref={fileInput}
+                  type="file"
+                  multiple
+                  style={{ display: "none" }}
+                />
+              </div>
+            </Grid>
+            {files?.map((item) => (
+              <Grid item>
+                <Chip
+                  className="upload-chip"
+                  icon={<InsertDriveFileOutlinedIcon fontSize="small" />}
+                  label={item?.name}
+                  variant="outlined"
+                  onDelete={() => {}}
+                />
+              </Grid>
+            ))}
           </Grid>
         </Section>
       </Box>

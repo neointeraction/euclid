@@ -53,6 +53,10 @@ const GlobalStyle = createGlobalStyle`
   .MuiList-root {
     padding: 0 !important ;
   }
+  .upload-chip{
+    border-radius: 4px !important;
+    padding: 17px 2px !important;
+  }
 `;
 
 export default GlobalStyle;

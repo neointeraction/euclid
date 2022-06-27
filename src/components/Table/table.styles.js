@@ -29,6 +29,9 @@ export const ObjectFlex = styled.h1`
 export const CustomTable = styled.div`
   display: block;
   overflow: auto;
+  .upside {
+    transform: rotate(-180deg);
+  }
   .table {
     border-spacing: 0;
     .thead {

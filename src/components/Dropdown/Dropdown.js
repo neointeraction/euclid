@@ -39,12 +39,20 @@ const Dropdown = ({
               outline: 0,
             },
             anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'left',
+              vertical: "bottom",
+              horizontal: "left",
             },
             transformOrigin: {
-              vertical: 'top',
-              horizontal: 'left',
+              vertical: "top",
+              horizontal: "left",
+            },
+            PaperProps: {
+              elevation: 0,
+              sx: {
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.10))",
+                mt: 0,
+              },
             },
           }}
           {...rest}
@@ -54,7 +62,6 @@ const Dropdown = ({
               className="custom-menuItem"
               value={item.optionText}
               key={item.optionText}
-              disableRipple
             >
               {item.optionText}
             </MenuItem>

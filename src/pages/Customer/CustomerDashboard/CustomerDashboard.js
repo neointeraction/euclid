@@ -3,7 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 import Grid from "@mui/material/Grid";
 
-import { PageHeader, Card, Button, IconButton, Tooltip } from "components";
+import {
+  PageHeader,
+  Card,
+  Button,
+  IconButton,
+  Tooltip,
+  ChartFilters,
+} from "components";
 import SearchHistoryTable from "../components/SearchHistoryTable";
 import PurchaseHistoryTable from "../components/PurchaseHistoryTable";
 import { BarGraphChart } from "components/Charts";
@@ -16,6 +23,7 @@ import {
   SectionTitle,
   ViewAllBtn,
   ActionFlexTitle,
+  SectionFlex,
 } from "assets/styles/main.styles";
 
 const dataBar = [
@@ -92,13 +100,24 @@ const CustomerDashboard = () => {
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={6}>
             <Box>
-              <SectionTitle>Real time Data</SectionTitle>
+              <SectionFlex>
+                <SectionTitle>Real time Data</SectionTitle>
+                <ChartFilters averageText={"120 Triples coded"} />
+              </SectionFlex>
               <BarGraphChart data={dataBar} layout="vertical" />
             </Box>
           </Grid>
           <Grid item xs={6}>
             <Box>
-              <SectionTitle>Overview of Triples Quered</SectionTitle>
+              <SectionFlex>
+                <SectionTitle>Overview of Triples Quered</SectionTitle>
+                <ChartFilters
+                  byDuration
+                  valueDuration={"By days"}
+                  averageText={"12 Evidence"}
+                  isDown
+                />
+              </SectionFlex>
               <BarGraphChart data={dataBar} />
             </Box>
           </Grid>

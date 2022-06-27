@@ -151,7 +151,7 @@ export const ProfileRemove = styled.span`
   display: none;
   position: absolute;
   top: 10px;
-  right: -5px;
+  right: -2px;
   background: #fff;
   box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.08);
   border: 1px solid #e5e5e5;
@@ -166,20 +166,21 @@ export const ProfileRemove = styled.span`
 `;
 
 export const ProfileUpload = styled.div`
-  width: fit-content;
+  width: 100%;
   margin-bottom: 20px;
   .avatar {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
   label {
     cursor: pointer;
     position: relative;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     transition: 0.3s all ease-in-out;
-
+    width: 120px;
+    margin: auto;
     & .MuiAvatar-root {
       &:hover {
         opacity: 0.7;
@@ -263,5 +264,15 @@ export const TableActionIcon = styled.div`
 `;
 
 export const TempImage = styled.img`
-  width: ${(props) => (props.w84 ? "84%" : "100%")};
+  width: ${(props) => (props.w84 ? "498px" : "100%")};
+`;
+
+export const SectionFlex = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  ${SectionTitle} {
+    margin-bottom: 0;
+  }
 `;
