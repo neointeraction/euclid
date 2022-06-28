@@ -114,7 +114,7 @@ export const TypesBlock = styled.div`
 `;
 
 export const InfoWithActions = styled.div`
-  padding: 10px 0;
+  padding: 10px 0 0 0;
 `;
 
 export const ViewAllBtn = styled.div`
@@ -222,9 +222,9 @@ export const PlainTypesBlock = styled.div`
 export const PlainTypesItem = styled.div`
   width: 100%;
   background: ${(props) => (props.noBg ? "#fff" : "#daeaf3")};
-  padding: 12px;
+  padding: ${(props) => (props.noMb ? "0" : "12px")};
   border-radius: 4px;
-  margin-bottom: 20px;
+  margin-bottom: ${(props) => (props.noMb ? "0" : "20px")};
 `;
 
 export const ActionFlexTitle = styled.div`

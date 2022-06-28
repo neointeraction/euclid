@@ -35,7 +35,8 @@ const Modal = ({ title, size, children, open, close }) => {
           </IconButton>
         </ModalClose>
         <MOdalContent>
-          <ModalTitle>{title}</ModalTitle>
+          {title && <ModalTitle>{title}</ModalTitle>}
+
           {children}
         </MOdalContent>
       </Dialog>

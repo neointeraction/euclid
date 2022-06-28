@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import { Tag, Table } from "components";
+import { Tag, Table, Modal } from "components";
 import { TableTagContainer } from "assets/styles/main.styles";
-import { Link } from "react-router-dom";
 
-// import Menu from "@mui/material/Menu";
-// import MenuItem from "@mui/material/MenuItem";
-// import EditIcon from "../../../../assets/images/icons/edit.svg";
-// import DeleteIcon from "../../../../assets/images/icons/delete.svg";
-// import More from "../../../../assets/images/icons/more.svg";
+import ViewTripleModal from "../ViewTripleModal";
 
 const TripleHistoryTable = ({
   isCompleteList,
@@ -16,6 +11,14 @@ const TripleHistoryTable = ({
   hideSearch,
   hideFilter,
 }) => {
+  const [openModal, setOpenModal] = useState(false);
+  const handleClickOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+  };
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -26,9 +29,9 @@ const TripleHistoryTable = ({
         accessor: "Triple",
         Cell: (row) => {
           return (
-            <Link to="/view-triple" className="table-nav-link">
+            <div className="table-nav-link" onClick={handleClickOpen}>
               {row.row.original.Triple}
-            </Link>
+            </div>
           );
         },
       },
@@ -136,6 +139,12 @@ const TripleHistoryTable = ({
         hidePagination={isCompleteList ? false : true}
         defaultFilter={filter}
         hideSearch={hideSearch}
+      />
+      <Modal
+        size="lg"
+        open={openModal}
+        close={handleClose}
+        children={<ViewTripleModal handleClose={handleClose} />}
       />
     </div>
   );

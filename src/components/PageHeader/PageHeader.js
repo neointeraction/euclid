@@ -19,11 +19,12 @@ const PageHeader = ({
   btnText,
   onClick,
   rightSideContent,
+  isStartAlign,
 }) => {
   return (
-    <PageHeaderContainer>
+    <PageHeaderContainer isStartAlign={isStartAlign}>
       {isHomePage ? (
-        <PageTitle>
+        <PageTitle isStartAlign={isStartAlign}>
           Welcome, {user}
           <span>
             <Hello />
@@ -32,7 +33,7 @@ const PageHeader = ({
       ) : (
         <div>
           {subText && <SubText>{subText}</SubText>}
-          <PageTitle>{pageTitleText}</PageTitle>
+          <PageTitle isStartAlign={isStartAlign}>{pageTitleText}</PageTitle>
         </div>
       )}
       {btnText && !rightSideContent && (

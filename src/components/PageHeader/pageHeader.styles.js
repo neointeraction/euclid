@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const PageHeaderContainer = styled.div`
   padding: 10px 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: ${(props) =>
+    props.isStartAlign ? "flex-start" : "space-between"};
   align-items: center;
 `;
 
@@ -12,6 +13,7 @@ export const PageTitle = styled.h1`
   font-size: 28px;
   line-height: 38px;
   color: #262626;
+  margin-right: ${(props) => (props.isStartAlign ? "10px" : "0")};
   span {
     margin-left: 10px;
   }
