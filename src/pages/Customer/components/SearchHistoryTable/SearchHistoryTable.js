@@ -24,14 +24,36 @@ const SearchHistoryTable = ({
       {
         Header: "Query",
         accessor: "Query",
+        maxWidth: isCompleteList ? 600 : 300,
+        minWidth: isCompleteList ? 250 : 200,
+      },
+      {
+        Header: "Triples",
+        accessor: "Triples",
+      },
+      {
+        Header: "Entities",
+        accessor: "Entities",
+      },
+      {
+        Header: "Amount",
+        accessor: "Amount",
       },
       {
         Header: "Date and time",
         accessor: "Date and time",
       },
     ],
-    []
+    [isCompleteList]
   );
+
+  const filterColumns = () => {
+    return isCompleteList
+      ? columns
+      : columns.filter(
+          (item) => item.Header === "Query" || item.Header === "Date and time"
+        );
+  };
 
   useEffect(() => {
     // dummy data
@@ -39,66 +61,92 @@ const SearchHistoryTable = ({
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "109",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "129",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "109",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "109",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "109",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "109",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "109",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "103",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "109",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "22-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "109",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "209",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "11-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "109",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Query: "Disease: Neuro AND Species: Human Beings",
         Triples: "109",
+        Entities: "122",
+        Amount: "$133",
         "Date and time": "22-05-2022 at 5:30 PM",
       },
     ]);
@@ -109,7 +157,7 @@ const SearchHistoryTable = ({
   return (
     <div className="table-container">
       <Table
-        columns={columns}
+        columns={isCompleteList ? columns : filterColumns()}
         data={isCompleteList ? data : data.slice(0, 5)}
         isLoading={loading}
         hidePagination={isCompleteList ? false : true}

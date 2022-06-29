@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid } from "@mui/material";
+import { Grid, Menu, MenuItem } from "@mui/material";
 
 import { PageHeader, Dropdown, AutoComplete, Button, Chip } from "components";
+
+import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+
 import {
   Box,
   Section,
@@ -21,6 +24,18 @@ const QueryTriple = () => {
   const handleChange = (event) => {
     setState({ context: event.target.value });
   };
+
+  // menu btn
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <div>
       <PageHeader pageTitleText="Query Triple" />
@@ -53,10 +68,32 @@ const QueryTriple = () => {
             </Grid>
             <Grid item xs={1}>
               <Button
-                btnText="And"
+                btnText="AND"
                 variant="contained"
-                onClick={() => console.log("clicked")}
+                aria-controls={open ? "context-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                endIcon={<KeyboardArrowDownOutlinedIcon />}
               />
+              <Menu
+                id="context-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.10))",
+                    mt: 0,
+                  },
+                }}
+              >
+                <MenuItem onClick={handleClose}>AND</MenuItem>
+                <MenuItem onClick={handleClose}>OR</MenuItem>
+                <MenuItem onClick={handleClose}>NOT</MenuItem>
+              </Menu>
             </Grid>
           </Grid>
           <ChipsContainer>
@@ -100,10 +137,24 @@ const QueryTriple = () => {
             </Grid>
             <Grid item xs={1}>
               <Button
-                btnText="And"
+                btnText="AND"
                 variant="contained"
-                onClick={() => console.log("clicked")}
+                aria-controls={open ? "entity-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                endIcon={<KeyboardArrowDownOutlinedIcon />}
               />
+              <Menu
+                id="entity-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>AND</MenuItem>
+                <MenuItem onClick={handleClose}>OR</MenuItem>
+                <MenuItem onClick={handleClose}>NOT</MenuItem>
+              </Menu>
             </Grid>
           </Grid>
           <ChipsContainer>

@@ -9,7 +9,6 @@ import MinimalLayout from "layout/MinimalLayout";
 import {
   ContributorDashboard,
   AddTriple,
-  ViewTriple,
   TripleHistory,
 } from "pages/Contributor";
 
@@ -50,7 +49,6 @@ function App() {
             />
             <Route path="/add-triple" element={<AddTriple />} />
             <Route path="/triple-history" element={<TripleHistory />} />
-            <Route path="/view-triple" element={<ViewTriple />} />
             {/* Customer  */}
             <Route path="/customer-dashboard" element={<CustomerDashboard />} />
             <Route path="/query-triple" element={<QueryTriple />} />

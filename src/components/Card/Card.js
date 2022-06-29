@@ -46,7 +46,6 @@ const Card = ({ color, count, title, onClick, enableFilter }) => {
             />
           </CardFilter>
         )}
-
         <Menu
           id="filter-menu"
           anchorEl={anchorEl}

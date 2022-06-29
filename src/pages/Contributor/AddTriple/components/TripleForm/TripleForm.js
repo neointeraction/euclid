@@ -131,10 +131,10 @@ const TripleForm = (data) => {
         </ChipsContainer>
         <TypesBlock>
           <MultiFormContainer>
-            {multipleSubjectTypes.map((subjectType) => (
+            {multipleSubjectTypes.map((subjectType, index) => (
               <React.Fragment key={subjectType.id}>
                 <ExtendableSubjectTypeForm
-                  label="Subject type"
+                  label={index === 0 ? "Subject type" : ""}
                   onAddToLeft={() => onAddToLeftOfSubjectType(subjectType)}
                   onAddToRight={() => onAddToRightOfSubjectType(subjectType)}
                   onChange={(_e, value) =>
@@ -156,10 +156,10 @@ const TripleForm = (data) => {
             ))}
           </MultiFormContainer>
           <MultiFormContainer>
-            {multipleSubjectTypes.map((subjectType) => (
+            {multipleSubjectTypes.map((subjectType, index) => (
               <React.Fragment key={subjectType.id}>
                 <ExtendableSubjectTypeForm
-                  label="Relationship type"
+                  label={index === 0 ? "Relationship type" : ""}
                   noBg
                   onAddToLeft={() => onAddToLeftOfSubjectType(subjectType)}
                   onAddToRight={() => onAddToRightOfSubjectType(subjectType)}
@@ -182,10 +182,10 @@ const TripleForm = (data) => {
             ))}
           </MultiFormContainer>
           <MultiFormContainer>
-            {multipleSubjectTypes.map((subjectType) => (
+            {multipleSubjectTypes.map((subjectType, index) => (
               <React.Fragment key={subjectType.id}>
                 <ExtendableSubjectTypeForm
-                  label="Object type"
+                  label={index === 0 ? "Object type" : ""}
                   onAddToLeft={() => onAddToLeftOfSubjectType(subjectType)}
                   onAddToRight={() => onAddToRightOfSubjectType(subjectType)}
                   onChange={(_e, value) =>

@@ -1,12 +1,17 @@
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
+import { Grid } from "@mui/material";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import { useState } from "react";
 import Collapse from "@mui/material/Collapse";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-import IconButton from "components/IconButton";
-import Chip from "components/Chip";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+
+import { IconButton, Tooltip, Chip } from "components";
+
 import { CollapseIconWrap } from "./trippledCollapsed.styles";
 
 const TrippleCollapsed = ({ chipContent, children }) => {
@@ -34,6 +39,39 @@ const TrippleCollapsed = ({ chipContent, children }) => {
           }
         />
         {!open && <Chip content={chipContent} />}
+        {!open && (
+          <Grid
+            container
+            spacing={2}
+            alignItems="center"
+            justifyContent="flex-end"
+          >
+            <Grid item textAlign="right">
+              <Tooltip message="Add Comment" position="top">
+                <IconButton
+                  onClick={() => {}}
+                  icon={<DeleteOutlineOutlinedIcon fontSize="medium" />}
+                />
+              </Tooltip>
+            </Grid>
+            <Grid item textAlign="right">
+              <Tooltip message="Duplicate" position="top">
+                <IconButton
+                  icon={<ContentCopyOutlinedIcon fontSize="small" />}
+                  onClick={() => {}}
+                />
+              </Tooltip>
+            </Grid>
+            <Grid item textAlign="right">
+              <Tooltip message="Add Triple" position="top">
+                <IconButton
+                  icon={<EditOutlinedIcon fontSize="small" />}
+                  onClick={() => setOpen((prevState) => !prevState)}
+                />
+              </Tooltip>
+            </Grid>
+          </Grid>
+        )}
       </CollapseIconWrap>
       <Collapse in={open}>{children}</Collapse>
     </Box>
