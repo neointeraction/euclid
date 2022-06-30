@@ -26,7 +26,14 @@ const RecentActivityTable = ({
         accessor: "Triple",
         Cell: (row) => {
           return (
-            <Link to="/view-triple" className="table-nav-link">
+            <Link
+              to={
+                row.row.original.status === "Invalid Evidence"
+                  ? "/evidences"
+                  : "/triple-view"
+              }
+              className="table-nav-link"
+            >
               {row.row.original.Triple}
             </Link>
           );
@@ -59,67 +66,67 @@ const RecentActivityTable = ({
     setData([
       {
         Triple: "134678 (12 Evidences, 20 Triples)",
-        status: "Approved",
+        status: "Triples Validated",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
+        status: "Invalid Evidence",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
+        status: "Triples Flagged",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "434678 (12 Evidences, 20 Triples)",
-        status: "Reverted",
+        status: "Triples Reverted",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "534678 (12 Evidences, 20 Triples)",
-        status: "Approved",
+        status: "Triples Validated",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "534678 (12 Evidences, 20 Triples)",
-        status: "Approved",
+        status: "Triples Validated",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "434678 (12 Evidences, 20 Triples)",
-        status: "Reverted",
+        status: "Triples Reverted",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
+        status: "Invalid Evidence",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
+        status: "Triples Flagged",
         "Date and time": "22-05-2022 at 5:30 PM",
       },
       {
         Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
+        status: "Invalid Evidence",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
+        status: "Triples Flagged",
         "Date and time": "11-05-2022 at 5:30 PM",
       },
       {
         Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
+        status: "Invalid Evidence",
         "Date and time": "19-05-2022 at 5:30 PM",
       },
       {
         Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
+        status: "Triples Flagged",
         "Date and time": "22-05-2022 at 5:30 PM",
       },
     ]);
@@ -136,6 +143,7 @@ const RecentActivityTable = ({
         hidePagination={isCompleteList ? false : true}
         defaultFilter={filter}
         hideSearch={hideSearch}
+        isReviewerFilter={true}
       />
     </div>
   );

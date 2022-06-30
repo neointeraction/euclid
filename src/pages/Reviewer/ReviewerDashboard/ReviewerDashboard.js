@@ -26,7 +26,14 @@ const ReviewerDashboard = () => {
               count={12}
               title="Invalid Evidences"
               color="purple"
-              onClick={() => navigate("/evidences")}
+              onClick={() =>
+                navigate("/recent-activity", {
+                  state: {
+                    filter: "Invalid Evidence",
+                  },
+                })
+              }
+              // onClick={() => navigate("/evidences")}
             />
           </Grid>
           <Grid item xs={3}>
@@ -37,7 +44,7 @@ const ReviewerDashboard = () => {
               onClick={() =>
                 navigate("/recent-activity", {
                   state: {
-                    filter: "Approved",
+                    filter: "Triples Validated",
                   },
                 })
               }
@@ -48,7 +55,14 @@ const ReviewerDashboard = () => {
               count={2}
               title="Triples Reverted"
               color="red"
-              onClick={() => navigate("/triple-view")}
+              onClick={() =>
+                navigate("/recent-activity", {
+                  state: {
+                    filter: "Triples Reverted",
+                  },
+                })
+              }
+              // onClick={() => navigate("/triple-view")}
             />
           </Grid>
           <Grid item xs={3}>
@@ -56,7 +70,14 @@ const ReviewerDashboard = () => {
               count={32}
               title="Triples Flagged"
               color="blue"
-              onClick={() => navigate("/triple-view")}
+              onClick={() =>
+                navigate("/recent-activity", {
+                  state: {
+                    filter: "Triples Flagged",
+                  },
+                })
+              }
+              // onClick={() => navigate("/triple-view")}
             />
           </Grid>
         </Grid>

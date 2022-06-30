@@ -42,6 +42,7 @@ const Table = ({
   defaultFilter,
   hideFilter,
   hideSearch,
+  isReviewerFilter,
 }) => {
   const defaultColumn = React.useMemo(
     () => ({
@@ -143,7 +144,12 @@ const Table = ({
             onChange={(e) => setGlobalFilter(e.target.value || undefined)}
           />
         )}
-        {hideFilter ? null : <Filter setFilterValue={setFilterValue} />}
+        {hideFilter ? null : (
+          <Filter
+            setFilterValue={setFilterValue}
+            reviewerFilter={isReviewerFilter}
+          />
+        )}
       </TableHeader>
 
       <div {...getTableProps()} className="table">

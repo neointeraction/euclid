@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import { Grid } from "@mui/material";
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
-import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 
 import {
   PageHeader,
@@ -39,6 +40,7 @@ const rows = [
 // Dummy Triple Data
 
 const Evidences = () => {
+  let navigate = useNavigate();
   // PopoverGrid
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -117,15 +119,7 @@ const Evidences = () => {
                   btnText="Back"
                   variant="text"
                   startIcon={<ChevronLeftOutlinedIcon />}
-                  onClick={() => console.log("clicked")}
-                />
-              </Grid>
-              <Grid item xs={2} textAlign="left">
-                <Button
-                  btnText="Next"
-                  variant="text"
-                  endIcon={<ChevronRightOutlinedIcon />}
-                  onClick={() => console.log("clicked")}
+                  onClick={() => navigate(-1)}
                 />
               </Grid>
             </Grid>
