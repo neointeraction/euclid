@@ -7,7 +7,6 @@ import {
   PageHeader,
   Button,
   Modal,
-  Alert,
   PopoverGrid,
   ConfirmationModal,
   TrippleCollapsed,
@@ -23,7 +22,6 @@ import {
   BodyText,
   BodyTextLight,
   ActionBox,
-  AlertWrapper,
   HighlightText,
   TripleCollapseContainer,
 } from "assets/styles/main.styles";
@@ -52,10 +50,6 @@ const EditTriple = () => {
 
   const [openModalConfirm, setOpenModalConfirm] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpenModal(true);
-  };
-
   const handleClickOpenConfirm = () => {
     setOpenModalConfirm(true);
   };
@@ -69,11 +63,6 @@ const EditTriple = () => {
   };
 
   //Alert
-  const [showAlert, setShowAlert] = useState(false);
-
-  const notReleventClick = () => {
-    setShowAlert(true);
-  };
 
   // PopoverGrid
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -114,38 +103,6 @@ const EditTriple = () => {
             data={rows}
           />
         </Box>
-        <ActionBox>
-          <Grid
-            container
-            spacing={0}
-            alignItems="center"
-            justifyContent="flex-end"
-          >
-            <Grid item xs={6} textAlign="right">
-              <Grid
-                container
-                spacing={2}
-                alignItems="center"
-                justifyContent="flex-end"
-              >
-                <Grid item xs={3} textAlign="right">
-                  <Button
-                    btnText="Not relevent/Invalid"
-                    variant="secondary"
-                    onClick={notReleventClick}
-                  />
-                </Grid>
-                <Grid item xs={3} textAlign="right">
-                  <Button
-                    btnText="Add Evidence"
-                    variant="secondary"
-                    onClick={handleClickOpen}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-        </ActionBox>
       </Section>
       <Section>
         {dummyTripleData.length > 1 ? (
@@ -217,16 +174,6 @@ const EditTriple = () => {
         children={<EvidenceModalContent handleClose={handleClose} />}
       />
 
-      {/* {Alert } */}
-      {showAlert && (
-        <AlertWrapper>
-          <Alert
-            type="success"
-            message="Evidence marked as Not Relevent"
-            onClose={() => setShowAlert(false)}
-          />
-        </AlertWrapper>
-      )}
       <ConfirmationModal
         openModal={openModalConfirm}
         handleClose={handleCloseConfirm}

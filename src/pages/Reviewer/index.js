@@ -3,3 +3,4 @@ export { default as RecentActivity } from "./RecentActivity";
 export { default as Evidences } from "./Evidences";
 export { default as ReviewerViewTriple } from "./ReviewerViewTriple";
 export { default as EditTriple } from "./EditTriple";
+export { default as FlaggedTriple } from "./FlaggedTriple";

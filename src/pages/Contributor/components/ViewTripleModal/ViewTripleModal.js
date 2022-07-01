@@ -84,8 +84,8 @@ const ViewTripleModal = () => {
         </Section>
         <Box>
           <Grid container spacing={1} justifyContent="flex-start">
-            {data1.map((item) => (
-              <Grid item xs={2}>
+            {data1.map((item, index) => (
+              <Grid item xs={2} key={index}>
                 <PlainTypesItem noBg noMb>
                   <Chip
                     content={[{ labelKey: item.label, labelValue: item.value }]}

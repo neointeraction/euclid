@@ -27,6 +27,7 @@ import {
   Evidences,
   ReviewerViewTriple,
   EditTriple,
+  FlaggedTriple,
 } from "pages/Reviewer";
 
 import { AdminDashboard, UserList, CustomerList } from "pages/Admin";
@@ -62,6 +63,7 @@ function App() {
             <Route path="/evidences" element={<Evidences />} />
             <Route path="/triple-view" element={<ReviewerViewTriple />} />
             <Route path="/edit-triple" element={<EditTriple />} />
+            <Route path="/flagged-triple" element={<FlaggedTriple />} />
             {/* Admin  */}
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/users" element={<UserList />} />

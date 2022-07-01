@@ -30,6 +30,8 @@ const RecentActivityTable = ({
               to={
                 row.row.original.status === "Invalid Evidence"
                   ? "/evidences"
+                  : row.row.original.status === "Triples Flagged"
+                  ? "/flagged-triple"
                   : "/triple-view"
               }
               className="table-nav-link"

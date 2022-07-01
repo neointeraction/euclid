@@ -276,3 +276,7 @@ export const SectionFlex = styled.div`
     margin-bottom: 0;
   }
 `;
+
+export const CommentBlock = styled.div`
+  margin-top: 20px;
+`;

@@ -34,9 +34,9 @@ const rows = [
 // Dummy popover data end
 
 // Dummy Triple Data
-const dummyTripleData = [1];
+const dummyTripleData = [1, 2];
 
-const ViewTriple = () => {
+const ReviewerViewTriple = () => {
   const navigate = useNavigate();
   // PopoverGrid
   const [anchorEl, setAnchorEl] = useState(null);
@@ -51,17 +51,7 @@ const ViewTriple = () => {
 
   return (
     <div>
-      <PageHeader
-        subText="Triples"
-        pageTitleText="234567"
-        rightSideContent={
-          <Button
-            btnText="Modify"
-            variant="contained"
-            onClick={() => navigate("/edit-triple")}
-          />
-        }
-      />
+      <PageHeader subText="Triples" pageTitleText="234567" />
       <Section>
         <Box bordered>
           <BodyText>
@@ -126,6 +116,8 @@ const ViewTriple = () => {
         {dummyTripleData.length > 1 ? (
           dummyTripleData.map((item) => (
             <TrippleCollapsed
+              hideActions
+              hasCheckbox
               key={item}
               chipContent={[
                 { labelKey: "Protein", labelValue: "GSK3BB" },
@@ -149,9 +141,65 @@ const ViewTriple = () => {
         ) : (
           <TripleBlock />
         )}
+        <ActionBox>
+          <Grid
+            container
+            spacing={0}
+            alignItems="center"
+            justifyContent="flex-end"
+          >
+            <Grid item xs={6} textAlign="left">
+              <Grid
+                container
+                spacing={2}
+                alignItems="center"
+                justifyContent="flex-start"
+              >
+                <Grid item xs={2} textAlign="left">
+                  <Button
+                    btnText="Back"
+                    variant="text"
+                    startIcon={<ChevronLeftOutlinedIcon />}
+                    onClick={() => navigate(-1)}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={6} textAlign="right">
+              <Grid
+                container
+                spacing={2}
+                alignItems="center"
+                justifyContent="flex-end"
+              >
+                <Grid item xs={3} textAlign="right">
+                  <Button
+                    btnText="Revert Back"
+                    variant="secondary"
+                    onClick={() => console.log("clicked")}
+                  />
+                </Grid>
+                <Grid item xs={3} textAlign="right">
+                  <Button
+                    btnText="Approve"
+                    variant="outlined"
+                    onClick={() => console.log("clicked")}
+                  />
+                </Grid>
+                <Grid item xs={3} textAlign="right">
+                  <Button
+                    btnText="Modify This"
+                    variant="contained"
+                    onClick={() => navigate("/edit-triple")}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </ActionBox>
       </Section>
     </div>
   );
 };
 
-export default ViewTriple;
+export default ReviewerViewTriple;
