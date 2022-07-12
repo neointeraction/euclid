@@ -10,7 +10,14 @@ import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-import { IconButton, Tooltip, Chip, TextBlock } from "components";
+import {
+  IconButton,
+  Tooltip,
+  Chip,
+  TextBlock,
+  Input,
+  Button,
+} from "components";
 
 import {
   CollapseIconWrap,
@@ -24,6 +31,8 @@ const TrippleCollapsed = ({
   hasCheckbox,
   hideActions,
   commentData,
+  isFlagged,
+  viewOnly,
 }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -92,12 +101,64 @@ const TrippleCollapsed = ({
           </Grid>
         )}
       </CollapseIconWrap>
-      {commentData?.map((item) => (
-        <CommentBlock>
-          <TextBlock label={item.user} value={item.comment} />
-        </CommentBlock>
-      ))}
-      <Collapse in={open}>{children}</Collapse>
+      {open ? null : (
+        <>
+          {isFlagged &&
+            commentData?.map((item) => (
+              <CommentBlock>
+                <TextBlock label={item.user} value={item.comment} />
+              </CommentBlock>
+            ))}
+          {!viewOnly && isFlagged && (
+            <Grid
+              container
+              spacing={2}
+              alignItems="flex-end"
+              justifyContent="flex-start"
+              style={{ marginTop: 5 }}
+            >
+              <Grid item xs={4}>
+                <Input isMulti label="Comment" />
+              </Grid>
+              <Grid item xs={2}>
+                <Button btnText="Forward to Admin" variant="contained" />
+              </Grid>
+            </Grid>
+          )}
+        </>
+      )}
+
+      <Collapse in={open}>
+        {open ? (
+          <>
+            {children}
+            {isFlagged &&
+              commentData?.map((item) => (
+                <CommentBlock>
+                  <TextBlock label={item.user} value={item.comment} />
+                </CommentBlock>
+              ))}
+            {!viewOnly && isFlagged && (
+              <Grid
+                container
+                spacing={2}
+                alignItems="flex-end"
+                justifyContent="flex-start"
+                style={{ marginTop: 5 }}
+              >
+                <Grid item xs={4}>
+                  <Input isMulti label="Comment" />
+                </Grid>
+                <Grid item xs={2}>
+                  <Button btnText="Forward to Admin" variant="contained" />
+                </Grid>
+              </Grid>
+            )}
+          </>
+        ) : (
+          <>{children}</>
+        )}
+      </Collapse>
     </Box>
   );
 };

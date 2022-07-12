@@ -13,6 +13,8 @@ import {
   SectionFlex,
 } from "assets/styles/main.styles";
 
+import FlaggedTable from "../components/FlaggedTable";
+
 const dataBar = [
   {
     name: "5 Jun",
@@ -156,6 +158,14 @@ const AdminDashboard = () => {
             />
           </SectionFlex>
           <BarGraphChart data={dataBar} />
+        </Box>
+      </Section>
+      <Section>
+        <Box>
+          <SectionFlex>
+            <SectionTitle>Triples Flagged</SectionTitle>
+          </SectionFlex>
+          <FlaggedTable hideFilter />
         </Box>
       </Section>
     </div>

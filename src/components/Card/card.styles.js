@@ -12,6 +12,8 @@ export const CardContainer = styled.div`
       ? "#FFEFF0"
       : props.color === "blue"
       ? "#DAEAF3"
+      : props.color === "orange"
+      ? "rgba(250, 173, 20, 0.15)"
       : "#ccc"};
   border: ${(props) =>
     props.color === "purple"
@@ -22,6 +24,8 @@ export const CardContainer = styled.div`
       ? "1px solid #FF6870"
       : props.color === "blue"
       ? "1px solid #005585"
+      : props.color === "orange"
+      ? "1px solid #FAAD14"
       : "1px solid #aaa"};
   box-shadow: 6px 6px 24px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
@@ -40,6 +44,8 @@ export const CardCount = styled.h1`
       ? "#FF6870"
       : props.color === "blue"
       ? "#005585"
+      : props.color === "orange"
+      ? "#FAAD14"
       : "#ccc"};
   margin-bottom: 14px;
 `;

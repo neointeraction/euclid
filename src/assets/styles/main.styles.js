@@ -280,3 +280,16 @@ export const SectionFlex = styled.div`
 export const CommentBlock = styled.div`
   margin-top: 20px;
 `;
+
+export const TableChipContainer = styled.div`
+  display: flex;
+  .custom-chip {
+    background-color: #f0f0f0;
+    color: #262626;
+    margin-left: 5px;
+    font-size: 12px;
+    padding: 5px 6px !important;
+
+    height: 22px !important ;
+  }
+`;

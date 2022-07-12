@@ -158,8 +158,7 @@ const ReviewerViewTriple = () => {
                 <Grid item xs={2} textAlign="left">
                   <Button
                     btnText="Back"
-                    variant="text"
-                    startIcon={<ChevronLeftOutlinedIcon />}
+                    variant="secondary"
                     onClick={() => navigate(-1)}
                   />
                 </Grid>
@@ -172,13 +171,6 @@ const ReviewerViewTriple = () => {
                 alignItems="center"
                 justifyContent="flex-end"
               >
-                <Grid item xs={3} textAlign="right">
-                  <Button
-                    btnText="Revert Back"
-                    variant="secondary"
-                    onClick={() => console.log("clicked")}
-                  />
-                </Grid>
                 <Grid item xs={3} textAlign="right">
                   <Button
                     btnText="Approve"

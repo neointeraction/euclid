@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
+import Chip from "@mui/material/Chip";
 
 import { ConfirmationModal, Table } from "components";
-import { TableMore, TableActionIcon } from "assets/styles/main.styles";
+import {
+  TableMore,
+  TableActionIcon,
+  TableChipContainer,
+} from "assets/styles/main.styles";
 
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
 import Menu from "@mui/material/Menu";
@@ -19,6 +24,18 @@ const UserTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
       {
         Header: "Name",
         accessor: "Name",
+        Cell: (row) => {
+          return (
+            <TableChipContainer>
+              <div>{row.row.original.Name}</div>
+              <Chip
+                label={row.row.original.userType}
+                size="small"
+                className="custom-chip"
+              />
+            </TableChipContainer>
+          );
+        },
       },
       {
         Header: "Triples coded",
@@ -90,30 +107,35 @@ const UserTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
     setData([
       {
         Name: "Jane Cooper",
+        userType: "Reviewer",
         "Triples coded": "109",
         "Triples Approved": "125",
         "Triples Reverted": "2374",
       },
       {
         Name: "Esther Howard",
+        userType: "Contributor",
         "Triples coded": "129",
         "Triples Approved": "126",
         "Triples Reverted": "4374",
       },
       {
         Name: "Wade Warren",
+        userType: "Customer",
         "Triples coded": "139",
         "Triples Approved": "325",
         "Triples Reverted": "2174",
       },
       {
         Name: "Rob Wane",
+        userType: "Reviewer",
         "Triples coded": "154",
         "Triples Approved": "115",
         "Triples Reverted": "2334",
       },
       {
         Name: "Chris Martin",
+        userType: "Admin",
         "Triples coded": "162",
         "Triples Approved": "125",
         "Triples Reverted": "2322",

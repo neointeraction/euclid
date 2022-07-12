@@ -25,7 +25,7 @@ const ReviewerDashboard = () => {
             <Card
               count={12}
               title="Invalid Evidences"
-              color="purple"
+              color="blue"
               onClick={() =>
                 navigate("/recent-activity", {
                   state: {
@@ -69,7 +69,7 @@ const ReviewerDashboard = () => {
             <Card
               count={32}
               title="Triples Flagged"
-              color="blue"
+              color="orange"
               onClick={() =>
                 navigate("/recent-activity", {
                   state: {

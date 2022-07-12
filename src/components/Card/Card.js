@@ -41,6 +41,8 @@ const Card = ({ color, count, title, onClick, enableFilter }) => {
                   ? "#FF6870"
                   : color === "blue"
                   ? "#005585"
+                  : color === "orange"
+                  ? "#FAAD14"
                   : "#aaa"
               }
             />

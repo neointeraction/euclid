@@ -30,7 +30,12 @@ import {
   FlaggedTriple,
 } from "pages/Reviewer";
 
-import { AdminDashboard, UserList, CustomerList } from "pages/Admin";
+import {
+  AdminDashboard,
+  UserList,
+  CustomerList,
+  AdminFlaggedTriple,
+} from "pages/Admin";
 
 import Login from "pages/Login";
 import UserSettings from "pages/UserSettings";
@@ -68,6 +73,10 @@ function App() {
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/users" element={<UserList />} />
             <Route path="/customers" element={<CustomerList />} />
+            <Route
+              path="/admin-flagged-triple"
+              element={<AdminFlaggedTriple />}
+            />
             {/* Settings  */}
             <Route path="/user-settings" element={<UserSettings />} />
           </Route>

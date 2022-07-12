@@ -122,10 +122,11 @@ const FlaggedTriple = () => {
       </ActionBox>
       <Section>
         {dummyTripleData.length > 1 ? (
-          dummyTripleData.map((item) => (
+          dummyTripleData.map((item, index) => (
             <TrippleCollapsed
               hideActions
               hasCheckbox
+              isFlagged={index === 1 ? true : false}
               commentData={commentData}
               key={item}
               chipContent={[
@@ -144,6 +145,7 @@ const FlaggedTriple = () => {
             >
               <TripleCollapseContainer>
                 <TripleBlock />
+                {/* condition added for Demo  */}
               </TripleCollapseContainer>
             </TrippleCollapsed>
           ))
@@ -167,8 +169,8 @@ const FlaggedTriple = () => {
                 <Grid item xs={2} textAlign="left">
                   <Button
                     btnText="Back"
-                    variant="text"
-                    startIcon={<ChevronLeftOutlinedIcon />}
+                    variant="secondary"
+                    // startIcon={<ChevronLeftOutlinedIcon />}
                     onClick={() => navigate(-1)}
                   />
                 </Grid>
@@ -184,7 +186,7 @@ const FlaggedTriple = () => {
                 <Grid item xs={3} textAlign="right">
                   <Button
                     btnText="Revert Back"
-                    variant="secondary"
+                    variant="contained"
                     onClick={() => console.log("clicked")}
                   />
                 </Grid>
