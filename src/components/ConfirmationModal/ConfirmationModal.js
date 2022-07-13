@@ -16,13 +16,16 @@ const ConfirmationModal = ({
   return (
     <div>
       <Modal
+        hideClose
         size="sm"
         open={openModal}
         close={handleClose}
         title={title}
         children={
           <>
-            <Typography variant="subtitle1">{subtitle}</Typography>
+            <Typography variant="subtitle1" style={{ marginTop: "-8px" }}>
+              {subtitle}
+            </Typography>
             <ModalActionButtons>
               <Grid
                 container

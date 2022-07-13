@@ -17,7 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />;
 });
 
-const Modal = ({ title, size, children, open, close }) => {
+const Modal = ({ title, size, children, open, close, hideClose }) => {
   return (
     <ModalContainer>
       <Dialog
@@ -29,12 +29,14 @@ const Modal = ({ title, size, children, open, close }) => {
         fullWidth
         maxWidth={size}
       >
-        <ModalClose>
-          <IconButton aria-label="close" onClick={close}>
-            <CloseIcon />
-          </IconButton>
-        </ModalClose>
-        <MOdalContent>
+        {hideClose ? null : (
+          <ModalClose>
+            <IconButton aria-label="close" onClick={close}>
+              <CloseIcon />
+            </IconButton>
+          </ModalClose>
+        )}
+        <MOdalContent hideClose={hideClose ? true : false}>
           {title && <ModalTitle>{title}</ModalTitle>}
 
           {children}

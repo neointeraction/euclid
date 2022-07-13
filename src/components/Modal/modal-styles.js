@@ -5,7 +5,8 @@ export const ModalContainer = styled.div`
 `;
 
 export const MOdalContent = styled.div`
-  padding: 0 20px 20px 20px;
+  padding: ${(props) =>
+    props.hideClose ? "20px 20px 20px 20px" : "0 20px 20px 20px"};
 `;
 
 export const ModalClose = styled.div`
@@ -24,5 +25,5 @@ export const ModalTitle = styled.h1`
   font-size: 24px;
   line-height: 33px;
   color: #262626;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
