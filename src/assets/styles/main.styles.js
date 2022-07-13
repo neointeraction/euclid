@@ -287,9 +287,8 @@ export const TableChipContainer = styled.div`
     background-color: #f0f0f0;
     color: #262626;
     margin-left: 5px;
-    font-size: 12px;
+    font-size: 14px;
     padding: 5px 6px !important;
-
     height: 22px !important ;
   }
 `;

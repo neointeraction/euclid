@@ -234,7 +234,7 @@ const TripleForm = (data) => {
                 justifyContent="flex-end"
               >
                 <Grid item xs={2} textAlign="right">
-                  <Tooltip message="Add Comment" position="top">
+                  <Tooltip message="Flag and Comment" position="top">
                     <IconButton
                       onClick={handleClickOpenComment}
                       icon={<AddCommentOutlinedIcon fontSize="small" />}
@@ -260,12 +260,12 @@ const TripleForm = (data) => {
         </InfoWithActions>
       </Box>
 
-      {/* Add Comment  */}
+      {/* Flag and Comment  */}
       <Modal
         size="sm"
         open={openModalComment}
         close={handleCloseComment}
-        title="Add Comment"
+        title="Flag and Comment"
         children={<CommentModalContent handleClose={handleCloseComment} />}
       />
     </>

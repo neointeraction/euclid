@@ -191,7 +191,7 @@ const AdminFlaggedTriple = () => {
               >
                 <Grid item xs={3} textAlign="right">
                   <Button
-                    btnText="Revert Back"
+                    btnText="Fixed / Closed"
                     variant="contained"
                     onClick={() => console.log("clicked")}
                   />

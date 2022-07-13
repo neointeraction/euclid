@@ -13,6 +13,7 @@ export const ModalClose = styled.div`
   justify-content: flex-end;
   align-items: center;
   padding: 10px 12px 0 0;
+  margin-bottom: -36px;
   svg {
     cursor: pointer;
   }

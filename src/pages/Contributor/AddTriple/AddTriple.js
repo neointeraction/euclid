@@ -155,13 +155,6 @@ const AddTriple = () => {
               >
                 <Grid item xs={3} textAlign="right">
                   <Button
-                    btnText="Skip"
-                    variant="outlined"
-                    onClick={() => console.log("clicked")}
-                  />
-                </Grid>
-                <Grid item xs={3} textAlign="right">
-                  <Button
                     btnText="Not relevent/Invalid"
                     variant="secondary"
                     onClick={notReleventClick}

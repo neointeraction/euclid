@@ -17,9 +17,9 @@ import {
 } from "assets/styles/main.styles";
 
 import Chart1 from "assets/images/temp/chart1.png";
-import Chart2 from "assets/images/temp/chart2.png";
-import Chart3 from "assets/images/temp/chart3.png";
-import Chart4 from "assets/images/temp/chart4.png";
+// import Chart2 from "assets/images/temp/chart2.png";
+// import Chart3 from "assets/images/temp/chart3.png";
+// import Chart4 from "assets/images/temp/chart4.png";
 
 const dataBar = [
   {
@@ -135,7 +135,7 @@ const SearchResult = () => {
         </Box>
       </Section>
       <Grid container spacing={2} alignItems="baseline">
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Section>
             <Box>
               <SectionTitle>
@@ -145,55 +145,12 @@ const SearchResult = () => {
             </Box>
           </Section>
         </Grid>
-        <Grid item xs={6}>
-          <Section>
-            <Box>
-              <SectionTitle>Types of Relationships::</SectionTitle>
-              <TempImage src={Chart1} alt="Temp1" w84 />
-            </Box>
-          </Section>
-        </Grid>
       </Grid>
-      <Grid container spacing={2} alignItems="baseline">
-        <Grid item xs={6}>
-          <Section>
-            <Box>
-              <SectionTitle>Types of articles:</SectionTitle>
-              <BarGraphChart data={dataBar} />
-            </Box>
-          </Section>
-        </Grid>
-        <Grid item xs={6}>
-          <Section>
-            <Box>
-              <SectionTitle>Year Distribution of triples:</SectionTitle>
-              <BarGraphChart data={dataBar} />
-            </Box>
-          </Section>
-        </Grid>
-      </Grid>
-      <Section>
-        <Box>
-          <SectionTitle>Entities Relationship with eachother:</SectionTitle>
-          <TempImage src={Chart2} alt="Temp1" />
-        </Box>
-      </Section>
-      <Section>
-        <Box>
-          <SectionTitle>Triples:</SectionTitle>
-          <TempImage src={Chart3} alt="Temp1" />
-        </Box>
-      </Section>
+
       <Section>
         <Box>
           <SectionTitle>Evidence supporting each Triple:</SectionTitle>
           <BarGraphChart data={dataBar} layout="vertical" />
-        </Box>
-      </Section>
-      <Section>
-        <Box>
-          <SectionTitle>Triples extracted from various regions:</SectionTitle>
-          <TempImage src={Chart4} alt="Temp1" />
         </Box>
       </Section>
     </div>

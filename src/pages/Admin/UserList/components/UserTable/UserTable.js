@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Chip from "@mui/material/Chip";
+// import Chip from "@mui/material/Chip";
 
-import { ConfirmationModal, Table } from "components";
+import { ConfirmationModal, Table, Tag } from "components";
 import {
   TableMore,
   TableActionIcon,
-  TableChipContainer,
+  // TableChipContainer,
+  TableTagContainer,
 } from "assets/styles/main.styles";
 
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
@@ -24,16 +25,26 @@ const UserTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
       {
         Header: "Name",
         accessor: "Name",
+      },
+      {
+        Header: "Role",
+        accessor: "userType",
         Cell: (row) => {
           return (
-            <TableChipContainer>
-              <div>{row.row.original.Name}</div>
-              <Chip
+            // <TableChipContainer>
+            //   <Chip
+            //     label={row.row.original.userType}
+            //     size="small"
+            //     className="custom-chip"
+            //   />
+            // </TableChipContainer>
+
+            <TableTagContainer>
+              <Tag
                 label={row.row.original.userType}
-                size="small"
-                className="custom-chip"
+                type={row.row.original.userType.toLowerCase()}
               />
-            </TableChipContainer>
+            </TableTagContainer>
           );
         },
       },

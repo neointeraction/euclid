@@ -10,14 +10,7 @@ import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-import {
-  IconButton,
-  Tooltip,
-  Chip,
-  TextBlock,
-  Input,
-  Button,
-} from "components";
+import { IconButton, Tooltip, Chip, TextBlock, Input } from "components";
 
 import {
   CollapseIconWrap,
@@ -31,10 +24,15 @@ const TrippleCollapsed = ({
   hasCheckbox,
   hideActions,
   commentData,
-  isFlagged,
   viewOnly,
+  setTripleChecked,
 }) => {
   const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+    setTripleChecked(event.target.checked);
+  };
   return (
     <Box
       sx={{
@@ -49,7 +47,7 @@ const TrippleCollapsed = ({
         <IconWithCheckboxBlock>
           {hasCheckbox && (
             <div className="custom-checkbox">
-              <Checkbox />
+              <Checkbox checked={checked} onChange={handleChange} />
             </div>
           )}
 
@@ -75,7 +73,7 @@ const TrippleCollapsed = ({
             justifyContent="flex-end"
           >
             <Grid item textAlign="right">
-              <Tooltip message="Add Comment" position="top">
+              <Tooltip message="Delete" position="top">
                 <IconButton
                   onClick={() => {}}
                   icon={<DeleteOutlineOutlinedIcon fontSize="medium" />}
@@ -91,7 +89,7 @@ const TrippleCollapsed = ({
               </Tooltip>
             </Grid>
             <Grid item textAlign="right">
-              <Tooltip message="Add Triple" position="top">
+              <Tooltip message="Edit" position="top">
                 <IconButton
                   icon={<EditOutlinedIcon fontSize="small" />}
                   onClick={() => setOpen((prevState) => !prevState)}
@@ -103,13 +101,12 @@ const TrippleCollapsed = ({
       </CollapseIconWrap>
       {open ? null : (
         <>
-          {isFlagged &&
-            commentData?.map((item) => (
-              <CommentBlock>
-                <TextBlock label={item.user} value={item.comment} />
-              </CommentBlock>
-            ))}
-          {!viewOnly && isFlagged && (
+          {commentData?.map((item) => (
+            <CommentBlock>
+              <TextBlock label={item.user} value={item.comment} />
+            </CommentBlock>
+          ))}
+          {!viewOnly && checked && (
             <Grid
               container
               spacing={2}
@@ -120,9 +117,6 @@ const TrippleCollapsed = ({
               <Grid item xs={4}>
                 <Input isMulti label="Comment" />
               </Grid>
-              <Grid item xs={2}>
-                <Button btnText="Forward to Admin" variant="contained" />
-              </Grid>
             </Grid>
           )}
         </>
@@ -132,13 +126,12 @@ const TrippleCollapsed = ({
         {open ? (
           <>
             {children}
-            {isFlagged &&
-              commentData?.map((item) => (
-                <CommentBlock>
-                  <TextBlock label={item.user} value={item.comment} />
-                </CommentBlock>
-              ))}
-            {!viewOnly && isFlagged && (
+            {commentData?.map((item) => (
+              <CommentBlock>
+                <TextBlock label={item.user} value={item.comment} />
+              </CommentBlock>
+            ))}
+            {!viewOnly && checked && (
               <Grid
                 container
                 spacing={2}
@@ -148,9 +141,6 @@ const TrippleCollapsed = ({
               >
                 <Grid item xs={4}>
                   <Input isMulti label="Comment" />
-                </Grid>
-                <Grid item xs={2}>
-                  <Button btnText="Forward to Admin" variant="contained" />
                 </Grid>
               </Grid>
             )}

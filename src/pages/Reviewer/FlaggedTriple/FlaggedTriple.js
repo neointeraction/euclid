@@ -57,6 +57,8 @@ const FlaggedTriple = () => {
     setAnchorEl(null);
   };
 
+  const [tripleChecked, setTripleChecked] = useState(false);
+
   return (
     <div>
       <PageHeader subText="Triples" pageTitleText="234567" />
@@ -126,7 +128,7 @@ const FlaggedTriple = () => {
             <TrippleCollapsed
               hideActions
               hasCheckbox
-              isFlagged={index === 1 ? true : false}
+              setTripleChecked={setTripleChecked}
               commentData={commentData}
               key={item}
               chipContent={[
@@ -185,7 +187,8 @@ const FlaggedTriple = () => {
               >
                 <Grid item xs={3} textAlign="right">
                   <Button
-                    btnText="Revert Back"
+                    btnText="Forward to Admin"
+                    disabled={!tripleChecked}
                     variant="contained"
                     onClick={() => console.log("clicked")}
                   />
