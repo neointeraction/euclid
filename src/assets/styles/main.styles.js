@@ -74,15 +74,16 @@ export const ActionBox = styled.div`
 
 export const MultiFormContainer = styled.div`
   display: flex;
+  justify-content: center;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   width: 100%;
-  overflow-x: auto;
-  &::before,
+  /* overflow-x: auto; */
+  /* &::before,
   &::after {
     content: "";
     flex: 1;
-  }
+  } */
   /* scrollbar */
   &::-webkit-scrollbar {
     height: 4px;
