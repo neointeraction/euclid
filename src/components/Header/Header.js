@@ -35,6 +35,7 @@ import {
 } from "./header.styles";
 import { webAuth } from "config/auth-config";
 import { UserContext } from "layout/MainLayout/MainLayout";
+import { appUrl } from "config/constants";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -93,7 +94,7 @@ const Header = () => {
   const logOut = () => {
     localStorage.clear();
     webAuth.logout({
-      redirectUri: "http://local.auth:3000",
+      redirectUri: appUrl,
       realm: "Username-Password-Authentication"
     }, (err, result) => {
       if (err) {

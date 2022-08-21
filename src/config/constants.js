@@ -1,5 +1,7 @@
 
 export const baseUrl = "http://44.195.196.106:8001/api/";
+// export const appUrl = "http://local.auth:3000";
+export const appUrl = "https://neointeraction.github.io/euclid/build";
 
 export const ADMIN = "Admin";
 export const CONTRIBUTOR = "Contributor";

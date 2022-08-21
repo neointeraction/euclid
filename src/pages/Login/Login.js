@@ -18,7 +18,7 @@ import {
   RememberForgotFlex,
 } from "assets/styles/main.styles";
 import { webAuth } from "config/auth-config";
-import { ADMIN, CONTRIBUTOR, CUSTOMER } from "config/constants";
+import { ADMIN, appUrl, CONTRIBUTOR, CUSTOMER } from "config/constants";
 import { LocalStorageCache, useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
@@ -71,7 +71,7 @@ const Login = () => {
     webAuth.login({
       username: email,
       password: password,
-      redirectUri: "http://local.auth:3000",
+      redirectUri: appUrl,
       responseType: "token",
       realm: "Username-Password-Authentication",
       scope: "openid profile email offline_access"
