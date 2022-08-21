@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import Logo from "assets/images/logo.svg";
@@ -12,6 +12,7 @@ import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import {
   contributorRoutes,
@@ -32,12 +33,14 @@ import {
   NameTag,
   MenuArrow,
 } from "./header.styles";
+import { webAuth } from "config/auth-config";
+import { UserContext } from "layout/MainLayout/MainLayout";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { pathname } = location;
-
+  const { userDetails } = useContext(UserContext);
   const url = pathname.split("/");
 
   const checkActive = (menu) => {
@@ -76,14 +79,30 @@ const Header = () => {
   }, [userType, data]);
 
   useEffect(() => {
-    userType === "customer"
-      ? setMenuRoutes(customerRoutes)
-      : userType === "reviewer"
-      ? setMenuRoutes(reviewerRoutes)
-      : userType === "admin"
-      ? setMenuRoutes(adminRoutes)
-      : setMenuRoutes(contributorRoutes);
-  }, [userType]);
+    if (userDetails) {
+      userDetails.userRoles[0] === "Customer"
+        ? setMenuRoutes(customerRoutes)
+        : userDetails.userRoles[0] === "Reviewer"
+          ? setMenuRoutes(reviewerRoutes)
+          : userDetails.userRoles[0] === "Admin"
+            ? setMenuRoutes(adminRoutes)
+            : setMenuRoutes(contributorRoutes);
+    }
+  }, [userDetails]);
+
+  const logOut = () => {
+    localStorage.clear();
+    webAuth.logout({
+      redirectUri: "http://local.auth:3000",
+      realm: "Username-Password-Authentication"
+    }, (err, result) => {
+      if (err) {
+        console.log("failed to logout");
+        return
+      }
+      navigate("/")
+    })
+  };
 
   return (
     <HeaderContainer>
@@ -107,14 +126,11 @@ const Header = () => {
         <LastLoginText>Last Login : 2 May 20:23</LastLoginText>
         <ProfileBlock>
           <ProfileSection onClick={handleClick}>
-            <Avatar />
+            <Avatar src={userDetails?.picture} />
             <NameTag>
-              <span className="p-user-name">Rob Hawkins</span>
+              <span className="p-user-name">{userDetails?.name}</span>
               <Chip
-                label={
-                  userType.charAt(0).toUpperCase() +
-                  userType.slice(1).toLowerCase()
-                }
+                label={userDetails?.userRoles[0]}
                 size="small"
                 className="custom-chip"
               />
@@ -165,7 +181,7 @@ const Header = () => {
               </ListItemIcon>
               User Settings
             </MenuItem>
-            <MenuItem onClick={() => navigate("/")}>
+            <MenuItem onClick={() => logOut()}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>

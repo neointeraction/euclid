@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Grid } from "@mui/material";
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
@@ -28,6 +28,8 @@ import {
   HighlightText,
   TripleCollapseContainer,
 } from "assets/styles/main.styles";
+import { addEvidence, getContext, getPaperSnippets, getRelations, setInvalidSnippet } from "config/api.service";
+import { UserContext } from "layout/MainLayout/MainLayout";
 
 // Dummy popover data
 
@@ -43,14 +45,24 @@ const rows = [
 
 // Dummy popover data end
 
-// Dummy Triple Data
-const dummyTripleData = [1, 2, 3];
 
 const AddTriple = () => {
   // Modal
   const [openModal, setOpenModal] = useState(false);
 
   const [openModalConfirm, setOpenModalConfirm] = useState(false);
+
+  const { userDetails } = useContext(UserContext);
+
+  const [snippets, setSnippets] = useState({});
+
+  const [snippetIndex, setSnippetIndex] = useState(0);
+
+  const [evidenceToAdd, setEvidenceToAdd] = useState("");
+
+  const [tripleData, setTripleData] = useState([{}]);
+
+  const [relations, setRelations] = useState([]);
 
   const handleClickOpen = () => {
     setOpenModal(true);
@@ -71,9 +83,14 @@ const AddTriple = () => {
   //Alert
   const [showAlert, setShowAlert] = useState(false);
 
-  const notReleventClick = () => {
-    setShowAlert(true);
+  const notRelevantClick = () => {
+    handleClickOpenConfirm();
   };
+
+  const notRelevantConfirm = () => {
+    handleCloseConfirm(false);
+    setInvalidSnippet({ pubid: snippets.pubid, evidence_num: snippetIndex }, setShowAlert(true), userDetails.sub);
+  }
 
   // PopoverGrid
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -86,26 +103,66 @@ const AddTriple = () => {
     setAnchorEl(null);
   };
 
+  const getSnippets = (result) => {
+    setSnippets(result);
+  }
+
+  useEffect(() => {
+    if (userDetails) {
+      getPaperSnippets(getSnippets, userDetails.sub);
+    }
+  }, [userDetails]);
+
+  const snippetControl = (type) => {
+    if (type === "next") {
+      setSnippetIndex(oldData => oldData < (snippets?.evidences.length - 1) ? oldData + 1 : oldData);
+    } else {
+      setSnippetIndex(oldData => oldData > 0 ? oldData - 1 : oldData);
+    }
+  }
+
+  const addEvidenceCallBack = (result) => {
+    console.log(result);
+  }
+
+  const addEvidenceText = () => {
+    let temp = { ...snippets };
+    temp?.evidences?.push(evidenceToAdd);
+    setSnippets(temp);
+    addEvidence({ pubid: snippets.pubid, evidence: evidenceToAdd }, addEvidenceCallBack, userDetails.sub)
+  }
+
+  const addNewTriple = () => {
+    setTripleData(oldData => [...oldData, {}]);
+  }
+
+  const duplicateTriple = (index) => {
+    let temp = [...tripleData];
+    setTripleData(oldData => [...oldData, temp[index]]);
+  }
+
+  const deleteTriple = (index) => {
+    let temp = [...tripleData];
+    temp.splice(index, 1);
+    setTripleData(temp);
+  }
+
+  const relationCallBack = (result) => {
+    setRelations(result)
+  }
+
+  useEffect(() => {
+    getRelations(relationCallBack);
+  }, [])
+
   return (
     <div>
-      <PageHeader pageTitleText="Add Triples" />
+      <PageHeader pageTitleText={`Add Triples (${snippets?.pubid})`} onClick={() => addNewTriple()} />
       <Section>
         <Box bordered>
-          <BodyText>
-            This skew talks about the main mechanism{" "}
-            <HighlightText
-              onMouseEnter={handlePopoverOpen}
-              onMouseLeave={handlePopoverClose}
-            >
-              Alzhiemers disease
-            </HighlightText>
-            . Phosphorylation of Glycogen synthase kinase 3 beta at Theronine,
-            668 increases the degradation of amyloid precursor protein and GSK3
-            beta also phosphorylates tau protein in intact cells.
-          </BodyText>
+          <BodyText dangerouslySetInnerHTML={snippets?.evidences?.length ? { __html: snippets?.evidences[snippetIndex][Object.keys(snippets?.evidences[snippetIndex])[0]] } : { __html: "<div></div>" }} />
           <BodyTextLight>
-            Sergio CM, Ronaldo CA, Exp Brain Res, 2022 March 2. dol:10,
-            1007/a0021 - 0022. Online ahead print, PMID - 234678 Review.
+            <a href={snippets?.url} target="_blank" rel="noreferrer">{snippets?.url}</a>
           </BodyTextLight>
           {/* Popover grid compnent  */}
           <PopoverGrid
@@ -133,7 +190,7 @@ const AddTriple = () => {
                     btnText="Back"
                     variant="text"
                     startIcon={<ChevronLeftOutlinedIcon />}
-                    onClick={() => console.log("clicked")}
+                    onClick={() => snippetControl("prev")}
                   />
                 </Grid>
                 <Grid item xs={2} textAlign="left">
@@ -141,7 +198,7 @@ const AddTriple = () => {
                     btnText="Next"
                     variant="text"
                     endIcon={<ChevronRightOutlinedIcon />}
-                    onClick={() => console.log("clicked")}
+                    onClick={() => snippetControl("next")}
                   />
                 </Grid>
               </Grid>
@@ -157,7 +214,7 @@ const AddTriple = () => {
                   <Button
                     btnText="Not relevent/Invalid"
                     variant="secondary"
-                    onClick={notReleventClick}
+                    onClick={notRelevantClick}
                   />
                 </Grid>
                 <Grid item xs={3} textAlign="right">
@@ -173,9 +230,12 @@ const AddTriple = () => {
         </ActionBox>
       </Section>
       <Section>
-        {dummyTripleData.length > 1 ? (
-          dummyTripleData.map((item) => (
+        {tripleData.length > 1 ? (
+          tripleData.map((item, i) => (
             <TrippleCollapsed
+              deleteTriple={deleteTriple}
+              duplicateTriple={duplicateTriple}
+              index={i}
               key={item}
               chipContent={[
                 { labelKey: "Protein", labelValue: "GSK3BB" },
@@ -192,12 +252,12 @@ const AddTriple = () => {
               ]}
             >
               <TripleCollapseContainer>
-                <TripleForm />
+                <TripleForm addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={i} relations={relations} />
               </TripleCollapseContainer>
             </TrippleCollapsed>
           ))
         ) : (
-          <TripleForm />
+          <TripleForm addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={0} relations={relations} />
         )}
 
         <ActionBox>
@@ -239,27 +299,30 @@ const AddTriple = () => {
         open={openModal}
         close={handleClose}
         title="Provide Evidence"
-        children={<EvidenceModalContent handleClose={handleClose} />}
+        children={<EvidenceModalContent handleClose={handleClose} addEvidence={addEvidenceText} evidence={evidenceToAdd} setEvidenceToAdd={setEvidenceToAdd} />}
       />
 
       {/* {Alert } */}
-      {showAlert && (
-        <AlertWrapper>
-          <Alert
-            type="success"
-            message="Evidence marked as Not Relevent"
-            onClose={() => setShowAlert(false)}
-          />
-        </AlertWrapper>
-      )}
+      {
+        showAlert && (
+          <AlertWrapper>
+            <Alert
+              type="success"
+              message="Evidence marked as Not Relevent"
+              onClose={() => setShowAlert(false)}
+            />
+          </AlertWrapper>
+        )
+      }
       <ConfirmationModal
         openModal={openModalConfirm}
         handleClose={handleCloseConfirm}
-        title="Confirm Commit"
-        subtitle={"Are you sure you want to confirm commit ?"}
-        btnText="Commit"
+        title="Confirm Mark irrelevant"
+        subtitle={"Are you sure you want to mark this as Irrelevant ?"}
+        btnText="Mark As Irrelevant"
+        onClick={() => notRelevantConfirm()}
       />
-    </div>
+    </div >
   );
 };
 

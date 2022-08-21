@@ -1,18 +1,24 @@
 import Chip from "@mui/material/Chip";
 import React from "react";
 
-const CustomChip = ({ content, ...rest }) => {
+const CustomChip = ({ content, isSingleString, ...rest }) => {
   return (
     <div>
-      <Chip
-        label={content.map(({ labelKey, labelValue }) => (
-          <React.Fragment key={labelValue}>
-            <span>{labelKey}:</span>
-            <b style={{ fontWeight: "bold" }}> {labelValue}</b>
-          </React.Fragment>
-        ))}
-        {...rest}
-      />
+      {!isSingleString ?
+        <Chip
+          label={content.map(({ labelKey, labelValue }) => (
+            <React.Fragment key={labelValue}>
+              <span>{labelKey}:</span>
+              <b style={{ fontWeight: "bold" }}> {labelValue}</b>
+            </React.Fragment>
+          ))}
+          {...rest}
+        />
+        :
+        <Chip
+          label={content}
+        />
+      }
     </div>
   );
 };

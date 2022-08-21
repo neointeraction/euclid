@@ -139,6 +139,7 @@ const TripleHistoryTable = ({
         hidePagination={isCompleteList ? false : true}
         defaultFilter={filter}
         hideSearch={hideSearch}
+        hideFilter
       />
       <Modal
         size="lg"

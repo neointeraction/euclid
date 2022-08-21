@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -13,9 +13,26 @@ import {
   SectionTitle,
   ViewAllBtn,
 } from "assets/styles/main.styles";
+import { getRecentHistory, getTripleStatuses } from "config/api.service";
 
 const ReviewerDashboard = () => {
   const navigate = useNavigate();
+  const [summaryCounts, setSummaryCounts] = useState({});
+  const [recentHistory, setRecentHistory] = useState([]);
+
+  const callBackStatusCount = (result) => {
+    setSummaryCounts(result);
+  }
+
+  const recentHistoryCallBack = (result) => {
+    setRecentHistory(result);
+  }
+
+  useEffect(() => {
+    getTripleStatuses(callBackStatusCount);
+    getRecentHistory(recentHistoryCallBack);
+  }, []);
+
   return (
     <div>
       <PageHeader isHomePage user="Rob" />
@@ -23,7 +40,7 @@ const ReviewerDashboard = () => {
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={3}>
             <Card
-              count={12}
+              count={summaryCounts?.invalid_evidence ?? 0}
               title="Invalid Evidences"
               color="blue"
               onClick={() =>
@@ -33,12 +50,12 @@ const ReviewerDashboard = () => {
                   },
                 })
               }
-              // onClick={() => navigate("/evidences")}
+            // onClick={() => navigate("/evidences")}
             />
           </Grid>
           <Grid item xs={3}>
             <Card
-              count={16}
+              count={summaryCounts?.triples_validated ?? 0}
               title="Triples Validated"
               color="green"
               onClick={() =>
@@ -52,7 +69,7 @@ const ReviewerDashboard = () => {
           </Grid>
           <Grid item xs={3}>
             <Card
-              count={2}
+              count={summaryCounts?.triples_reverted ?? 0}
               title="Triples Reverted"
               color="red"
               onClick={() =>
@@ -62,12 +79,12 @@ const ReviewerDashboard = () => {
                   },
                 })
               }
-              // onClick={() => navigate("/triple-view")}
+            // onClick={() => navigate("/triple-view")}
             />
           </Grid>
           <Grid item xs={3}>
             <Card
-              count={32}
+              count={summaryCounts?.triples_flagged ?? 0}
               title="Triples Flagged"
               color="orange"
               onClick={() =>
@@ -77,7 +94,7 @@ const ReviewerDashboard = () => {
                   },
                 })
               }
-              // onClick={() => navigate("/triple-view")}
+            // onClick={() => navigate("/triple-view")}
             />
           </Grid>
         </Grid>
@@ -85,7 +102,7 @@ const ReviewerDashboard = () => {
       <Section>
         <Box>
           <SectionTitle>Recent Activities</SectionTitle>
-          <TripleHistoryTable hideSearch />
+          <TripleHistoryTable hideSearch dataList={recentHistory}/>
           <ViewAllBtn>
             <Button
               btnText="See All"

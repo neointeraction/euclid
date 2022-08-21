@@ -26,6 +26,10 @@ const TrippleCollapsed = ({
   commentData,
   viewOnly,
   setTripleChecked,
+  contextValues,
+  deleteTriple,
+  index,
+  duplicateTriple
 }) => {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -75,7 +79,7 @@ const TrippleCollapsed = ({
             <Grid item textAlign="right">
               <Tooltip message="Delete" position="top">
                 <IconButton
-                  onClick={() => {}}
+                  onClick={() => { deleteTriple(index) }}
                   icon={<DeleteOutlineOutlinedIcon fontSize="medium" />}
                 />
               </Tooltip>
@@ -84,7 +88,7 @@ const TrippleCollapsed = ({
               <Tooltip message="Duplicate" position="top">
                 <IconButton
                   icon={<ContentCopyOutlinedIcon fontSize="small" />}
-                  onClick={() => {}}
+                  onClick={() => { duplicateTriple(index) }}
                 />
               </Tooltip>
             </Grid>

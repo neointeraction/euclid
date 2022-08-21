@@ -129,7 +129,7 @@ const Table = ({
   const [filterValue, setFilterValue] = useState("");
 
   useEffect(() => {
-    !hideFilter && setFilter("status", filterValue);
+    !hideFilter && setFilter("triples_status", filterValue);
   }, [filterValue, setFilter, setFilterValue, hideFilter]);
 
   useEffect(() => {
@@ -175,9 +175,8 @@ const Table = ({
                     {column.canResize && (
                       <div
                         {...column.getResizerProps()}
-                        className={`resizer ${
-                          column.isResizing ? "isResizing" : ""
-                        }`}
+                        className={`resizer ${column.isResizing ? "isResizing" : ""
+                          }`}
                       />
                     )}
                     {!column.disableSortBy && (
@@ -196,7 +195,7 @@ const Table = ({
                           <img
                             src={SortIcon}
                             alt="SortIcon"
-                            // style={{ visibility: "hidden" }}
+                          // style={{ visibility: "hidden" }}
                           />
                         )}
                       </span>
@@ -228,9 +227,8 @@ const Table = ({
                         return (
                           <div
                             {...cell.getCellProps(cellProps)}
-                            className={`td ${
-                              row.isSelected ? "highlight" : ""
-                            }`}
+                            className={`td ${row.isSelected ? "highlight" : ""
+                              }`}
                             key={index}
                           >
                             {cell.render("Cell")}

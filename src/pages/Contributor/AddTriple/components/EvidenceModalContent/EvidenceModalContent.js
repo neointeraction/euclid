@@ -9,7 +9,7 @@ import {
 import Input from "components/Input";
 import Button from "components/Button";
 
-const EvidenceModalContent = ({ handleClose }) => {
+const EvidenceModalContent = ({ handleClose, addEvidence, evidence, setEvidenceToAdd }) => {
   return (
     <ProvideEvidenceModalBoxContainer>
       <Typography variant="subtitle1">Subject Type</Typography>
@@ -21,6 +21,8 @@ const EvidenceModalContent = ({ handleClose }) => {
           }}
           isMulti
           placeholder="Enter Here"
+          onChange={(e) => setEvidenceToAdd(e.target.value)}
+          value={evidence}
         />
         <ModalActionButtons>
           <Grid
@@ -37,7 +39,10 @@ const EvidenceModalContent = ({ handleClose }) => {
               />
             </Grid>
             <Grid item xs={3} textAlign="right">
-              <Button variant="contained" btnText="Save" />
+              <Button variant="contained" btnText="Save" onClick={() => {
+                addEvidence();
+                handleClose();
+              }} />
             </Grid>
           </Grid>
         </ModalActionButtons>

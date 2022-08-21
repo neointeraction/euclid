@@ -12,6 +12,7 @@ import {
   ExtendableSubjectTypeFormContainer,
   ExtendableSubjectTypeFormHeaderWrap,
 } from "./extendableSubjectType.styles";
+import { INFINITE_SCROLL, NORMAL_SCROLL, RELATION, SUBJECT_LEFT, SUBJECT_RIGHT } from "config/constants";
 
 const ExtendableSubjectTypeForm = ({
   label,
@@ -21,9 +22,21 @@ const ExtendableSubjectTypeForm = ({
   onRemove,
   onChange,
   noBg,
+  relations,
+  type,
+  infiniteScrollFunction,
+  searchFunction,
+  index,
+  setInFocusIndex,
+  valueUpdate
 }) => {
+
+  const selectedValueUpdate = (value) =>{
+    valueUpdate(value,index);
+  }
+
   return (
-    <ExtendableSubjectTypeContainer noBg={noBg}>
+    <ExtendableSubjectTypeContainer noBg={noBg} onClick={() => (type === RELATION) ? setInFocusIndex(RELATION) : setInFocusIndex(index)}>
       <ExtendableSubjectTypeFormContainer>
         <ExtendableSubjectTypeFormHeaderWrap>
           <Typography variant="body1">{label} </Typography>
@@ -35,11 +48,15 @@ const ExtendableSubjectTypeForm = ({
             />
           )}
         </ExtendableSubjectTypeFormHeaderWrap>
-        <AutoComplete options={options} onChange={onChange} isDropdown />
-        <div className="action-icons-wrapper">
-          <img src={BackIcon} onClick={onAddToLeft} alt="" />
-          <img src={NextIcon} onClick={onAddToRight} alt="" />
-        </div>
+        <AutoComplete type={type === RELATION ? NORMAL_SCROLL : INFINITE_SCROLL} options={type === RELATION ? relations : options} onChange={onChange} isDropdown onScrollFunction={infiniteScrollFunction} searchFunction={searchFunction} valueUpdate={selectedValueUpdate}/>
+        {type !== RELATION ?
+          <div className="action-icons-wrapper">
+            {type !== SUBJECT_RIGHT && <img src={BackIcon} onClick={onAddToLeft} alt="" />}
+            {type !== SUBJECT_LEFT && <img src={NextIcon} onClick={onAddToRight} alt="" />}
+          </div>
+          :
+          <div className="action-icons-wrapper"></div>
+        }
       </ExtendableSubjectTypeFormContainer>
     </ExtendableSubjectTypeContainer>
   );

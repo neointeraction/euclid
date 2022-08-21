@@ -178,7 +178,7 @@ const ContributorDashboard = () => {
       <Section>
         <Box>
           <SectionTitle>Triple History</SectionTitle>
-          <TripleHistoryTable hideSearch />
+          <TripleHistoryTable hideSearch hideFilter={true}/>
           <ViewAllBtn>
             <Button
               btnText="See All"

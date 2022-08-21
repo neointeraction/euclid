@@ -29,6 +29,10 @@ export const reviewerRoutes = [
     menu: "Dashboard",
     link: "/reviewer-dashboard",
   },
+  {
+    menu: "History",
+    link: "/search-history",
+  },
 ];
 
 export const adminRoutes = [

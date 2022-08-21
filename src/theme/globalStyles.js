@@ -58,6 +58,15 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 4px !important;
     padding: 17px 2px !important;
   }
+  .insufficient-authority {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
+    padding: 1rem;
+    background-color: thistle;
+    margin-bottom:40%;
+  }
 `;
 
 export default GlobalStyle;
