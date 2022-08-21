@@ -19,7 +19,7 @@ import { getHeaders } from "config/api.service";
 import auth0 from 'auth0-js';
 import { UserContext } from "layout/MainLayout/MainLayout";
 import { useNavigate } from "react-router-dom";
-import { ADMIN, CONTRIBUTOR, CUSTOMER } from "config/constants";
+import { ADMIN, appUrl, CONTRIBUTOR, CUSTOMER } from "config/constants";
 
 
 const UserSettings = () => {
@@ -56,7 +56,7 @@ const UserSettings = () => {
         audience: `https://dev-qurience.eu.auth0.com/api/v2/`,
         scope: 'read:current_user',
         responseType: "token",
-        redirectUri: "http://local.auth:3000",
+        redirectUri: appUrl,
       }, (err, result) => {
         if (err) {
           console.log(err);
@@ -80,7 +80,7 @@ const UserSettings = () => {
   const onSave = () => {
     webAuth.checkSession({
       audience: `https://dev-qurience.eu.auth0.com/api/v2/`,
-      redirectUri: "http://local.auth:3000",
+      redirectUri: appUrl,
       responseType: "token",
       scope: "update:current_user_metadata",
     }, (err, result) => {
