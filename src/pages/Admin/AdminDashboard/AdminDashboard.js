@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 
@@ -14,6 +14,7 @@ import {
 } from "assets/styles/main.styles";
 
 import FlaggedTable from "../components/FlaggedTable";
+import { getDashboardDetails } from "config/api.service";
 
 const dataBar = [
   {
@@ -78,8 +79,19 @@ const dataBar = [
   },
 ];
 
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const [generalCounts, setGeneralCounts] = useState({});
+
+  const handleGeneralCounts = (result) => {
+    setGeneralCounts(result);
+  }
+
+  useEffect(() => {
+    getDashboardDetails(handleGeneralCounts);
+  }, [])
+
   return (
     <div>
       <PageHeader isHomePage user="Rob" />
@@ -87,7 +99,7 @@ const AdminDashboard = () => {
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={3}>
             <Card
-              count={16}
+              count={generalCounts?.n_users ?? 0}
               title="No. of Users"
               color="green"
               onClick={() => navigate("/users")}
@@ -95,7 +107,7 @@ const AdminDashboard = () => {
           </Grid>
           <Grid item xs={3}>
             <Card
-              count={"12"}
+              count={generalCounts?.n_customers ?? 0}
               title="No. of Customers"
               color="red"
               onClick={() => navigate("/customers")}
@@ -103,44 +115,44 @@ const AdminDashboard = () => {
           </Grid>
           <Grid item xs={3}>
             <Card
-              count={32}
+              count={generalCounts["Evidence Committed"] ?? 0}
               title="Evidence Committed"
               color="blue"
-              onClick={() => {}}
+              onClick={() => { }}
             />
           </Grid>
           <Grid item xs={3}>
-            <Card count={12} title="Evidence Downloaded" color="purple" />
+            <Card count={generalCounts["Evidence Downloaded"] ?? 0} title="Evidence Downloaded" color="purple" />
           </Grid>
         </Grid>
       </Section>
       <Section>
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={3}>
-            <Card count={12} title="Triples Committed" color="purple" />
+            <Card count={generalCounts["triples_committed"] ?? 0} title="Triples Committed" color="purple" />
           </Grid>
           <Grid item xs={3}>
             <Card
-              count={16}
+              count={generalCounts["triples_validated"] ?? 0}
               title="Triple Validated"
               color="green"
-              onClick={() => {}}
+              onClick={() => { }}
             />
           </Grid>
           <Grid item xs={3}>
             <Card
-              count="22"
+              count={generalCounts["triples_reverted"] ?? 0}
               title="Triples Reverted"
               color="red"
-              onClick={() => {}}
+              onClick={() => { }}
             />
           </Grid>
           <Grid item xs={3}>
             <Card
-              count={52}
+              count={generalCounts["Triples Downloaded"] ?? 0}
               title="Triples Downloaded"
               color="blue"
-              onClick={() => {}}
+              onClick={() => { }}
             />
           </Grid>
         </Grid>

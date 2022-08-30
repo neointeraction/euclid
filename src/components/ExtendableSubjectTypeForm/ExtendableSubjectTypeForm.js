@@ -28,11 +28,12 @@ const ExtendableSubjectTypeForm = ({
   searchFunction,
   index,
   setInFocusIndex,
-  valueUpdate
+  valueUpdate,
+  data
 }) => {
 
-  const selectedValueUpdate = (value) =>{
-    valueUpdate(value,index);
+  const selectedValueUpdate = (value) => {
+    valueUpdate(value, index);
   }
 
   return (
@@ -48,7 +49,7 @@ const ExtendableSubjectTypeForm = ({
             />
           )}
         </ExtendableSubjectTypeFormHeaderWrap>
-        <AutoComplete type={type === RELATION ? NORMAL_SCROLL : INFINITE_SCROLL} options={type === RELATION ? relations : options} onChange={onChange} isDropdown onScrollFunction={infiniteScrollFunction} searchFunction={searchFunction} valueUpdate={selectedValueUpdate}/>
+        <AutoComplete value={data} type={type === RELATION ? NORMAL_SCROLL : INFINITE_SCROLL} options={type === RELATION ? relations : options} onChange={onChange} isDropdown onScrollFunction={infiniteScrollFunction} searchFunction={searchFunction} valueUpdate={selectedValueUpdate} />
         {type !== RELATION ?
           <div className="action-icons-wrapper">
             {type !== SUBJECT_RIGHT && <img src={BackIcon} onClick={onAddToLeft} alt="" />}

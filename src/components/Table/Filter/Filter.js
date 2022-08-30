@@ -3,6 +3,7 @@ import React from "react";
 import { Tag } from "components";
 
 import { FilterChips } from "../table.styles";
+import { FLAGGED, INVALID, REVERTED, VALIDATED } from "config/constants";
 
 const Filter = ({ setFilterValue, reviewerFilter }) => {
   return (
@@ -10,28 +11,28 @@ const Filter = ({ setFilterValue, reviewerFilter }) => {
       {reviewerFilter ? (
         <FilterChips>
           <span>Filter By:</span>
-          <Tag label="All" type="all" onClick={() => setFilterValue("")} />
+          <Tag label="All" type="all" onClick={() => setFilterValue("all")} />
           <Tag
             label="Triples Validated"
             type="approved"
-            onClick={() => setFilterValue("Triples Validated")}
+            onClick={() => setFilterValue(VALIDATED)}
           />
           <Tag
             label="Triples Flagged"
             type="in draft"
             onClick={() => {
-              setFilterValue("Triples Flagged");
+              setFilterValue(FLAGGED);
             }}
           />
           <Tag
             label="Invalid Evidence"
             type="committed"
-            onClick={() => setFilterValue("Invalid Evidence")}
+            onClick={() => setFilterValue(INVALID)}
           />
           <Tag
             label="Triples Reverted"
             type="reverted"
-            onClick={() => setFilterValue("Triples Reverted")}
+            onClick={() => setFilterValue(REVERTED)}
           />
         </FilterChips>
       ) : (

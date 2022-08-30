@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 
 import { PageHeader, Tag, PopoverGrid, Chip } from "components";
@@ -13,6 +13,8 @@ import {
   PlainTypesItem,
   InfoWithActions,
 } from "assets/styles/main.styles";
+import { getEvidence } from "config/api.service";
+import { VALIDATED } from "config/constants";
 
 const data1 = [
   {
@@ -37,9 +39,10 @@ const rows = [
   createData("SWISSPROT-GRN_HUMAN 2", "GSK3 beta", "SWISSPROT-GRN_HUMAN 2"),
 ];
 
-const ViewTripleModal = () => {
+const ViewTripleModal = ({ id }) => {
   // PopoverGrid
   const [anchorEl, setAnchorEl] = useState(null);
+  const [data, setData] = useState([]);
 
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -48,76 +51,69 @@ const ViewTripleModal = () => {
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
+
+  const handleData = (result) => {
+    setData(result?.evidences?.filter((item) => item.status === VALIDATED));
+  }
+
+  useEffect(() => {
+    getEvidence(id, handleData);
+  }, [id]);
+
   return (
     <ProvideEvidenceModalBoxContainer>
       <PageHeader
         isStartAlign
-        pageTitleText="234567"
+        pageTitleText={id}
         rightSideContent={<Tag label="Approved" type="approved" />}
       />
-      <div>
-        <Section>
-          <Box bordered>
-            <BodyText>
-              This skew talks about the main mechanism{" "}
-              <HighlightText
-                onMouseEnter={handlePopoverOpen}
-                onMouseLeave={handlePopoverClose}
-              >
-                Alzhiemers disease
-              </HighlightText>
-              . Phosphorylation of Glycogen synthase kinase 3 beta at Theronine,
-              668 increases the degradation of amyloid precursor protein and
-              GSK3 beta also phosphorylates tau protein in intact cells.
-            </BodyText>
-            <BodyTextLight>
-              Sergio CM, Ronaldo CA, Exp Brain Res, 2022 March 2. dol:10,
-              1007/a0021 - 0022. Online ahead print, PMID - 234678 Review.
-            </BodyTextLight>
-            {/* Popover grid compnent  */}
-            <PopoverGrid
-              anchorEl={anchorEl}
-              handlePopoverClose={handlePopoverClose}
-              data={rows}
-            />
-          </Box>
-        </Section>
-        <Box>
-          <Grid container spacing={1} justifyContent="flex-start">
-            {data1.map((item, index) => (
-              <Grid item xs={2} key={index}>
-                <PlainTypesItem noBg noMb>
-                  <Chip
-                    content={[{ labelKey: item.label, labelValue: item.value }]}
-                  />
-                </PlainTypesItem>
-              </Grid>
-            ))}
-          </Grid>
-          <InfoWithActions>
-            <Grid container spacing={1} alignItems="flex-start">
-              <Grid item xs={9}>
-                <Chip
-                  content={[
-                    { labelKey: "Protein", labelValue: "GSK3BB" },
-                    {
-                      labelKey: "protein_modification",
-                      labelValue: "Phosphorylationn",
-                    },
-                    { labelKey: " Amino_acid", labelValue: "Threoninee" },
-                    { labelKey: "Protein", labelValue: "GSK3B" },
-                    {
-                      labelKey: "protein_modification",
-                      labelValue: "Phosphorylation",
-                    },
-                  ]}
+      {data?.map((item) => {
+        return (
+          <div>
+            <Section>
+              <Box bordered>
+                <BodyText dangerouslySetInnerHTML={{ __html: item?.text }} />
+                {/* Popover grid compnent  */}
+                <PopoverGrid
+                  anchorEl={anchorEl}
+                  handlePopoverClose={handlePopoverClose}
+                  data={rows}
                 />
-              </Grid>
-            </Grid>
-          </InfoWithActions>
-        </Box>
-      </div>
-    </ProvideEvidenceModalBoxContainer>
+              </Box>
+            </Section>
+            {item?.codes?.map((element, index) => {
+              const contextValues = Object.keys(element.context);
+              return (
+                <Box>
+                  <Grid container spacing={1} justifyContent="flex-start">
+                    {contextValues?.map((value, index) => (
+                      <Grid item xs={2} key={index}>
+                        <PlainTypesItem noBg noMb>
+                          <Chip
+                            content={[{ labelKey: value, labelValue: element.context[value] }]}
+                          />
+                        </PlainTypesItem>
+                      </Grid>
+                    ))
+                    }
+                  </Grid>
+                  <InfoWithActions>
+                    <Grid container spacing={1} alignItems="flex-start">
+                      <Grid item xs={9}>
+                        <Chip
+                          content={element.code}
+                          isSingleString={true}
+                        />
+                      </Grid>
+                    </Grid>
+                  </InfoWithActions>
+                </Box>)
+            })}
+          </div>
+        )
+      })
+      }
+    </ProvideEvidenceModalBoxContainer >
   );
 };
 

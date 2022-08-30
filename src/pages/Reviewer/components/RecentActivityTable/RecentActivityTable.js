@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { Tag, Table } from "components";
+import { Tag, Table, Modal } from "components";
 import { TableTagContainer } from "assets/styles/main.styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ViewTripleModal from "pages/Contributor/components/ViewTripleModal";
+import { FLAGGED, INVALID, VALIDATED } from "config/constants";
 
 // import Menu from "@mui/material/Menu";
 // import MenuItem from "@mui/material/MenuItem";
@@ -15,10 +17,37 @@ const RecentActivityTable = ({
   filter,
   hideSearch,
   hideFilter,
-  dataList
+  dataList,
+  setSelectedFilter
 }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 });
+  const [viewValidatedEvidence, setViewValidatedEvidence] = useState(false);
+  const [selectedId, setSelectedId] = useState(0);
+  const navigate = useNavigate();
+
+  const handleValidatedEvidenceClose = () => {
+    setViewValidatedEvidence(false);
+  }
+
+  const handleOnClick = (status, id) => {
+    switch (status) {
+      case INVALID:
+        navigate(`/evidences/${id}`)
+        break;
+      case FLAGGED:
+        navigate(`/flagged-triple/${id}`)
+        break;
+      case VALIDATED:
+        setSelectedId(id);
+        setViewValidatedEvidence(true)
+        break;
+      default:
+        navigate(`/triple-view/${id}`)
+        break;
+    }
+  }
 
   const columns = React.useMemo(
     () => [
@@ -27,18 +56,9 @@ const RecentActivityTable = ({
         accessor: "pmid",
         Cell: (row) => {
           return (
-            <Link
-              to={
-                row.row.original.triples_status === "Invalid Evidence"
-                  ? "/evidences"
-                  : row.row.original.triples_status === "Triples Flagged"
-                    ? "/flagged-triple"
-                    : "/triple-view"
-              }
-              className="table-nav-link"
-            >
-              {`${row.row.original.pmid} (${row.row.original.n_evidences} Evidences, ${row.row.original.n_triples} Triples)`}
-            </Link>
+            <div role={"button"} onClick={() => handleOnClick(row.row.original.triples_status ?? row.row.original.status, row.row.original.pmid)}>
+              {`${row.row.original.pmid} (${row.row.original.n_evidences ?? 0} Evidences, ${row.row.original.n_triples ?? 0} Triples)`}
+            </div>
           );
         },
       },
@@ -49,8 +69,8 @@ const RecentActivityTable = ({
           return (
             <TableTagContainer>
               <Tag
-                label={row.row.original.triples_status}
-                type={row.row.original.triples_status.toLowerCase()}
+                label={row.row.original.triples_status ?? row.row.original.status}
+                type={row.row.original.status ? row.row.original.status?.toLowerCase() : row.row.original.triples_status?.toLowerCase}
               />
             </TableTagContainer>
           );
@@ -64,78 +84,6 @@ const RecentActivityTable = ({
     [dataList]
   );
 
-  // useEffect(() => {
-  //   // dummy data
-  //   setData([
-  //     {
-  //       Triple: "134678 (12 Evidences, 20 Triples)",
-  //       status: "Triples Validated",
-  //       "Date and time": "19-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "234678 (12 Evidences, 20 Triples)",
-  //       status: "Invalid Evidence",
-  //       "Date and time": "19-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "334678 (12 Evidences, 20 Triples)",
-  //       status: "Triples Flagged",
-  //       "Date and time": "19-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "434678 (12 Evidences, 20 Triples)",
-  //       status: "Triples Reverted",
-  //       "Date and time": "19-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "534678 (12 Evidences, 20 Triples)",
-  //       status: "Triples Validated",
-  //       "Date and time": "19-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "534678 (12 Evidences, 20 Triples)",
-  //       status: "Triples Validated",
-  //       "Date and time": "19-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "434678 (12 Evidences, 20 Triples)",
-  //       status: "Triples Reverted",
-  //       "Date and time": "19-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "234678 (12 Evidences, 20 Triples)",
-  //       status: "Invalid Evidence",
-  //       "Date and time": "19-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "334678 (12 Evidences, 20 Triples)",
-  //       status: "Triples Flagged",
-  //       "Date and time": "22-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "234678 (12 Evidences, 20 Triples)",
-  //       status: "Invalid Evidence",
-  //       "Date and time": "19-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "334678 (12 Evidences, 20 Triples)",
-  //       status: "Triples Flagged",
-  //       "Date and time": "11-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "234678 (12 Evidences, 20 Triples)",
-  //       status: "Invalid Evidence",
-  //       "Date and time": "19-05-2022 at 5:30 PM",
-  //     },
-  //     {
-  //       Triple: "334678 (12 Evidences, 20 Triples)",
-  //       status: "Triples Flagged",
-  //       "Date and time": "22-05-2022 at 5:30 PM",
-  //     },
-  //   ]);
-  //   setLoading(false);
-  //   // dummy data
-  // }, []);
 
   useEffect(() => {
     // dummy data
@@ -154,7 +102,15 @@ const RecentActivityTable = ({
         defaultFilter={filter}
         hideSearch={hideSearch}
         isReviewerFilter={true}
+        setSelectedFilter={setSelectedFilter}
       />
+      {viewValidatedEvidence &&
+        <Modal
+          size="lg"
+          open={viewValidatedEvidence}
+          close={handleValidatedEvidenceClose}
+          children={<ViewTripleModal handleClose={handleValidatedEvidenceClose} id={selectedId} />}
+        />}
     </div>
   );
 };

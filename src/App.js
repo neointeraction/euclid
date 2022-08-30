@@ -62,22 +62,30 @@ function App() {
             <Route path="/customer-dashboard" element={<PrivateRouteComponent roles={[CUSTOMER]} shouldAuthenticate={true} child={<CustomerDashboard />} />} />
             <Route path="/query-triple" element={<PrivateRouteComponent roles={[CUSTOMER]} shouldAuthenticate={true} child={<QueryTriple />} />} />
             <Route path="/cart" element={<PrivateRouteComponent roles={[CUSTOMER]} shouldAuthenticate={true} child={<Cart />} />} />
-            <Route path="/search-history" element={<PrivateRouteComponent roles={[CUSTOMER]} shouldAuthenticate={true} child={<SearchHistory />} />} />
+            <Route path="/search-history" element={<SearchHistory />} />
+            {/* <Route path="/search-history" element={<PrivateRouteComponent roles={[CUSTOMER]} shouldAuthenticate={true} child={<SearchHistory />} />} /> */}
             <Route path="/previous-purchases" element={<PrivateRouteComponent roles={[CUSTOMER]} shouldAuthenticate={true} child={<PreviousPurchase />} />} />
-            <Route path="/search-result" element={<PrivateRouteComponent roles={[CUSTOMER]} shouldAuthenticate={true} child={<SearchResult />} />} />
+            <Route path="/search-result" element={<SearchResult />} />
+            {/* <Route path="/search-result" element={<PrivateRouteComponent roles={[CUSTOMER]} shouldAuthenticate={true} child={<SearchResult />} />} /> */}
             {/* Reviewer  */}
-            <Route path="/reviewer-dashboard" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<ReviewerDashboard />} />} />
+            {/* <Route path="/reviewer-dashboard" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<ReviewerDashboard />} />} />
             <Route path="/recent-activity" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<RecentActivity />} />} />
             <Route path="/evidences" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<Evidences />} />} />
             <Route path="/triple-view" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<ReviewerViewTriple />} />} />
             <Route path="/edit-triple" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<EditTriple />} />} />
-            <Route path="/flagged-triple" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<FlaggedTriple />} />} />
+            <Route path="/flagged-triple" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<FlaggedTriple />} />} /> */}
+            <Route path="/reviewer-dashboard" element={<ReviewerDashboard />} />
+            <Route path="/recent-activity" element={<RecentActivity />} />
+            <Route path="/evidences/:id" element={<Evidences />} />
+            <Route path="/triple-view/:id" element={<ReviewerViewTriple />} />
+            <Route path="/edit-triple/:id" element={<EditTriple />} />
+            <Route path="/flagged-triple/:id" element={<FlaggedTriple />} />
             {/* Admin  */}
             <Route path="/admin-dashboard" element={<PrivateRouteComponent roles={[ADMIN]} shouldAuthenticate={true} child={<AdminDashboard />} />} />
             <Route path="/users" element={<PrivateRouteComponent roles={[ADMIN]} shouldAuthenticate={true} child={<UserList />} />} />
             <Route path="/customers" element={<PrivateRouteComponent roles={[ADMIN]} shouldAuthenticate={true} child={<CustomerList />} />} />
             <Route
-              path="/admin-flagged-triple"
+              path="/admin-flagged-triple/:id"
               element={<PrivateRouteComponent roles={[ADMIN]} shouldAuthenticate={true} child={<AdminFlaggedTriple />} />}
             />
             {/* Settings  */}

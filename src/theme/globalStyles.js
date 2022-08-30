@@ -67,6 +67,9 @@ const GlobalStyle = createGlobalStyle`
     background-color: thistle;
     margin-bottom:40%;
   }
+  .link-without-decoration{
+    text-decoration: none;
+  }
 `;
 
 export default GlobalStyle;
