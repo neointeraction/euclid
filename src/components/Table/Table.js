@@ -43,6 +43,7 @@ const Table = ({
   hideFilter,
   hideSearch,
   isReviewerFilter,
+  setSelectedFilter
 }) => {
   const defaultColumn = React.useMemo(
     () => ({
@@ -126,7 +127,13 @@ const Table = ({
     []
   );
 
-  const [filterValue, setFilterValue] = useState("");
+  const [filterValue, setFilterValue] = useState("all");
+
+  useEffect(() => {
+    if (filterValue && !hideFilter) {
+      setSelectedFilter(filterValue);
+    }
+  }, [filterValue])
 
   useEffect(() => {
     !hideFilter && setFilter("triples_status", filterValue);

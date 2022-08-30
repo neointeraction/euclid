@@ -9,6 +9,7 @@ import {
   ExtendableSubjectTypeForm,
   Tooltip,
   Chip,
+  Alert,
 } from "components";
 
 import CommentModalContent from "../CommentModalContent";
@@ -23,38 +24,35 @@ import {
   MultiFormContainer,
   InfoWithActions,
   ChipsContainer,
+  AlertWrapper,
 } from "assets/styles/main.styles";
 import { UserContext } from "layout/MainLayout/MainLayout";
 import { getContext, getContextValues, getEntityWithOutType } from "config/api.service";
-import { RELATION, ROOT, SUBJECT_LEFT, SUBJECT_RIGHT } from "config/constants";
+import { INFINITE_SCROLL, OBJECT, RELATION, ROOT, SUBJECT, SUBJECT_LEFT, SUBJECT_RIGHT } from "config/constants";
 import { v4 as uuidv4 } from 'uuid';
+import { object } from "yup";
 
 
-const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relations }) => {
+const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onSubjectValueUpdate, onObjectValueUpdate, addSubjectLeft, addObjectLeft, addSubjectRight, addObjectRight, handleRelationSelect, removeObject, removeSubject, addFlagAndComment, addContext, removeContext }) => {
   // CONFIRM MODAL
   const [openModalComment, setOpenModalComment] = useState(false);
   const { userDetails } = useContext(UserContext);
-  const [addedContext, setAddedContext] = useState([]);
   const [contextValues, setContextValues] = useState([]);
   const [contextOptions, setContextOptions] = useState([]);
   const [structuredRelations, setStructuredRelation] = useState([]);
   const [currentOptions, setCurrentOptions] = useState([]);
   const [pagination, setPagination] = useState({ page_num: 0, page_size: 10, prefix: "" })
+  const [contextOptionPagination, setContextOptionPagination] = useState({ page_num: 0, page_size: 10, prefix: "" });
   const [option, setOption] = useState([]);
   const [inFocusIndex, setInFocusIndex] = useState(0);
-  const [selectedRelation, setSelectedRelation] = useState("");
-  const [code, setCode] = useState("");
+  const [inFocusType, setInFocusType] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [optionEntityTypes,setOptionEntityTypes] = useState([]);
 
   const [state, setState] = useState({
     context: "",
     contextValue: ""
   });
-
-  useEffect(() => {
-    if (inFocusIndex !== RELATION) {
-
-    }
-  }, [inFocusIndex])
 
 
   const handleClickOpenComment = () => {
@@ -69,11 +67,19 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
 
   const handleChange = (event) => {
     setState({ context: event.target.value });
-    getContextValues(event.target.value, handleContextValues)
+    getContextValues(event.target.value, contextOptionPagination, handleContextValues)
   };
 
   const infiniteScrollFunction = (e) => {
     setPagination({ ...pagination, page_num: pagination.page_num + 1 });
+  }
+
+  const infiniteScrollFunctionForContext = (e) => {
+    setContextOptionPagination({ ...contextOptionPagination, page_num: contextOptionPagination.page_num + 1 });
+  }
+
+  const searchFunctionForContext = (value) => {
+    setContextOptionPagination({ ...contextOptionPagination, page_num: 0, prefix: value });
   }
 
   const searchFunction = (value) => {
@@ -88,23 +94,9 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
     getEntityWithOutType({ ...pagination }, mainEntityCallBackOnPagination);
   }, [pagination])
 
-  const [multipleSubjectTypes, setMultipleSubjectTypes] = useState([
-    {
-      id: 0, // todo: use unique id. eg uuid library
-      selectedValue: "",
-      options: [],
-      type: ROOT
-    },
-  ]);
-
-  const [multipleObjectTypes, setMultipleObjectTypes] = useState([
-    {
-      id: 0, // todo: use unique id. eg uuid library
-      selectedValue: "",
-      options: [],
-      type: ROOT
-    },
-  ]);
+  useEffect(() => {
+    getContextValues(state.context, contextOptionPagination, handleContextValues);
+  }, [contextOptionPagination])
 
   const handleSubjectOption = (result) => {
     const tmp = currentOptions.map((item) => {
@@ -126,106 +118,40 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
     }
   }, [currentOptions])
 
-  const handleLeftOption = () => {
-
-  }
-
-  const handleRightOption = () => {
-
-  }
-
-  const onSubjectValueUpdate = (value, index) => {
-    let temp = [...multipleSubjectTypes];
-    temp[index] = { ...temp[index], selectedValue: value.label }
-    setMultipleSubjectTypes(temp);
-  }
-
-  const onObjectValueUpdate = (value, index) => {
-    let temp = [...multipleObjectTypes];
-    temp[index] = { ...temp[index], selectedValue: value.label }
-    setMultipleObjectTypes(temp);
-  }
-
-  const onAddToLeftOfSubjectType = (element, index) => {
-    console.log("element to add to", element);
-    const newData = [...multipleSubjectTypes];
-    if (index === 0) {
-      newData.unshift({
-        id: uuidv4(),
-        selectedValue: "",
-        options: element.options,
-        type: SUBJECT_LEFT
-      });
+  const invalidAddition = (element, validFuntion) => {
+    if (!element.selectedValue) {
+      setShowAlert(true);
     } else {
-      newData.splice(index - 1, 0, {
-        id: uuidv4(),
-        selectedValue: "",
-        options: element.options,
-        type: SUBJECT_LEFT
-      });
+      validFuntion();
     }
-    setMultipleSubjectTypes(newData);
+  }
+
+  const onAddToLeftOfSubjectType = (element, innerIndex) => {
+    invalidAddition(element, () => { addSubjectLeft(element, index, innerIndex) });
   };
 
-  const onAddToLeftOfObjectType = (element, index) => {
-    console.log("element to add to", element);
-    const newData = [...multipleObjectTypes];
-    if (index === 0) {
-      newData.unshift({
-        id: uuidv4(),
-        selectedValue: "",
-        options: element.options,
-        type: SUBJECT_LEFT
-      });
-    } else {
-      newData.splice(index - 1, 0, {
-        id: uuidv4(),
-        selectedValue: "",
-        options: element.options,
-        type: SUBJECT_LEFT
-      });
+  const onAddToLeftOfObjectType = (element, innerIndex) => {
+    invalidAddition(element, () => { addObjectLeft(element, index, innerIndex) });
+  };
+
+  const onAddToRightOfSubjectType = (element, innerIndex) => {
+    invalidAddition(element, () => { addSubjectRight(element, index, innerIndex) });
+  };
+
+  const onAddToRightOfObjectType = (element, innerIndex) => {
+    invalidAddition(element, () => { addObjectRight(element, index, innerIndex) });
+  };
+
+  const onRemoveFromMultipleSubjectType = (element) => {
+    if (element.type !== ROOT) {
+      removeSubject(element.id, index);
     }
-    setMultipleObjectTypes(newData);
   };
 
-  const onAddToRightOfSubjectType = (element, index) => {
-    console.log("element to add to", element);
-    const newData = [...multipleSubjectTypes];
-    newData.splice(index + 1, 0, {
-      id: uuidv4(),
-      selectedValue: "",
-      options: element.options,
-      type: SUBJECT_RIGHT
-    });
-    setMultipleSubjectTypes(newData);
-  };
-
-  const onAddToRightOfObjectType = (element, index) => {
-    console.log("element to add to", element);
-    const newData = [...multipleObjectTypes];
-    newData.splice(index + 1, 0, {
-      id: uuidv4(),
-      selectedValue: "",
-      options: element.options,
-      type: SUBJECT_RIGHT
-    });
-    setMultipleObjectTypes(newData);
-  };
-
-  const onRemoveFromMultipleSubjectType = (elementId) => {
-    if (multipleSubjectTypes.length <= 1 || elementId === 0) return;
-    const filteredList = multipleSubjectTypes.filter(
-      (item) => item.id !== elementId
-    );
-    setMultipleSubjectTypes(filteredList);
-  };
-
-  const onRemoveFromMultipleObjectType = (elementId) => {
-    if (multipleObjectTypes.length <= 1) return;
-    const filteredList = multipleObjectTypes.filter(
-      (item) => item.id !== elementId
-    );
-    setMultipleObjectTypes(filteredList);
+  const onRemoveFromMultipleObjectType = (element) => {
+    if (element.type !== ROOT) {
+      removeObject(element.id, index);
+    }
   };
 
   const contextValuesStructuring = (result) => {
@@ -239,9 +165,22 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
   }
 
   const handleContextValues = (result) => {
-    setContextOptions(result)
+    const tmp = result.map((item) => {
+      return {
+        label: item,
+        key: uuidv4()
+      }
+    });
+    if (contextOptionPagination.page_num > 0) {
+      setContextOptions([...contextOptions, ...tmp]);
+    } else {
+      setContextOptions(tmp);
+    }
   }
 
+  const addComments = (value) => {
+    addFlagAndComment(value, index);
+  }
 
   useEffect(() => {
     if (userDetails) {
@@ -250,17 +189,19 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
   }, [userDetails]);
 
   const handleContextAdd = () => {
-    setAddedContext(oldData => [...oldData, state])
+    addContext(index, state);
   }
 
   const handleContextOption = (value) => {
-    setState({ ...state, contextValue: value })
+    if (typeof (value) === "object") {
+      setState({ ...state, contextValue: value.label })
+    } else {
+      setState({ ...state, contextValue: value })
+    }
   }
 
-  const deleteAddedContext = (index) => {
-    let temp = [...addedContext];
-    temp.splice(index, 1);
-    setAddedContext(temp);
+  const deleteAddedContext = (innerIndex) => {
+    removeContext(index, innerIndex);
   }
 
   useEffect(() => {
@@ -273,33 +214,17 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
     }
   }, [relations])
 
-  const handleRelationSelect = (value) => {
-    setSelectedRelation(value?.label);
+  const handleRelation = (value) => {
+    handleRelationSelect(value?.label, index);
   }
 
-  useEffect(() => {
-    let subjectCode = "";
-    if (multipleSubjectTypes?.length) {
-      for (let subject of multipleSubjectTypes) {
-        if (subject.selectedValue) {
-          let temp = subject.selectedValue.split(":");
-          subjectCode = `${subjectCode} ${temp[0]}:'${temp[1]}'`
-        }
-      }
-    }
-    let objectCode = "";
-    if (multipleObjectTypes?.length) {
-      for (let object of multipleObjectTypes) {
-        if (object.selectedValue) {
-          let temp = object.selectedValue.split(":");
-          objectCode = `${objectCode} ${temp[0]}:'${temp[1]}'`
-        }
-      }
-    }
-    if (subjectCode || objectCode || selectedRelation) {
-      setCode(`${subjectCode ? `(${subjectCode})` : ""} ${selectedRelation} ${objectCode ? `(${objectCode})` : ""}`);
-    }
-  }, [selectedRelation, multipleSubjectTypes, multipleObjectTypes]);
+  const subjectValueUpdate = (value, innerIndex) => {
+    onSubjectValueUpdate(value, index, innerIndex);
+  }
+
+  const objectValueUpdate = (value, innerIndex) => {
+    onObjectValueUpdate(value, index, innerIndex);
+  }
 
   return (
     <>
@@ -319,6 +244,13 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
               placeholder="Enter here..."
               options={contextOptions ?? []}
               onChange={handleContextOption}
+              type={INFINITE_SCROLL}
+              onScrollFunction={infiniteScrollFunctionForContext}
+              searchFunction={(value) => {
+                searchFunctionForContext(value);
+                handleContextOption(value);
+              }}
+              valueUpdate={handleContextOption}
             />
           </Grid>
           <Grid item xs={2}>
@@ -330,7 +262,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
           </Grid>
         </Grid>
         <ChipsContainer>
-          {addedContext.map((item, i) => {
+          {data?.contextList?.map((item, i) => {
             return (
               <Chip
                 content={[{ labelKey: item.context, labelValue: item.contextValue }]}
@@ -341,16 +273,17 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
           }
         </ChipsContainer>
         <TypesBlock>
-          <MultiFormContainer>
-            {multipleSubjectTypes.map((subjectType, index) => (
+          <MultiFormContainer onClick={() => setInFocusType(SUBJECT)}>
+            {data.subjectData.map((subjectType, index) => (
               <React.Fragment key={subjectType.id}>
                 <ExtendableSubjectTypeForm
+                  data={subjectType.selectedValue}
                   index={index}
-                  valueUpdate={onSubjectValueUpdate}
+                  valueUpdate={subjectValueUpdate}
                   setInFocusIndex={setInFocusIndex}
                   infiniteScrollFunction={infiniteScrollFunction}
                   searchFunction={searchFunction}
-                  label={index === 0 ? "Subject type" : ""}
+                  label={"Subject Relation"}
                   onAddToLeft={() => onAddToLeftOfSubjectType(subjectType, index)}
                   onAddToRight={() => onAddToRightOfSubjectType(subjectType, index)}
                   onChange={(_e, value) =>
@@ -362,9 +295,9 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
                   options={option}
                   type={subjectType.type}
                   onRemove={
-                    multipleSubjectTypes.length > 1
+                    data.subjectData.length > 1
                       ? () => {
-                        onRemoveFromMultipleSubjectType(subjectType.id);
+                        onRemoveFromMultipleSubjectType(subjectType);
                       }
                       : undefined
                   }
@@ -375,25 +308,27 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
           <MultiFormContainer>
             <React.Fragment >
               <ExtendableSubjectTypeForm
+                data={data.relation}
                 setInFocusIndex={setInFocusIndex}
                 label={index === 0 ? "Relationship type" : ""}
                 noBg
-                onChange={handleRelationSelect}
+                onChange={handleRelation}
                 relations={structuredRelations}
                 type={RELATION}
               />
             </React.Fragment>
           </MultiFormContainer>
-          <MultiFormContainer>
-            {multipleObjectTypes.map((objectType, index) => (
+          <MultiFormContainer onClick={() => setInFocusType(OBJECT)}>
+            {data.objectData.map((objectType, index) => (
               <React.Fragment key={objectType.id}>
                 <ExtendableSubjectTypeForm
-                  valueUpdate={onObjectValueUpdate}
+                  data={objectType.selectedValue}
+                  valueUpdate={objectValueUpdate}
                   setInFocusIndex={setInFocusIndex}
                   index={index}
                   infiniteScrollFunction={infiniteScrollFunction}
                   searchFunction={searchFunction}
-                  label={index === 0 ? "Object type" : ""}
+                  label={"Object Relation"}
                   onAddToLeft={() => onAddToLeftOfObjectType(objectType, index)}
                   onAddToRight={() => onAddToRightOfObjectType(objectType, index)}
                   onChange={(_e, value) =>
@@ -405,9 +340,9 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
                   options={option}
                   type={objectType.type}
                   onRemove={
-                    multipleObjectTypes.length > 1
+                    data.objectData.length > 1
                       ? () => {
-                        onRemoveFromMultipleObjectType(objectType.id);
+                        onRemoveFromMultipleObjectType(objectType);
                       }
                       : undefined
                   }
@@ -419,10 +354,10 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
         <InfoWithActions>
           <Grid container spacing={2} alignItems="flex-start">
             <Grid item xs={9}>
-              {code !== "" || undefined ?
+              {data.code.trim() !== "" ?
                 <Chip
                   isSingleString={true}
-                  content={code}
+                  content={data?.code}
                 />
                 :
                 null
@@ -464,15 +399,25 @@ const TripleForm = ({ addNewTriple, duplicateTriple, deleteTriple, index, relati
           </Grid>
         </InfoWithActions>
       </Box>
-
       {/* Flag and Comment  */}
       <Modal
         size="sm"
         open={openModalComment}
         close={handleCloseComment}
         title="Flag and Comment"
-        children={<CommentModalContent handleClose={handleCloseComment} />}
+        children={<CommentModalContent onChange={addComments} handleClose={handleCloseComment} />}
       />
+      {
+        showAlert && (
+          <AlertWrapper>
+            <Alert
+              type="error"
+              message="please select a value before you add next element"
+              onClose={() => setShowAlert(false)}
+            />
+          </AlertWrapper>
+        )
+      }
     </>
   );
 };

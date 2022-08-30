@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography } from "@mui/material";
 import { Grid } from "@mui/material";
 
@@ -9,7 +9,9 @@ import {
 import Input from "components/Input";
 import Button from "components/Button";
 
-const CommentModalContent = ({ handleClose }) => {
+const CommentModalContent = ({ handleClose, onChange }) => {
+  const [comment, setComment] = useState("");
+
   return (
     <ProvideEvidenceModalBoxContainer>
       <Typography variant="subtitle1">Enter your comment here</Typography>
@@ -21,6 +23,7 @@ const CommentModalContent = ({ handleClose }) => {
           }}
           isMulti
           placeholder="Enter Here"
+          onChange={(e) => setComment(e.target.value)}
         />
         <ModalActionButtons>
           <Grid
@@ -37,7 +40,10 @@ const CommentModalContent = ({ handleClose }) => {
               />
             </Grid>
             <Grid item xs={3} textAlign="right">
-              <Button variant="contained" btnText="Save" />
+              <Button variant="contained" btnText="Save" onClick={() => {
+                onChange(comment)
+                handleClose();
+              }} />
             </Grid>
           </Grid>
         </ModalActionButtons>

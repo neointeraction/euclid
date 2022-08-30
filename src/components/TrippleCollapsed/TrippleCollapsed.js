@@ -29,7 +29,8 @@ const TrippleCollapsed = ({
   contextValues,
   deleteTriple,
   index,
-  duplicateTriple
+  duplicateTriple,
+  onChange
 }) => {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -67,8 +68,7 @@ const TrippleCollapsed = ({
             }
           />
         </IconWithCheckboxBlock>
-
-        {!open && <Chip content={chipContent} />}
+        {(!open && (typeof (chipContent) === "string") && (chipContent?.trim()).length) ? <Chip isSingleString={true} content={chipContent} /> : null}
         {!open && !hideActions && (
           <Grid
             container
@@ -119,7 +119,7 @@ const TrippleCollapsed = ({
               style={{ marginTop: 5 }}
             >
               <Grid item xs={4}>
-                <Input isMulti label="Comment" />
+                <Input isMulti label="Comment" onChange={onChange} />
               </Grid>
             </Grid>
           )}
@@ -130,11 +130,11 @@ const TrippleCollapsed = ({
         {open ? (
           <>
             {children}
-            {commentData?.map((item) => (
+            {/* {commentData?.map((item) => (
               <CommentBlock>
                 <TextBlock label={item.user} value={item.comment} />
               </CommentBlock>
-            ))}
+            ))} */}
             {!viewOnly && checked && (
               <Grid
                 container

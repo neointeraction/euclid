@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Grid } from "@mui/material";
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
@@ -22,6 +22,8 @@ import {
   ActionBox,
   AlertWrapper,
 } from "assets/styles/main.styles";
+import { deleteEvidence, getEvidence, validateEvidence } from "config/api.service";
+import { INVALID } from "config/constants";
 
 // Dummy popover data
 
@@ -41,6 +43,9 @@ const rows = [
 
 const Evidences = () => {
   let navigate = useNavigate();
+  const { id } = useParams();
+  const [data, setData] = useState([]);
+  const [evidenceInFocus, setEvidenceInFocus] = useState(null);
   // PopoverGrid
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -55,9 +60,6 @@ const Evidences = () => {
   //Alert
   const [showAlert, setShowAlert] = useState(false);
 
-  const validClick = () => {
-    setShowAlert(true);
-  };
 
   // confirm
 
@@ -67,88 +69,103 @@ const Evidences = () => {
     setOpenModalConfirm(true);
   };
 
-  const handleCloseConfirm = () => {
+  const handleCloseConfirm = (evidenceId) => {
     setOpenModalConfirm(false);
+    evidenceId && setEvidenceInFocus(evidenceId)
   };
+
+  const handleData = (result) => {
+    const temp = result?.evidences?.filter(item => item.status === INVALID);
+    setData(temp);
+  }
+
+  useEffect(() => {
+    if (id) {
+      getEvidence(id, handleData);
+    }
+  }, [id]);
+
+  const handleValidate = (evidenceId) => {
+    const data = { pubid: id, evidence_no: evidenceId };
+    validateEvidence(data, (result) => {
+      setShowAlert(true);
+    });
+  }
+
+  const handleDelete = () => {
+    const data = { pubid: id, evidence_no: evidenceInFocus };
+    deleteEvidence(data, (result) => { navigate("/recent-activity") })
+  }
 
   return (
     <div>
-      <PageHeader subText="Triples" pageTitleText="234567" />
-      <Section>
-        <Box bordered>
-          <BodyText>
-            This skew talks about the main mechanism{" "}
-            <HighlightText
-              onMouseEnter={handlePopoverOpen}
-              onMouseLeave={handlePopoverClose}
-            >
-              Alzhiemers disease
-            </HighlightText>
-            . Phosphorylation of Glycogen synthase kinase 3 beta at Theronine,
-            668 increases the degradation of amyloid precursor protein and GSK3
-            beta also phosphorylates tau protein in intact cells.
-          </BodyText>
-          <BodyTextLight>
-            Sergio CM, Ronaldo CA, Exp Brain Res, 2022 March 2. dol:10,
-            1007/a0021 - 0022. Online ahead print, PMID - 234678 Review.
-          </BodyTextLight>
-          {/* Popover grid compnent  */}
-          <PopoverGrid
-            anchorEl={anchorEl}
-            handlePopoverClose={handlePopoverClose}
-            data={rows}
-          />
-        </Box>
-      </Section>
-      <ActionBox>
-        <Grid
-          container
-          spacing={0}
-          alignItems="center"
-          justifyContent="flex-start"
-        >
-          <Grid item xs={6} textAlign="left">
-            <Grid
-              container
-              spacing={2}
-              alignItems="center"
-              justifyContent="flex-start"
-            >
-              <Grid item xs={2} textAlign="left">
-                <Button
-                  btnText="Back"
-                  variant="text"
-                  startIcon={<ChevronLeftOutlinedIcon />}
-                  onClick={() => navigate(-1)}
+      <PageHeader subText="Triples" pageTitleText={id} />
+      {data?.map((item, index) => {
+        return (
+          <>
+            <Section>
+              <Box bordered>
+                <BodyText dangerouslySetInnerHTML={{ __html: item?.text }} />
+                {/* Popover grid compnent  */}
+                <PopoverGrid
+                  anchorEl={anchorEl}
+                  handlePopoverClose={handlePopoverClose}
+                  data={rows}
                 />
+              </Box>
+            </Section>
+            <ActionBox>
+              <Grid
+                container
+                spacing={0}
+                alignItems="center"
+                justifyContent="flex-start"
+              >
+                <Grid item xs={6} textAlign="left">
+                  <Grid
+                    container
+                    spacing={2}
+                    alignItems="center"
+                    justifyContent="flex-start"
+                  >
+                    <Grid item xs={2} textAlign="left">
+                      <Button
+                        btnText="Back"
+                        variant="text"
+                        startIcon={<ChevronLeftOutlinedIcon />}
+                        onClick={() => navigate(-1)}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={6} textAlign="right">
+                  <Grid
+                    container
+                    spacing={2}
+                    alignItems="center"
+                    justifyContent="flex-end"
+                  >
+                    <Grid item xs={3} textAlign="right">
+                      <Button
+                        btnText="Delete"
+                        variant="secondary"
+                        onClick={() => handleClickOpenConfirm(item.id)}
+                      />
+                    </Grid>
+                    <Grid item xs={3} textAlign="right">
+                      <Button
+                        btnText="Valid"
+                        variant="contained"
+                        onClick={() => handleValidate(item.id)}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
               </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={6} textAlign="right">
-            <Grid
-              container
-              spacing={2}
-              alignItems="center"
-              justifyContent="flex-end"
-            >
-              <Grid item xs={3} textAlign="right">
-                <Button
-                  btnText="Delete"
-                  variant="secondary"
-                  onClick={handleClickOpenConfirm}
-                />
-              </Grid>
-              <Grid item xs={3} textAlign="right">
-                <Button
-                  btnText="Valid"
-                  variant="contained"
-                  onClick={validClick}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </ActionBox>
+            </ActionBox>
+          </>
+        )
+      })}
       {/* {Alert } */}
       {showAlert && (
         <AlertWrapper>
@@ -161,10 +178,11 @@ const Evidences = () => {
       )}
       <ConfirmationModal
         openModal={openModalConfirm}
-        handleClose={handleCloseConfirm}
+        handleClose={() => handleCloseConfirm()}
         title="Confirm Delete ?"
         subtitle={"Are you sure you want to delete ?"}
         btnText="Delete"
+        onClick={() => handleDelete()}
       />
     </div>
   );

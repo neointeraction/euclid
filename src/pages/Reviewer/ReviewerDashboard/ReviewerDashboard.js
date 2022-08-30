@@ -19,6 +19,7 @@ const ReviewerDashboard = () => {
   const navigate = useNavigate();
   const [summaryCounts, setSummaryCounts] = useState({});
   const [recentHistory, setRecentHistory] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState("all")
 
   const callBackStatusCount = (result) => {
     setSummaryCounts(result);
@@ -102,7 +103,7 @@ const ReviewerDashboard = () => {
       <Section>
         <Box>
           <SectionTitle>Recent Activities</SectionTitle>
-          <TripleHistoryTable hideSearch dataList={recentHistory}/>
+          <TripleHistoryTable hideSearch dataList={recentHistory} setSelectedFilter={setSelectedFilter}/>
           <ViewAllBtn>
             <Button
               btnText="See All"
