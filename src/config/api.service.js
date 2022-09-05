@@ -85,7 +85,7 @@ export function getContextValues(contextValue, pagination, successCallback) {
 
 export function saveTriples(data, successCallback) {
     axios({
-        url: baseUrl + "contributor/save",
+        url: baseUrl + "contributor/save_draft",
         method: "POST",
         headers: getHeaders(),
         data
@@ -283,12 +283,12 @@ export function deleteEvidence(data, successCallback) {
         headers: getHeaders(),
         data
     })
-    .then((response) => {
-        if (response.data.result === SUCCESS) successCallback(response.data.message);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 export function approveTriple(data, successCallback) {
@@ -298,12 +298,12 @@ export function approveTriple(data, successCallback) {
         headers: getHeaders(),
         data
     })
-    .then((response) => {
-        if (response.data.result === SUCCESS) successCallback(response.data.message);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 export function forwardTripleToAdmin(data, successCallback) {
@@ -313,12 +313,12 @@ export function forwardTripleToAdmin(data, successCallback) {
         headers: getHeaders(),
         data
     })
-    .then((response) => {
-        if (response.data.result === SUCCESS) successCallback(response.data.message);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 export function getDashboardDetails(successCallback) {
@@ -327,12 +327,12 @@ export function getDashboardDetails(successCallback) {
         method: "POST",
         headers: getHeaders(),
     })
-    .then((response) => {
-        if (response.data.result === SUCCESS) successCallback(response.data.message);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 export function getUserDetails(successCallback) {
@@ -341,12 +341,12 @@ export function getUserDetails(successCallback) {
         method: "POST",
         headers: getHeaders(),
     })
-    .then((response) => {
-        if (response.data.result === SUCCESS) successCallback(response.data.message);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 export function getCustomerDetails(successCallback) {
@@ -355,12 +355,12 @@ export function getCustomerDetails(successCallback) {
         method: "POST",
         headers: getHeaders(),
     })
-    .then((response) => {
-        if (response.data.result === SUCCESS) successCallback(response.data.message);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 export function getTriplesFlagged(successCallback) {
@@ -369,12 +369,12 @@ export function getTriplesFlagged(successCallback) {
         method: "POST",
         headers: getHeaders(),
     })
-    .then((response) => {
-        if (response.data.result === SUCCESS) successCallback(response.data.message);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 export function getPerformanceOverView(successCallback) {
@@ -383,10 +383,40 @@ export function getPerformanceOverView(successCallback) {
         method: "POST",
         headers: getHeaders(),
     })
-    .then((response) => {
-        if (response.data.result === SUCCESS) successCallback(response.data.message);
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getDraft(pubId, successCallback) {
+    axios({
+        url: baseUrl + "contributor/get_draft",
+        method: "POST",
+        headers: getHeaders(),
+        data: { pubid: pubId }
     })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function fixOrCloseTriple(pubId, successCallback) {
+    axios({
+        url: baseUrl + "admin/fixed",
+        method: "POST",
+        headers: getHeaders(),
+        data: { pubid: pubId }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
