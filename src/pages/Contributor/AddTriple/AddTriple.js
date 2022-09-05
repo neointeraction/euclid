@@ -28,7 +28,7 @@ import {
   HighlightText,
   TripleCollapseContainer,
 } from "assets/styles/main.styles";
-import { addEvidence, commitTriples, getContext, getEntityLeft, getEntityRight, getPaperSnippets, getRelations, getSavedData, saveTriples, setInvalidSnippet } from "config/api.service";
+import { addEvidence, commitTriples, getContext, getDraft, getEntityLeft, getEntityRight, getPaperSnippets, getRelations, getSavedData, saveTriples, setInvalidSnippet } from "config/api.service";
 import { UserContext } from "layout/MainLayout/MainLayout";
 import { ROOT, SUBJECT_LEFT, SUBJECT_RIGHT, subRelations } from "config/constants";
 import { v4 as uuidv4 } from 'uuid';
@@ -61,20 +61,28 @@ const AddTriple = () => {
 
   const [evidenceToAdd, setEvidenceToAdd] = useState("");
 
-  const [tripleData, setTripleData] = useState([{
-    subjectData: [{
-      id: 0, // todo: use unique id. eg uuid library
-      selectedValue: "",
-      options: [],
-      type: ROOT
-    }],
-    objectData: [{
-      id: 0, // todo: use unique id. eg uuid library
-      selectedValue: "",
-      options: [],
-      type: ROOT
-    }], relation: "", code: "", contextList: [], evidenceId: ""
-  }]);
+  const [alertMessage, setAlertMessage] = useState("");
+
+  const [draft, setDraft] = useState([]);
+
+  const [tripleData, setTripleData] = useState({
+    pubid: snippets.pubid, evidences: [{
+      id: "", codes: [{
+        subjectData: [{
+          id: 0, // todo: use unique id. eg uuid library
+          selectedValue: "",
+          options: [],
+          type: ROOT
+        }],
+        objectData: [{
+          id: 0, // todo: use unique id. eg uuid library
+          selectedValue: "",
+          options: [],
+          type: ROOT
+        }], relation: "", code: "", contextList: [], evidenceId: ""
+      }]
+    }]
+  });
 
   const [relations, setRelations] = useState([]);
 
@@ -103,7 +111,10 @@ const AddTriple = () => {
 
   const notRelevantConfirm = () => {
     handleCloseConfirm(false);
-    setInvalidSnippet({ pubid: snippets.pubid, evidence_num: snippetIndex }, setShowAlert(true), userDetails.sub);
+    setInvalidSnippet({ pubid: snippets.pubid, evidence_num: snippetIndex }, () => {
+      setAlertMessage("Evidence marked as Not Relevent");
+      setShowAlert(true)
+    }, userDetails.sub);
   }
 
   // PopoverGrid
@@ -118,12 +129,35 @@ const AddTriple = () => {
   };
 
   const getSnippets = (result) => {
+    if (result?.evidences?.length) {
+      setTripleData({
+        pubid: result.pubid,
+        evidences: result.evidences?.map((item) => {
+          return {
+            id: Object.keys(item)[0], codes: [{
+              subjectData: [{
+                id: 0, // todo: use unique id. eg uuid library
+                selectedValue: "",
+                options: [],
+                type: ROOT
+              }],
+              objectData: [{
+                id: 0, // todo: use unique id. eg uuid library
+                selectedValue: "",
+                options: [],
+                type: ROOT
+              }], relation: "", code: "", contextList: [], evidenceId: ""
+            }]
+          }
+        })
+      })
+    }
     setSnippets(result);
   }
 
   useEffect(() => {
     if (userDetails) {
-      getPaperSnippets(getSnippets, userDetails.sub);
+      getPaperSnippets(getSnippets);
     }
   }, [userDetails]);
 
@@ -142,41 +176,68 @@ const AddTriple = () => {
   }
 
   const addEvidenceCallBack = (result) => {
-    console.log(result);
-  }
-
-  const addEvidenceText = () => {
+    let data = {
+      id: `${snippets.pubid}_${snippets.evidences.length + 1}`,
+      codes: [{
+        subjectData: [{
+          id: 0, // todo: use unique id. eg uuid library
+          selectedValue: "",
+          options: [],
+          type: ROOT
+        }],
+        objectData: [{
+          id: 0, // todo: use unique id. eg uuid library
+          selectedValue: "",
+          options: [],
+          type: ROOT
+        }], relation: "", code: "", contextList: [], evidenceId: "", id: `${snippets.pubid}_${snippets.evidences.length + 1}_1`
+      }]
+    }
     let temp = { ...snippets };
     temp?.evidences?.push({ [`${snippets.pubid}_${snippets?.evidences?.length + 1}`]: evidenceToAdd });
     setSnippets(temp);
+    let tempTripleData = { ...tripleData }
+    tempTripleData.evidences.push(data);
+    setTripleData(tempTripleData);
+    setAlertMessage("Added Evidence Successfully");
+    setShowAlert(true);
+  }
+
+  const addEvidenceText = () => {
     addEvidence({ pubid: snippets.pubid, evidence: { [`${snippets?.pubid}_${snippets?.evidences.length + 1}`]: evidenceToAdd } }, addEvidenceCallBack, userDetails.sub)
   }
 
   const addNewTriple = () => {
-    setTripleData(oldData => [...oldData, {
+    let temp = { ...tripleData }
+    temp.evidences[snippetIndex].codes.push({
       subjectData: [{
         id: 0, // todo: use unique id. eg uuid library
         selectedValue: "",
         options: [],
         type: ROOT
-      }], objectData: [{
+      }],
+      objectData: [{
         id: 0, // todo: use unique id. eg uuid library
         selectedValue: "",
         options: [],
         type: ROOT
-      }], relation: "", code: "", contextList: []
-    }]);
+      }], relation: "", code: "", contextList: [], evidenceId: ""
+    })
+    setTripleData(temp);
   }
 
   const duplicateTriple = (index) => {
-    let temp = [...tripleData];
-    setTripleData(oldData => [...oldData, temp[index]]);
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
+    temp.push(temp[index])
+    setTripleData(tempTripleData);
   }
 
   const deleteTriple = (index) => {
-    let temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     temp.splice(index, 1);
-    setTripleData(temp);
+    setTripleData(tempTripleData);
   }
 
   const relationCallBack = (result) => {
@@ -188,30 +249,34 @@ const AddTriple = () => {
   }, [])
 
   const tripleDataUpdate = (subjectData, objectData, relationData, code, index) => {
-    let temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     temp[index] = { subjectData: subjectData, objectData: objectData, relation: relationData, code }
-    setTripleData(temp);
+    setTripleData(tempTripleData);
   }
 
   const onSubjectValueUpdate = (value, index, innerIndex) => {
-    let temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     temp[index].subjectData[innerIndex] = { ...temp[index].subjectData[innerIndex], selectedValue: value?.label }
     temp[index].code = createCode(temp, index);
     temp[index].evidenceId = Object.keys(snippets?.evidences[snippetIndex])[0];
-    setTripleData(temp);
+    setTripleData(tempTripleData);
   }
 
   const onObjectValueUpdate = (value, index, innerIndex) => {
-    let temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     temp[index].objectData[innerIndex] = { ...temp[index].objectData[innerIndex], selectedValue: value.label }
     temp[index].code = createCode(temp, index);
     temp[index].evidenceId = Object.keys(snippets?.evidences[snippetIndex])[0];
-    setTripleData(temp);
+    setTripleData(tempTripleData);
   }
 
   const onAddToLeftOfSubjectType = (element, index, innerIndex) => {
     const entityType = element.selectedValue.split(":");
-    const temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     const newData = temp[index].subjectData
     if (subRelations.includes(element.selectedValue)) {
       if (innerIndex === 0) {
@@ -231,7 +296,7 @@ const AddTriple = () => {
           entityType: []
         });
       }
-      setTripleData(temp);
+      setTripleData(tempTripleData);
     } else {
       getEntityLeft(entityType[0], (result) => {
         if (innerIndex === 0) {
@@ -251,7 +316,7 @@ const AddTriple = () => {
             entityType: result
           });
         }
-        setTripleData(temp);
+        setTripleData(tempTripleData);
       })
     }
   };
@@ -259,7 +324,8 @@ const AddTriple = () => {
   const onAddToLeftOfObjectType = (element, index, innerIndex) => {
     console.log("element to add to", element);
     const entityType = element.selectedValue.split(":");
-    const temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     const newData = temp[index].objectData;
     if (subRelations.includes(element.selectedValue)) {
       if (innerIndex === 0) {
@@ -279,7 +345,7 @@ const AddTriple = () => {
           entityType: []
         });
       }
-      setTripleData(temp);
+      setTripleData(tempTripleData);
     } else {
       getEntityLeft(entityType[0], (result) => {
         if (innerIndex === 0) {
@@ -299,7 +365,7 @@ const AddTriple = () => {
             entityType: result
           });
         }
-        setTripleData(temp);
+        setTripleData(tempTripleData);
       })
     }
   };
@@ -345,31 +411,35 @@ const AddTriple = () => {
   }
 
   const handleRelationSelect = (value, index) => {
-    const temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     temp[index].relation = value;
     temp[index].code = createCode(temp, index);
-    setTripleData(temp);
+    setTripleData(tempTripleData);
   }
 
   const removeSubject = (id, index) => {
-    let temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     temp[index].subjectData = temp[index].subjectData.filter((item) => item.id !== id);
     temp[index].code = createCode(temp, index);
-    setTripleData(temp);
+    setTripleData(tempTripleData);
   }
 
   const removeObject = (id, index) => {
-    let temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     temp[index].objectData = temp[index].objectData.filter((item) => item.id !== id);
     temp[index].code = createCode(temp, index);
-    setTripleData(temp);
+    setTripleData(tempTripleData);
   }
 
 
   const onAddToRightOfSubjectType = (element, index, innerIndex) => {
     console.log("element to add to", element);
     if (subRelations.includes(element.selectedValue)) {
-      const temp = [...tripleData];
+      let tempTripleData = { ...tripleData };
+      let temp = tempTripleData.evidences[snippetIndex].codes;
       const newData = temp[index].subjectData
       newData.splice(innerIndex + 1, 0, {
         id: uuidv4(),
@@ -378,11 +448,12 @@ const AddTriple = () => {
         type: SUBJECT_RIGHT,
         entityType: []
       });
-      setTripleData(temp);
+      setTripleData(tempTripleData);
     } else {
       const entityType = element.selectedValue.split(":");
       getEntityRight(entityType[0], (result) => {
-        const temp = [...tripleData];
+        let tempTripleData = { ...tripleData };
+        let temp = tempTripleData.evidences[snippetIndex].codes;
         const newData = temp[index].subjectData
         newData.splice(innerIndex + 1, 0, {
           id: uuidv4(),
@@ -391,7 +462,7 @@ const AddTriple = () => {
           type: SUBJECT_RIGHT,
           entityType: result
         });
-        setTripleData(temp);
+        setTripleData(tempTripleData);
       })
     }
   };
@@ -399,7 +470,8 @@ const AddTriple = () => {
   const onAddToRightOfObjectType = (element, index, innerIndex) => {
     console.log("element to add to", element);
     if (subRelations.includes(element.selectedValue)) {
-      const temp = [...tripleData];
+      let tempTripleData = { ...tripleData };
+      let temp = tempTripleData.evidences[snippetIndex].codes;
       const newData = temp[index].objectData
       newData.splice(innerIndex + 1, 0, {
         id: uuidv4(),
@@ -408,11 +480,12 @@ const AddTriple = () => {
         type: SUBJECT_RIGHT,
         entityType: []
       });
-      setTripleData(temp);
+      setTripleData(tempTripleData);
     } else {
       const entityType = element.selectedValue.split(":");
       getEntityRight(entityType[0], (result) => {
-        const temp = [...tripleData];
+        let tempTripleData = { ...tripleData };
+        let temp = tempTripleData.evidences[snippetIndex].codes;
         const newData = temp[index].objectData
         newData.splice(innerIndex + 1, 0, {
           id: uuidv4(),
@@ -421,64 +494,174 @@ const AddTriple = () => {
           type: SUBJECT_RIGHT,
           entityType: result
         });
-        setTripleData(temp);
+        setTripleData(tempTripleData);
       })
     }
   };
 
   const addFlagAndComment = (comment, index) => {
-    let temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     temp[index] = { ...temp[index], comment, flagged: true }
-    setTripleData(temp);
+    setTripleData(tempTripleData);
   }
 
   const addContext = (index, data) => {
-    let temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     temp[index].contextList.push(data);
-    setTripleData(temp);
+    setTripleData(tempTripleData);
   }
 
   const removeContext = (index, innerIndex) => {
-    let temp = [...tripleData];
+    let tempTripleData = { ...tripleData };
+    let temp = tempTripleData.evidences[snippetIndex].codes;
     temp[index].contextList.splice(innerIndex, 1);
-    setTripleData(temp);
+    setTripleData(tempTripleData);
   }
 
   const commitAndSave = (type) => {
-    let evidenceData = [];
-    for (let snippet of snippets?.evidences) {
-      let id = Object.keys(snippet)[0];
-      const temp = tripleData?.filter((item) => item.evidenceId === id);
-      if (temp?.length) {
-        let innerData = { id, codes: [] }
-        for (let i = 0; i < temp.length; i++) {
+    let temp = { ...tripleData };
+    temp.evidences = temp.evidences.map((item) => {
+      const validCodes = item.codes.filter((item) => item.code.trim() !== "");
+      return {
+        ...item,
+        codes: validCodes.map((element, index) => {
           let contextObject = {};
-          for (let context of temp[i].contextList) {
+          for (let context of element.contextList) {
             contextObject[context.context] = context.contextValue;
           }
-          if (temp[i].flagged === true) {
-            innerData.codes.push({ id: `${id}_${i + 1}`, context: contextObject, code: temp[i].code, flagged: true, comment: temp[i].comment })
+          let codeData = {}
+          if (element.flagged === true) {
+            codeData = {
+              id: `${element.evidenceId}_${index + 1}`,
+              context: contextObject,
+              subject: element.subjectData.map((data) => data.selectedValue),
+              object: element.objectData.map((data) => data.selectedValue),
+              flagged: true,
+              comment: element.comment,
+              relation: element.relation,
+              code: element.code,
+            }
           } else {
-            innerData.codes.push({ id: `${id}_${i + 1}`, context: contextObject, code: temp[i].code })
+            codeData = {
+              id: `${element.evidenceId}_${index + 1}`,
+              context: contextObject,
+              subject: element.subjectData.map((data) => data.selectedValue),
+              object: element.objectData.map((data) => data.selectedValue),
+              code: element.code,
+              relation: element.relation
+            }
           }
-        }
-        evidenceData.push({ id, codes: innerData });
+          return codeData
+        })
       }
-    }
-    let data = {
-      pubid: snippets?.pubid,
-      evidences: evidenceData
-    }
+    })
+    temp.evidences = temp.evidences.filter((item) => item.codes.length > 0);
     if (type === "COMMIT") {
-      commitTriples(data, (result) => {
-        console.log("zrk", result)
+      commitTriples(temp, (result) => {
+        setAlertMessage("Committed Triples successfully");
+        setShowAlert(true);
+        getPaperSnippets(getSnippets);
       })
     } else {
-      saveTriples(data, (result) => {
-        console.log("zrk", result)
+      saveTriples(temp, (result) => {
+        setAlertMessage("Saved Triples successfully");
+        setShowAlert(true);
       })
     }
   }
+
+  const decodeInComingCode = (result) => {
+    if (result?.evidences?.length) {
+      let temp = {
+        pubid: result.pubid,
+        evidences: snippets.evidences?.map((item) => {
+          const innerData = result.evidences.filter((element) => element.id === Object.keys(item)[0]);
+          if (innerData.length === 0) {
+            return {
+              id: Object.keys(item)[0],
+              codes: [{
+                subjectData: [{
+                  id: 0, // todo: use unique id. eg uuid library
+                  selectedValue: "",
+                  options: [],
+                  type: ROOT
+                }],
+                objectData: [{
+                  id: 0, // todo: use unique id. eg uuid library
+                  selectedValue: "",
+                  options: [],
+                  type: ROOT
+                }], relation: "", code: "", contextList: [], evidenceId: "", id: `${Object.keys(item)[0]}_1`
+              }]
+            }
+          } else {
+            return {
+              id: Object.keys(item)[0],
+              codes: innerData[0].codes.map((element) => {
+                let context = [];
+                for (let contextValues of Object.keys(element.context)) {
+                  context.push({ context: contextValues, contextValue: element.context[contextValues] })
+                }
+                return {
+                  subjectData: element?.subject?.map((data, index) => {
+                    const typeAssign = (i, datas) => {
+                      let totalCount = datas?.length;
+                      let rootIndex = Math.round(totalCount / 2);
+                      if (rootIndex === i) {
+                        return ROOT
+                      } else if (rootIndex > i) {
+                        return SUBJECT_LEFT
+                      } else {
+                        return SUBJECT_RIGHT
+                      }
+                    }
+                    return {
+                      id: uuidv4(), // todo: use unique id. eg uuid library
+                      selectedValue: data,
+                      options: [],
+                      type: typeAssign(index, element.subject)
+                    }
+                  }),
+                  objectData: element?.object?.map((data, index) => {
+                    const typeAssign = (i, datas) => {
+                      let totalCount = datas?.length;
+                      let rootIndex = Math.round(totalCount / 2);
+                      if (rootIndex === i) {
+                        return ROOT;
+                      } else if (rootIndex > i) {
+                        return SUBJECT_LEFT;
+                      } else {
+                        return SUBJECT_RIGHT;
+                      }
+                    }
+                    return {
+                      id: uuidv4(), // todo: use unique id. eg uuid library
+                      selectedValue: data,
+                      options: [],
+                      type: typeAssign(index, element.object)
+                    }
+                  }),
+                  relation: element.relation,
+                  code: element.code,
+                  contextList: context,
+                  evidenceId: "",
+                  id: element.id
+                }
+              })
+            }
+          }
+        })
+      }
+      setTripleData(temp);
+    }
+  }
+
+  useEffect(() => {
+    getDraft(snippets?.pubid, decodeInComingCode);
+  }, [snippets]);
+
 
   return (
     <div>
@@ -557,8 +740,9 @@ const AddTriple = () => {
         </ActionBox>
       </Section>
       <Section>
-        {tripleData.length > 1 ? (
-          tripleData.map((item, i) => (
+        {tripleData?.evidences?.length &&
+          tripleData?.evidences[snippetIndex]?.codes?.length > 1 ? (
+          tripleData?.evidences[snippetIndex]?.codes?.map((item, i) => (
             <TrippleCollapsed
               deleteTriple={deleteTriple}
               duplicateTriple={duplicateTriple}
@@ -572,7 +756,8 @@ const AddTriple = () => {
             </TrippleCollapsed>
           ))
         ) : (
-          tripleData.map((item, i) => (
+          tripleData?.evidences?.length &&
+          tripleData.evidences[snippetIndex].codes.map((item, i) => (
             <TripleForm addContext={addContext} removeContext={removeContext} removeObject={removeObject} addFlagAndComment={addFlagAndComment} removeSubject={removeSubject} handleRelationSelect={handleRelationSelect} addSubjectLeft={onAddToLeftOfSubjectType} addSubjectRight={onAddToRightOfSubjectType} addObjectLeft={onAddToLeftOfObjectType} addObjectRight={onAddToRightOfObjectType} onObjectValueUpdate={onObjectValueUpdate} onSubjectValueUpdate={onSubjectValueUpdate} data={item} key={i} addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={0} relations={relations} tripleDataUpdate={tripleDataUpdate} />
           ))
         )}
@@ -624,7 +809,7 @@ const AddTriple = () => {
           <AlertWrapper>
             <Alert
               type="success"
-              message="Evidence marked as Not Relevent"
+              message={alertMessage}
               onClose={() => setShowAlert(false)}
             />
           </AlertWrapper>

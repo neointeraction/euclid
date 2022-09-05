@@ -35,11 +35,6 @@ const rows = [
 ];
 
 
-// Dummy popover data end
-
-// Dummy Triple Data
-const dummyTripleData = [1, 2];
-
 const FlaggedTriple = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -124,7 +119,7 @@ const FlaggedTriple = () => {
       <PageHeader subText="Triples" pageTitleText={id} />
       <Section>
         <Box bordered>
-          <BodyText dangerouslySetInnerHTML={{ __html: data[index]?.text }} />
+          <BodyText dangerouslySetInnerHTML={{ __html: data[index]?.text }} onClick={handlePopoverOpen}/>
           <BodyTextLight>
             {`${index + 1}/${data.length}`}
           </BodyTextLight>

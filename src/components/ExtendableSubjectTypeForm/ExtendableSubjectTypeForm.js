@@ -52,8 +52,8 @@ const ExtendableSubjectTypeForm = ({
         <AutoComplete value={data} type={type === RELATION ? NORMAL_SCROLL : INFINITE_SCROLL} options={type === RELATION ? relations : options} onChange={onChange} isDropdown onScrollFunction={infiniteScrollFunction} searchFunction={searchFunction} valueUpdate={selectedValueUpdate} />
         {type !== RELATION ?
           <div className="action-icons-wrapper">
-            {type !== SUBJECT_RIGHT && <img src={BackIcon} onClick={onAddToLeft} alt="" />}
-            {type !== SUBJECT_LEFT && <img src={NextIcon} onClick={onAddToRight} alt="" />}
+            <img src={BackIcon} onClick={onAddToLeft} alt="" />
+            <img src={NextIcon} onClick={onAddToRight} alt="" />
           </div>
           :
           <div className="action-icons-wrapper"></div>

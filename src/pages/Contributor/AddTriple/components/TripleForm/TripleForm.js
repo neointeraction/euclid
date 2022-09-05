@@ -47,7 +47,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
   const [inFocusIndex, setInFocusIndex] = useState(0);
   const [inFocusType, setInFocusType] = useState("");
   const [showAlert, setShowAlert] = useState(false);
-  const [optionEntityTypes,setOptionEntityTypes] = useState([]);
+  const [alertMessage, setAlertMessage] = useState("")
 
   const [state, setState] = useState({
     context: "",
@@ -118,11 +118,12 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
     }
   }, [currentOptions])
 
-  const invalidAddition = (element, validFuntion) => {
+  const invalidAddition = (element, validFunction) => {
     if (!element.selectedValue) {
+      setAlertMessage("please select a value before you add next element");
       setShowAlert(true);
     } else {
-      validFuntion();
+      validFunction();
     }
   }
 
@@ -145,12 +146,18 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
   const onRemoveFromMultipleSubjectType = (element) => {
     if (element.type !== ROOT) {
       removeSubject(element.id, index);
+    } else {
+      setAlertMessage("You can't Delete Root Node")
+      setShowAlert(true);
     }
   };
 
   const onRemoveFromMultipleObjectType = (element) => {
     if (element.type !== ROOT) {
       removeObject(element.id, index);
+    } else {
+      setAlertMessage("You can't Delete Root Node")
+      setShowAlert(true);
     }
   };
 
@@ -281,7 +288,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
                   index={index}
                   valueUpdate={subjectValueUpdate}
                   setInFocusIndex={setInFocusIndex}
-                  infiniteScrollFunction={infiniteScrollFunction}
+                  infiniteScrollFunction={infiniteScrollFunction} x
                   searchFunction={searchFunction}
                   label={"Subject Relation"}
                   onAddToLeft={() => onAddToLeftOfSubjectType(subjectType, index)}
@@ -412,7 +419,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
           <AlertWrapper>
             <Alert
               type="error"
-              message="please select a value before you add next element"
+              message={alertMessage}
               onClose={() => setShowAlert(false)}
             />
           </AlertWrapper>
