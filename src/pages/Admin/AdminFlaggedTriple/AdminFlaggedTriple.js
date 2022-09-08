@@ -5,7 +5,7 @@ import { Grid } from "@mui/material";
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 
-import { PageHeader, PopoverGrid, TrippleCollapsed, Button } from "components";
+import { PageHeader, TrippleCollapsed, Button, Alert } from "components";
 
 import TripleBlock from "./components/TripleBlock";
 
@@ -14,66 +14,28 @@ import {
   Box,
   BodyText,
   BodyTextLight,
-  HighlightText,
   TripleCollapseContainer,
   ActionBox,
+  AlertWrapper,
 } from "assets/styles/main.styles";
-import { getEvidence } from "config/api.service";
-
-// Dummy popover data
-
-function createData(curie, subcurie, prefferedLabel) {
-  return { curie, subcurie, prefferedLabel };
-}
-
-const rows = [
-  createData("SWISSPROT-GRN_HUMAN", "GSK3 beta", "SWISSPROT-GRN_HUMAN"),
-  createData("HGNC:4601", "GSK3 beta", "HGNC:4601"),
-  createData("SWISSPROT-GRN_HUMAN 2", "GSK3 beta", "SWISSPROT-GRN_HUMAN 2"),
-];
-
-const commentData = [
-  {
-    user: "Rob Hawkins",
-    comment:
-      "Im not able to select options from Object tye and Brackets are not getting added. ",
-  },
-  {
-    user: "Rob Hawkins",
-    comment:
-      "Im not able to select options from Object tye and Brackets are not getting added. ",
-  },
-];
-
-// Dummy popover data end
-
-// Dummy Triple Data
-const dummyTripleData = [1, 2];
+import { fixOrCloseTriple, getEvidence } from "config/api.service";
 
 const AdminFlaggedTriple = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [index, setIndex] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
-  // PopoverGrid
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
+  const [alertMessage, setAlertMessage] = useState("");
+  const [checkedCount, setCheckedCount] = useState(0);
 
   const handleData = (result) => {
-    let temp = []
+    let temp = { pubid: result.pubid, evidences: [] };
     for (let evidence of result?.evidences) {
       const flaggedTriples = evidence.codes.filter(item => item.flagged === true);
       if (flaggedTriples.length) {
         evidence.codes = flaggedTriples;
-        temp.push(evidence);
+        temp.evidences.push(evidence);
       }
     }
     setData(temp);
@@ -97,23 +59,50 @@ const AdminFlaggedTriple = () => {
     }
   }
 
+  const evidenceSelectFunction = (checked, innerIndex) => {
+    let temp = { ...data };
+    if (checked) {
+      setCheckedCount(oldData => oldData + 1);
+      temp.evidences[index].codes[innerIndex].isFixed = true;
+    } else {
+      setCheckedCount(oldData => oldData - 1);
+      temp.evidences[index].codes[innerIndex].isFixed = false;
+    }
+    setData(temp);
+  }
+
+  const handleFixedOrClosedCallback = (result) => {
+    setAlertMessage("The Fix or close is Successful");
+    setShowAlert(true);
+    getEvidence(id, handleData);
+  }
+
+  const handleFixedOrClosed = () => {
+    let tempData = data.evidences.map((item) => {
+      return {
+        ...item,
+        codes: item.codes.filter((item) => item.isFixed && item.isFixed === true)
+      }
+    })
+    let temp = {
+      pubid: data.pubid,
+      evidences: tempData.filter((item) => item.codes.length > 0)
+    }
+    fixOrCloseTriple(temp, handleFixedOrClosedCallback);
+  }
+
   return (
     <div>
       <PageHeader subText="Triples" pageTitleText={id} />
-      <Section>
-        <Box bordered>
-          <BodyText dangerouslySetInnerHTML={{ __html: data[index]?.text }} />
-          <BodyTextLight>
-            {`${index + 1}/${data.length}`}
-          </BodyTextLight>
-          {/* Popover grid compnent  */}
-          <PopoverGrid
-            anchorEl={anchorEl}
-            handlePopoverClose={handlePopoverClose}
-            data={rows}
-          />
-        </Box>
-      </Section>
+      {data?.evidences?.length &&
+        <Section>
+          <Box bordered>
+            <BodyText dangerouslySetInnerHTML={{ __html: data.evidences[index]?.text }} />
+            <BodyTextLight>
+              {`${index + 1}/${data?.evidences?.length}`}
+            </BodyTextLight>
+          </Box>
+        </Section>}
       <ActionBox>
         <Grid
           container
@@ -148,76 +137,92 @@ const AdminFlaggedTriple = () => {
           </Grid>
         </Grid>
       </ActionBox>
-      {data[0]?.codes?.map((item, index) => {
-        const contextValues = [];
-        for (let context of Object.keys(item.context)) {
-          contextValues.push({ labelKey: context, labelValue: item.context[context] })
-        }
-        let commentData = [{ user: "Contributor", comment: item.comment },
-        ];
-        if (item?.comment_reviewer) {
-          commentData.push({ user: "Reviewer", comment: item.comment_reviewer })
-        }
-        return (
-          <Section>
-            <TrippleCollapsed
-              hideActions
-              hasCheckbox
-              isFlagged={true}
-              viewOnly
-              commentData={commentData}
-              key={item}
-              chipContent={item.code}
-            >
-              <TripleCollapseContainer>
-                <TripleBlock commentData={commentData} code={item.code} chipContent={contextValues} />
-                {/* condition added for Demo  */}
-              </TripleCollapseContainer>
-            </TrippleCollapsed>
-            <ActionBox>
-              <Grid
-                container
-                spacing={0}
-                alignItems="center"
-                justifyContent="flex-end"
+      {data?.evidences?.length &&
+        data?.evidences[index]?.codes?.map((item, i) => {
+          const contextValues = [];
+          for (let context of Object.keys(item.context)) {
+            contextValues.push({ labelKey: context, labelValue: item.context[context] })
+          }
+          let commentData = [{ user: "Contributor", comment: item.comment },
+          ];
+          if (item?.comment_reviewer) {
+            commentData?.push({ user: "Reviewer", comment: item.comment_reviewer })
+          }
+          return (
+            <Section>
+              <TrippleCollapsed
+                hideActions
+                hasCheckbox
+                isFlagged={true}
+                viewOnly
+                commentData={commentData}
+                key={item}
+                chipContent={item.code}
+                index={i}
+                setTripleChecked={(checked) => evidenceSelectFunction(checked, i)}
+                checked={item.isFixed}
               >
-                <Grid item xs={6} textAlign="left">
-                  <Grid
-                    container
-                    spacing={2}
-                    alignItems="center"
-                    justifyContent="flex-start"
-                  >
-                    <Grid item xs={2} textAlign="left">
-                      <Button
-                        btnText="Back"
-                        variant="secondary"
-                        // startIcon={<ChevronLeftOutlinedIcon />}
-                        onClick={() => navigate(-1)}
-                      />
+                <TripleCollapseContainer>
+                  <TripleBlock commentData={commentData} code={item.code} chipContent={contextValues} />
+                  {/* condition added for Demo  */}
+                </TripleCollapseContainer>
+              </TrippleCollapsed>
+              <ActionBox>
+                <Grid
+                  container
+                  spacing={0}
+                  alignItems="center"
+                  justifyContent="flex-end"
+                >
+                  <Grid item xs={6} textAlign="left">
+                    <Grid
+                      container
+                      spacing={2}
+                      alignItems="center"
+                      justifyContent="flex-start"
+                    >
+                      <Grid item xs={2} textAlign="left">
+                        <Button
+                          btnText="Back"
+                          variant="secondary"
+                          // startIcon={<ChevronLeftOutlinedIcon />}
+                          onClick={() => navigate(-1)}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={6} textAlign="right">
+                    <Grid
+                      container
+                      spacing={2}
+                      alignItems="center"
+                      justifyContent="flex-end"
+                    >
+                      <Grid item xs={3} textAlign="right">
+                        <Button
+                          btnText="Fixed / Closed"
+                          variant="contained"
+                          onClick={() => handleFixedOrClosed()}
+                          disabled={checkedCount <= 0}
+                        />
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item xs={6} textAlign="right">
-                  <Grid
-                    container
-                    spacing={2}
-                    alignItems="center"
-                    justifyContent="flex-end"
-                  >
-                    <Grid item xs={3} textAlign="right">
-                      <Button
-                        btnText="Fixed / Closed"
-                        variant="contained"
-                        onClick={() => console.log("clicked")}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </ActionBox>
-          </Section>)
-      })}
+              </ActionBox>
+            </Section>)
+        })}
+      {
+        showAlert && (
+          <AlertWrapper>
+            <Alert
+              type="success"
+              message={alertMessage}
+              onClose={() => setShowAlert(false)}
+            />
+          </AlertWrapper>
+        )
+      }
     </div>
   );
 };

@@ -406,12 +406,12 @@ export function getDraft(pubId, successCallback) {
         });
 }
 
-export function fixOrCloseTriple(pubId, successCallback) {
+export function fixOrCloseTriple(data, successCallback) {
     axios({
         url: baseUrl + "admin/fixed",
         method: "POST",
         headers: getHeaders(),
-        data: { pubid: pubId }
+        data
     })
         .then((response) => {
             if (response.data.result === SUCCESS) successCallback(response.data.message);
@@ -420,3 +420,167 @@ export function fixOrCloseTriple(pubId, successCallback) {
             console.log(error);
         });
 }
+
+export function getCustomerDashboardDetails(successCallback) {
+    axios({
+        url: baseUrl + "customer/get_dashboard_details",
+        method: "POST",
+        headers: getHeaders(),
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getLastSearchDetails(successCallback) {
+    axios({
+        url: baseUrl + "customer/get_last_search",
+        method: "POST",
+        headers: getHeaders(),
+        data: { last: "6" }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getLastPurchaseDetails(successCallback) {
+    axios({
+        url: baseUrl + "customer/get_last_purchase",
+        method: "POST",
+        headers: getHeaders(),
+        data: { last: "6" }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getCompletePurchaseDetails(successCallback) {
+    axios({
+        url: baseUrl + "customer/get_detailed_purchase",
+        method: "POST",
+        headers: getHeaders(),
+        data: { page_num: "0", page_size: "10" }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getCompleteSearchDetails(successCallback) {
+    axios({
+        url: baseUrl + "customer/get_detailed_search",
+        method: "POST",
+        headers: getHeaders(),
+        data: { page_num: "0", page_size: "10" }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getCartItems(successCallback) {
+    axios({
+        url: baseUrl + "customer/get_cart_items",
+        method: "POST",
+        headers: getHeaders(),
+        data: { page_num: "0", page_size: "10" }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getCustomerContext(successCallback) {
+    axios({
+        url: baseUrl + "customer/get_context",
+        method: "POST",
+        headers: getHeaders(),
+        data: { page_num: "0", page_size: "10" }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getCustomerContextValues(value, successCallback) {
+    axios({
+        url: baseUrl + "customer/get_context_value",
+        method: "POST",
+        headers: getHeaders(),
+        data: { context: value, page_num: "0", page_size: "10", prefix: "" }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getCustomerEntities(value, successCallback) {
+    axios({
+        url: baseUrl + "customer/get_entity",
+        method: "POST",
+        headers: getHeaders(),
+        data: { page_num: "0", page_size: "10", ent_types: [value], prefix: "" }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getCustomerEntityTypes(successCallback) {
+    axios({
+        url: baseUrl + "customer/get_all_entity_types",
+        method: "POST",
+        headers: getHeaders(),
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function searchTriples(data, successCallback) {
+    axios({
+        url: baseUrl + "customer/search",
+        method: "POST",
+        headers: getHeaders(),
+        data
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+

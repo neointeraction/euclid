@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Table } from "components";
+import { getCompleteSearchDetails, getLastSearchDetails } from "config/api.service";
 // import { TableTagContainer } from "assets/styles/main.styles";
 // import { Link } from "react-router-dom";
 
@@ -19,29 +20,31 @@ const SearchHistoryTable = ({
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setLoading(true);
+    isCompleteList ?
+      getCompleteSearchDetails((result) => {
+        setData(result);
+        setLoading(false);
+      })
+      :
+      getLastSearchDetails((result) => {
+        setData(result);
+        setLoading(false);
+      })
+  }, []);
+
   const columns = React.useMemo(
     () => [
       {
         Header: "Query",
-        accessor: "Query",
+        accessor: "query",
         maxWidth: isCompleteList ? 600 : 300,
         minWidth: isCompleteList ? 250 : 200,
       },
       {
-        Header: "Triples",
-        accessor: "Triples",
-      },
-      {
-        Header: "Entities",
-        accessor: "Entities",
-      },
-      {
-        Header: "Amount",
-        accessor: "Amount",
-      },
-      {
         Header: "Date and time",
-        accessor: "Date and time",
+        accessor: "datetime",
       },
     ],
     [isCompleteList]
@@ -51,108 +54,10 @@ const SearchHistoryTable = ({
     return isCompleteList
       ? columns
       : columns.filter(
-          (item) => item.Header === "Query" || item.Header === "Date and time"
-        );
+        (item) => item.Header === "Query" || item.Header === "Date and time"
+      );
   };
 
-  useEffect(() => {
-    // dummy data
-    setData([
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "109",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "129",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "109",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "109",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "109",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "109",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "109",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "103",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "109",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "22-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "109",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "209",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "11-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "109",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "109",
-        Entities: "122",
-        Amount: "$133",
-        "Date and time": "22-05-2022 at 5:30 PM",
-      },
-    ]);
-    setLoading(false);
-    // dummy data
-  }, []);
 
   return (
     <div className="table-container">

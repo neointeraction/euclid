@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Grid from "@mui/material/Grid";
@@ -25,6 +25,7 @@ import {
   ActionFlexTitle,
   SectionFlex,
 } from "assets/styles/main.styles";
+import { getCustomerDashboardDetails, getLastPurchaseDetails, getLastSearchDetails } from "config/api.service";
 
 const dataBar = [
   {
@@ -73,6 +74,12 @@ const dataBar = [
 
 const CustomerDashboard = () => {
   const navigate = useNavigate();
+  const [dataCounts, setDataCounts] = useState({});
+
+  useEffect(() => {
+    getCustomerDashboardDetails((result) => { setDataCounts(result) });
+  }, []);
+
   return (
     <div>
       <PageHeader
@@ -126,30 +133,30 @@ const CustomerDashboard = () => {
       <Section>
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={3}>
-            <Card count={12} title="Evidence Downloaded" color="purple" />
+            <Card count={dataCounts.n_evidence_downloaded} title="Evidence Downloaded" color="purple" />
           </Grid>
           <Grid item xs={3}>
             <Card
-              count={16}
+              count={dataCounts.n_triples_downloaded}
               title="Triples Downloaded"
               color="green"
-              onClick={() => {}}
+              onClick={() => { }}
             />
           </Grid>
           <Grid item xs={3}>
             <Card
-              count={"$200"}
+              count={dataCounts.amount_paid}
               title="Amount Paid"
               color="red"
-              onClick={() => {}}
+              onClick={() => { }}
             />
           </Grid>
           <Grid item xs={3}>
             <Card
-              count={32}
+              count={dataCounts.n_triples_in_cart}
               title="Triples in Cart"
               color="blue"
-              onClick={() => {}}
+              onClick={() => { }}
             />
           </Grid>
         </Grid>
@@ -159,7 +166,7 @@ const CustomerDashboard = () => {
           <Grid item xs={6}>
             <Box>
               <SectionTitle>Latest Search and History</SectionTitle>
-              <SearchHistoryTable hideSearch hideFilter />
+              <SearchHistoryTable isCompleteList={false} hideSearch hideFilter />
               <ViewAllBtn>
                 <Button
                   btnText="See All"
@@ -172,7 +179,7 @@ const CustomerDashboard = () => {
           <Grid item xs={6}>
             <Box>
               <SectionTitle>Previous Purchases</SectionTitle>
-              <PurchaseHistoryTable hideSearch hideFilter />
+              <PurchaseHistoryTable isCompleteList={false} hideSearch hideFilter />
               <ViewAllBtn>
                 <Button
                   btnText="See All"
