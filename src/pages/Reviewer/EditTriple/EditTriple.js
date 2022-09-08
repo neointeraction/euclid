@@ -38,16 +38,11 @@ const rows = [
   createData("SWISSPROT-GRN_HUMAN 2", "GSK3 beta", "SWISSPROT-GRN_HUMAN 2"),
 ];
 
-// Dummy popover data end
-
-// Dummy Triple Data
 const dummyTripleData = [1];
 
 const EditTriple = () => {
   const navigate = useNavigate();
-  // Modal
   const [openModal, setOpenModal] = useState(false);
-
   const [openModalConfirm, setOpenModalConfirm] = useState(false);
 
   const handleClickOpenConfirm = () => {
@@ -122,6 +117,7 @@ const EditTriple = () => {
                   labelValue: "Phosphorylation",
                 },
               ]}
+              setTripleChecked = {(checked)=>console.log(checked)}
             >
               <TripleCollapseContainer>
                 <TripleForm />

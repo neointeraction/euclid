@@ -10,6 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import EditIcon from "assets/images/icons/edit.svg";
 import DeleteIcon from "assets/images/icons/delete.svg";
 import More from "assets/images/icons/more.svg";
+import { getCartItems } from "config/api.service";
 
 const TableCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
   const defaultRef = React.useRef();
@@ -31,6 +32,10 @@ const CartTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    getCartItems((result) => setData(result))
+  }, [])
+
   const columns = React.useMemo(
     () => [
       {
@@ -50,21 +55,21 @@ const CartTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
       },
       {
         Header: "Query",
-        accessor: "Query",
+        accessor: "query",
         maxWidth: 600,
         minWidth: 400,
       },
       {
         Header: "Triples",
-        accessor: "Triples",
+        accessor: "triples",
       },
       {
         Header: "Entities",
-        accessor: "Entities",
+        accessor: "entities",
       },
       {
         Header: "Amount",
-        accessor: "Amount",
+        accessor: "amount",
       },
 
       {
@@ -132,44 +137,6 @@ const CartTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
     [navigate]
   );
 
-  useEffect(() => {
-    // dummy data
-    setData([
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "109",
-        Entities: "125",
-        Amount: "$2374",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "129",
-        Entities: "126",
-        Amount: "$4374",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "139",
-        Entities: "325",
-        Amount: "$2174",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "154",
-        Entities: "115",
-        Amount: "$2334",
-      },
-      {
-        Query: "Disease: Neuro AND Species: Human Beings",
-        Triples: "162",
-        Entities: "125",
-        Amount: "$2322",
-      },
-    ]);
-    setLoading(false);
-    // dummy data
-  }, []);
-
   const [openModalConfirm, setOpenModalConfirm] = useState(false);
 
   const handleClickOpenConfirm = () => {
@@ -180,6 +147,7 @@ const CartTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
     setOpenModalConfirm(false);
   };
 
+  console.log("zrk", data);
   return (
     <div className="table-container">
       <Table
@@ -198,7 +166,7 @@ const CartTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
         title="Remove from Cart ?"
         subtitle="Are you sure you want to do this ?"
         btnText="Remove"
-        onClick={() => {}}
+        onClick={() => { }}
       />
     </div>
   );

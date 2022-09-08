@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import { Grid, Checkbox } from "@mui/material";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Collapse from "@mui/material/Collapse";
 
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -30,14 +30,14 @@ const TrippleCollapsed = ({
   deleteTriple,
   index,
   duplicateTriple,
-  onChange
+  onChange,
+  checked
 }) => {
   const [open, setOpen] = useState(false);
-  const [checked, setChecked] = useState(false);
   const handleChange = (event) => {
-    setChecked(event.target.checked);
     setTripleChecked(event.target.checked);
   };
+
   return (
     <Box
       sx={{

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid, Menu, MenuItem } from "@mui/material";
 
@@ -13,16 +13,33 @@ import {
   ChipsContainer,
   ActionBox,
 } from "assets/styles/main.styles";
+import { getCustomerContext, getCustomerContextValues, getCustomerEntities, getCustomerEntityTypes } from "config/api.service";
 
 const QueryTriple = () => {
+  const [context, setContext] = useState([]);
+  const [entityTypes, setEntityTypes] = useState([]);
+  const [entityValues, setEntityValues] = useState([]);
+  const [contextOptions, setContextOptions] = useState([]);
   const navigate = useNavigate();
   // Forms
   const [state, setState] = useState({
     context: "",
+    contextValue: ""
   });
 
-  const handleChange = (event) => {
+  const [entityState, setEntityState] = useState({
+    entityType: "",
+    entityValue: ""
+  });
+
+  const handleContextChange = (event) => {
     setState({ context: event.target.value });
+    getCustomerContextValues(event.target.value, handleContextValues);
+
+  };
+
+  const handleEntityChange = (event) => {
+    setEntityState({ entityType: event.target.value, entityValue: "" });
   };
 
   // menu btn
@@ -36,6 +53,43 @@ const QueryTriple = () => {
     setAnchorEl(null);
   };
 
+  const contextValuesStructuring = (result) => {
+    const temp = result?.map((item) => {
+      return {
+        id: item,
+        optionText: item
+      }
+    })
+    setContext(temp);
+  }
+
+  const entityTypeValuesStructuring = (result) => {
+    const temp = result?.map((item) => {
+      return {
+        id: item,
+        optionText: item
+      }
+    })
+    setEntityTypes(temp);
+  }
+
+  useEffect(() => {
+    getCustomerContext(contextValuesStructuring);
+    getCustomerEntityTypes(entityTypeValuesStructuring);
+  }, []);
+
+  const handleContextValues = (result) => {
+    const tmp = result.map((item) => {
+      return {
+        label: item,
+        key: item
+      }
+    });
+    setContextOptions(tmp);
+  }
+
+
+  console.log("zrk", contextOptions);
   return (
     <div>
       <PageHeader pageTitleText="Query Triple" />
@@ -46,24 +100,16 @@ const QueryTriple = () => {
             <Grid item xs={3}>
               <Dropdown
                 label="Select context"
-                onChange={handleChange}
+                onChange={handleContextChange}
                 value={state.context}
-                options={[
-                  {
-                    id: "option a",
-                    optionText: "Option A",
-                  },
-                  {
-                    id: "option b",
-                    optionText: "Option B",
-                  },
-                ]}
+                options={context}
               />
             </Grid>
             <Grid item xs={5}>
               <AutoComplete
                 label="Search or enter items"
                 placeholder="Enter here..."
+                options={contextOptions}
               />
             </Grid>
             <Grid item xs={1}>
@@ -99,11 +145,11 @@ const QueryTriple = () => {
           <ChipsContainer>
             <Chip
               content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-              onDelete={() => {}}
+              onDelete={() => { }}
             />
             <Chip
               content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-              onDelete={() => {}}
+              onDelete={() => { }}
             />
           </ChipsContainer>
         </Box>
@@ -115,18 +161,9 @@ const QueryTriple = () => {
             <Grid item xs={3}>
               <Dropdown
                 label="Select entity"
-                onChange={handleChange}
-                value={state.context}
-                options={[
-                  {
-                    id: "option a",
-                    optionText: "Option A",
-                  },
-                  {
-                    id: "option b",
-                    optionText: "Option B",
-                  },
-                ]}
+                onChange={handleEntityChange}
+                value={entityState.entityType}
+                options={entityTypes}
               />
             </Grid>
             <Grid item xs={5}>
@@ -160,7 +197,7 @@ const QueryTriple = () => {
           <ChipsContainer>
             <Chip
               content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-              onDelete={() => {}}
+              onDelete={() => { }}
             />
           </ChipsContainer>
         </Box>

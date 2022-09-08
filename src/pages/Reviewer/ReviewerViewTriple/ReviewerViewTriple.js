@@ -14,7 +14,6 @@ import {
   Box,
   BodyText,
   BodyTextLight,
-  HighlightText,
   TripleCollapseContainer,
   ActionBox,
   AlertWrapper,
@@ -210,7 +209,7 @@ const ReviewerViewTriple = () => {
                       <Button
                         btnText="Modify This"
                         variant="contained"
-                        onClick={() => navigate("/edit-triple")}
+                        onClick={() => navigate(`/edit-triple/${id}`)}
                       />
                     </Grid>
                   </Grid>
