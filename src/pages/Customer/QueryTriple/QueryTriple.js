@@ -13,13 +13,15 @@ import {
   ChipsContainer,
   ActionBox,
 } from "assets/styles/main.styles";
-import { getCustomerContext, getCustomerContextValues, getCustomerEntities, getCustomerEntityTypes } from "config/api.service";
+import { getCustomerContext, getCustomerContextValues, getCustomerEntities, getCustomerEntityTypes, searchTriples } from "config/api.service";
 
 const QueryTriple = () => {
   const [context, setContext] = useState([]);
   const [entityTypes, setEntityTypes] = useState([]);
   const [entityValues, setEntityValues] = useState([]);
   const [contextOptions, setContextOptions] = useState([]);
+  const [selectedContexts, setSelectedContexts] = useState([]);
+  const [selectedEntities, setSelectedEntities] = useState([]);
   const navigate = useNavigate();
   // Forms
   const [state, setState] = useState({
@@ -35,22 +37,33 @@ const QueryTriple = () => {
   const handleContextChange = (event) => {
     setState({ context: event.target.value });
     getCustomerContextValues(event.target.value, handleContextValues);
-
   };
 
   const handleEntityChange = (event) => {
     setEntityState({ entityType: event.target.value, entityValue: "" });
+    getCustomerEntities(event.target.value, handleEntityValues);
   };
 
   // menu btn
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const [anchorElContext, setAnchorElContext] = React.useState(null);
+  const [anchorElEntity, setAnchorElEntity] = React.useState(null);
+  const openContext = Boolean(anchorElContext);
+  const openEntity = Boolean(anchorElEntity);
+
+  const handleClickContext = (event) => {
+    setAnchorElContext(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+
+  const handleClickEntity = (event) => {
+    setAnchorElEntity(event.currentTarget);
+  };
+  const handleCloseContext = () => {
+    setAnchorElContext(null);
+  };
+
+  const handleCloseEntity = () => {
+    setAnchorElEntity(null);
   };
 
   const contextValuesStructuring = (result) => {
@@ -88,8 +101,90 @@ const QueryTriple = () => {
     setContextOptions(tmp);
   }
 
+  const handleEntityValues = (result) => {
+    const tmp = result.map((item) => {
+      return {
+        label: item,
+        key: item
+      }
+    });
+    setEntityValues(tmp);
+  }
 
-  console.log("zrk", contextOptions);
+  const handleContextOperations = (type) => {
+    console.log("zrk", type);
+    let temp = [...selectedContexts]
+    if (type === "ADD") {
+      temp.push(state);
+    } else if (type === "AND") {
+      temp.push(state);
+      temp.push("AND");
+    } else if (type === "OR") {
+      temp.push(state);
+      temp.push("OR");
+    } else if (type === "NOT") {
+      temp.push(state);
+      temp.push("NOT");
+    }
+    setSelectedContexts(temp);
+    handleCloseContext();
+  }
+
+  const handleEntityOperations = (type) => {
+    let temp = [...selectedEntities]
+    if (type === "ADD") {
+      temp.push(entityState);
+    } else if (type === "AND") {
+      temp.push(entityState);
+      temp.push("AND");
+    } else if (type === "OR") {
+      temp.push(entityState);
+      temp.push("OR");
+    } else if (type === "NOT") {
+      temp.push(entityState);
+      temp.push("NOT");
+    }
+    setSelectedEntities(temp);
+    handleCloseEntity();
+  }
+
+  const deleteContext = (index) => {
+    let temp = [...selectedContexts];
+    temp.splice(index, 1);
+    setSelectedContexts(temp);
+  }
+
+  const deleteEntity = (index) => {
+    let temp = [...selectedEntities];
+    temp.splice(index, 1);
+    setSelectedEntities(temp);
+  }
+
+  const handleSearchTriples = () => {
+    let tempContext = "";
+    let tempEntity = "";
+    for (let context of selectedContexts) {
+      if (typeof (context) === "string") {
+        tempContext = `${tempContext},${context}`
+      } else {
+        tempContext = `${tempContext},${context.context}:${context.contextValue}`
+      }
+    }
+    for (let entity of selectedEntities) {
+      if (typeof (entity) === "string") {
+        tempEntity = `${tempEntity},${entity}`
+      } else {
+        tempEntity = `${tempEntity},${entity.entityType}:${entity.entityValue}`
+      }
+    }
+    const data = {
+      context: tempContext,
+      entity: tempEntity
+    }
+    searchTriples(data, (result) => console.log("zrk", result));
+  }
+
+
   return (
     <div>
       <PageHeader pageTitleText="Query Triple" />
@@ -110,23 +205,25 @@ const QueryTriple = () => {
                 label="Search or enter items"
                 placeholder="Enter here..."
                 options={contextOptions}
+                onChange={(value) => setState({ ...state, contextValue: value.label ?? value })}
+                value={state.contextValue}
               />
             </Grid>
             <Grid item xs={1}>
               <Button
-                btnText="AND"
+                btnText="ADD"
                 variant="contained"
-                aria-controls={open ? "context-menu" : undefined}
+                aria-controls={openContext ? "context-menu" : undefined}
                 aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
+                aria-expanded={openContext ? "true" : undefined}
+                onClick={handleClickContext}
                 endIcon={<KeyboardArrowDownOutlinedIcon />}
               />
               <Menu
                 id="context-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
+                anchorEl={anchorElContext}
+                open={openContext}
+                onClose={handleCloseContext}
                 PaperProps={{
                   elevation: 0,
                   sx: {
@@ -136,21 +233,33 @@ const QueryTriple = () => {
                   },
                 }}
               >
-                <MenuItem onClick={handleClose}>AND</MenuItem>
-                <MenuItem onClick={handleClose}>OR</MenuItem>
-                <MenuItem onClick={handleClose}>NOT</MenuItem>
+                <MenuItem onClick={() => handleContextOperations("ADD")}>ADD</MenuItem>
+                <MenuItem onClick={() => handleContextOperations("AND")}>AND</MenuItem>
+                <MenuItem onClick={() => handleContextOperations("OR")}>OR</MenuItem>
+                <MenuItem onClick={() => handleContextOperations("NOT")}>NOT</MenuItem>
               </Menu>
             </Grid>
           </Grid>
           <ChipsContainer>
-            <Chip
-              content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-              onDelete={() => { }}
-            />
-            <Chip
-              content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-              onDelete={() => { }}
-            />
+            {selectedContexts.map((item, i) => {
+              return (
+                <>
+                  {typeof (item) === "string" ?
+                    <Chip
+                      isSingleString={true}
+                      content={item}
+                      onDelete={() => { deleteContext(i) }}
+                    />
+                    :
+                    <Chip
+                      content={[{ labelKey: item.context, labelValue: item.contextValue }]}
+                      onDelete={() => { deleteContext(i) }}
+                    />
+                  }
+                </>
+              )
+            })
+            }
           </ChipsContainer>
         </Box>
       </Section>
@@ -170,35 +279,54 @@ const QueryTriple = () => {
               <AutoComplete
                 label="Search or enter entities"
                 placeholder="Enter here..."
+                options={entityValues}
+                onChange={(value) => setEntityState({ ...entityState, entityValue: value?.label ?? value })}
+                value={entityState.entityValue}
               />
             </Grid>
             <Grid item xs={1}>
               <Button
-                btnText="AND"
+                btnText="ADD"
                 variant="contained"
-                aria-controls={open ? "entity-menu" : undefined}
+                aria-controls={openEntity ? "entity-menu" : undefined}
                 aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
+                aria-expanded={openEntity ? "true" : undefined}
+                onClick={handleClickEntity}
                 endIcon={<KeyboardArrowDownOutlinedIcon />}
               />
               <Menu
                 id="entity-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
+                anchorEl={anchorElEntity}
+                open={openEntity}
+                onClose={handleCloseEntity}
               >
-                <MenuItem onClick={handleClose}>AND</MenuItem>
-                <MenuItem onClick={handleClose}>OR</MenuItem>
-                <MenuItem onClick={handleClose}>NOT</MenuItem>
+                <MenuItem onClick={() => handleEntityOperations("ADD")}>ADD</MenuItem>
+                <MenuItem onClick={() => handleEntityOperations("AND")}>AND</MenuItem>
+                <MenuItem onClick={() => handleEntityOperations("OR")}>OR</MenuItem>
+                <MenuItem onClick={() => handleEntityOperations("NOT")}>NOT</MenuItem>
               </Menu>
             </Grid>
           </Grid>
           <ChipsContainer>
-            <Chip
-              content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-              onDelete={() => { }}
-            />
+            {selectedEntities.map((item, i) => {
+              return (
+                <>
+                  {typeof (item) === "string" ?
+                    <Chip
+                      isSingleString={true}
+                      content={item}
+                      onDelete={() => { deleteEntity(i) }}
+                    />
+                    :
+                    <Chip
+                      content={[{ labelKey: item.entityType, labelValue: item.entityValue }]}
+                      onDelete={() => { deleteEntity(i) }}
+                    />
+                  }
+                </>
+              )
+            })
+            }
           </ChipsContainer>
         </Box>
       </Section>
@@ -227,14 +355,17 @@ const QueryTriple = () => {
                 <Button
                   btnText="Search"
                   variant="contained"
-                  onClick={() => navigate("/search-result")}
+                  onClick={() => {
+                    navigate("/search-result");
+                    handleSearchTriples();
+                  }}
                 />
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </ActionBox>
-    </div>
+    </div >
   );
 };
 
