@@ -547,12 +547,12 @@ export function getCustomerEntities(value, successCallback) {
         headers: getHeaders(),
         data: { page_num: "0", page_size: "10", ent_types: [value], prefix: "" }
     })
-        .then((response) => {
-            if (response.data.result === SUCCESS) successCallback(response.data.message);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    .then((response) => {
+        if (response.data.result === SUCCESS) successCallback(response.data.message);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
 }
 
 export function getCustomerEntityTypes(successCallback) {
@@ -561,12 +561,12 @@ export function getCustomerEntityTypes(successCallback) {
         method: "POST",
         headers: getHeaders(),
     })
-        .then((response) => {
-            if (response.data.result === SUCCESS) successCallback(response.data.message);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    .then((response) => {
+        if (response.data.result === SUCCESS) successCallback(response.data.message);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
 }
 
 export function searchTriples(data, successCallback) {

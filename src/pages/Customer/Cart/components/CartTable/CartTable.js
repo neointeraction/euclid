@@ -147,7 +147,6 @@ const CartTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
     setOpenModalConfirm(false);
   };
 
-  console.log("zrk", data);
   return (
     <div className="table-container">
       <Table

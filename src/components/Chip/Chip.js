@@ -17,6 +17,7 @@ const CustomChip = ({ content, isSingleString, ...rest }) => {
         :
         <Chip
           label={content}
+          {...rest}
         />
       }
     </div>
