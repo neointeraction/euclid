@@ -14,75 +14,14 @@ import {
 } from "assets/styles/main.styles";
 
 import FlaggedTable from "../components/FlaggedTable";
-import { getDashboardDetails } from "config/api.service";
-
-const dataBar = [
-  {
-    name: "5 Jun",
-    uv: 4000,
-    pv: 10,
-    amt: 20,
-  },
-  {
-    name: "6 Jun",
-    uv: 3000,
-    pv: 20,
-    amt: 10,
-  },
-  {
-    name: "7 Jun",
-    uv: 2000,
-    pv: 30,
-    amt: 26,
-  },
-  {
-    name: "8 Jun",
-    uv: 2780,
-    pv: 34,
-    amt: 30,
-  },
-  {
-    name: "9 Jun",
-    uv: 1890,
-    pv: 20,
-    amt: 40,
-  },
-  {
-    name: "10 Jun",
-    uv: 2390,
-    pv: 40,
-    amt: 15,
-  },
-  {
-    name: "11 Jun",
-    uv: 3490,
-    pv: 15,
-    amt: 20,
-  },
-  {
-    name: "12 Jun",
-    uv: 3490,
-    pv: 5,
-    amt: 5,
-  },
-  {
-    name: "13 Jun",
-    uv: 3490,
-    pv: 32,
-    amt: 20,
-  },
-  {
-    name: "14 Jun",
-    uv: 3490,
-    pv: 22,
-    amt: 20,
-  },
-];
+import { getAdminHistogram, getDashboardDetails } from "config/api.service";
 
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [generalCounts, setGeneralCounts] = useState({});
+  const [graphFilter, setGraphFilter] = useState({ type: "evidences", by: "days", last: "10" });
+  const [graphData, setGraphData] = useState([]);
 
   const handleGeneralCounts = (result) => {
     setGeneralCounts(result);
@@ -91,6 +30,18 @@ const AdminDashboard = () => {
   useEffect(() => {
     getDashboardDetails(handleGeneralCounts);
   }, [])
+
+  useEffect(() => {
+    getAdminHistogram(graphFilter, (result) => { setGraphData(result) });
+  }, [graphFilter])
+
+  const handleDurtionChange = (e) => {
+    setGraphFilter({ ...graphFilter, by: e.target.value });
+  }
+
+  const handleTypeChange = (e) => {
+    setGraphFilter({ ...graphFilter, type: e.target.value });
+  }
 
   return (
     <div>
@@ -164,12 +115,14 @@ const AdminDashboard = () => {
             <ChartFilters
               byType
               byDuration
-              valueType={"Evidences"}
-              valueDuration={"By days"}
-              averageText={"12 Evidences"}
+              handleChangeDuration={handleDurtionChange}
+              handleChangeType={handleTypeChange}
+              valueType={graphFilter.type}
+              valueDuration={graphFilter.by}
+              averageText={graphData.length}
             />
           </SectionFlex>
-          <BarGraphChart data={dataBar} />
+          <BarGraphChart data={graphData} />
         </Box>
       </Section>
       <Section>

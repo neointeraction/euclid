@@ -25,7 +25,7 @@ import {
   ActionFlexTitle,
   SectionFlex,
 } from "assets/styles/main.styles";
-import { getCustomerDashboardDetails, getLastPurchaseDetails, getLastSearchDetails } from "config/api.service";
+import { getCustomerDashboardDetails, getCustomerHistogram, getCustomerRealTimeGraph } from "config/api.service";
 
 const dataBar = [
   {
@@ -75,10 +75,25 @@ const dataBar = [
 const CustomerDashboard = () => {
   const navigate = useNavigate();
   const [dataCounts, setDataCounts] = useState({});
+  const [graphFilter, setGraphFilter] = useState({ by: "days", last: "10" });
+  const [graphData, setGraphData] = useState([]);
+  const [realTimeGraphData, setRealTimeGraphData] = useState([]);
 
   useEffect(() => {
     getCustomerDashboardDetails((result) => { setDataCounts(result) });
   }, []);
+
+  const handleDurationChange = (e) => {
+    setGraphFilter({ ...graphFilter, by: e.target.value });
+  }
+
+  useEffect(() => {
+    getCustomerHistogram(graphFilter, (result) => { setGraphData(result) });
+  }, [graphFilter])
+
+  useEffect(() => {
+    getCustomerRealTimeGraph((result) => { setRealTimeGraphData(result) });
+  }, [])
 
   return (
     <div>
@@ -111,7 +126,7 @@ const CustomerDashboard = () => {
                 <SectionTitle>Real time Data</SectionTitle>
                 <ChartFilters averageText={"120 Triples coded"} />
               </SectionFlex>
-              <BarGraphChart data={dataBar} layout="vertical" />
+              <BarGraphChart data={realTimeGraphData} layout="vertical" />
             </Box>
           </Grid>
           <Grid item xs={6}>
@@ -119,13 +134,14 @@ const CustomerDashboard = () => {
               <SectionFlex>
                 <SectionTitle>Overview of Triples Quered</SectionTitle>
                 <ChartFilters
+                  handleChangeDuration={handleDurationChange}
                   byDuration
-                  valueDuration={"By days"}
-                  averageText={"12 Evidence"}
+                  valueDuration={graphFilter.by}
+                  averageText={graphFilter.last}
                   isDown
                 />
               </SectionFlex>
-              <BarGraphChart data={dataBar} />
+              <BarGraphChart data={graphData} />
             </Box>
           </Grid>
         </Grid>

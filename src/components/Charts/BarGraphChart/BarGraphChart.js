@@ -51,7 +51,7 @@ const BarGraphChart = ({ data, layout }) => {
           <Tooltip cursor={{ fill: "#DAEAF3" }} />
           <Legend />
           <Bar
-            dataKey="pv"
+            dataKey="count"
             fill="#FCBF5C" //004C7C
             barSize={layout === "vertical" ? 14 : 30}
           />

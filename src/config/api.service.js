@@ -547,12 +547,12 @@ export function getCustomerEntities(value, successCallback) {
         headers: getHeaders(),
         data: { page_num: "0", page_size: "10", ent_types: [value], prefix: "" }
     })
-    .then((response) => {
-        if (response.data.result === SUCCESS) successCallback(response.data.message);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 export function getCustomerEntityTypes(successCallback) {
@@ -561,12 +561,12 @@ export function getCustomerEntityTypes(successCallback) {
         method: "POST",
         headers: getHeaders(),
     })
-    .then((response) => {
-        if (response.data.result === SUCCESS) successCallback(response.data.message);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 export function searchTriples(data, successCallback) {
@@ -584,3 +584,178 @@ export function searchTriples(data, successCallback) {
         });
 }
 
+export function getSatisfaction(successCallback) {
+    axios({
+        url: baseUrl + "contributor/get_satisfaction",
+        method: "POST",
+        headers: getHeaders(),
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getContributorDashboardDetails(successCallback) {
+    axios({
+        url: baseUrl + "contributor/get_dashboard_details",
+        method: "POST",
+        headers: getHeaders(),
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getRecentContributorHistory(successCallback) {
+    axios({
+        url: baseUrl + "contributor/get_recent_history",
+        method: "POST",
+        headers: getHeaders(),
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getPoints(successCallback) {
+    axios({
+        url: baseUrl + "contributor/get_points",
+        method: "POST",
+        headers: getHeaders(),
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+
+export function getCompleteContributorHistory(successCallback) {
+    axios({
+        url: baseUrl + "contributor/get_full_history",
+        method: "POST",
+        headers: getHeaders(),
+        data: { page_num: "0", page_size: "10" }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getContributorHistogram(data, successCallback) {
+    axios({
+        url: baseUrl + "contributor/get_histogram",
+        method: "POST",
+        headers: getHeaders(),
+        data
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getAdminHistogram(data, successCallback) {
+    axios({
+        url: baseUrl + "admin/get_histogram",
+        method: "POST",
+        headers: getHeaders(),
+        data
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getCustomerRealTimeGraph(successCallback) {
+    axios({
+        url: baseUrl + "customer/get_realtime_data",
+        method: "POST",
+        headers: getHeaders(),
+        data: { last: 12 }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getCustomerHistogram(data, successCallback) {
+    axios({
+        url: baseUrl + "customer/get_histogram",
+        method: "POST",
+        headers: getHeaders(),
+        data
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getTop10EntitiesGraph(successCallback) {
+    axios({
+        url: baseUrl + "customer/top_entities",
+        method: "POST",
+        headers: getHeaders(),
+        data: { last: 10 }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getDonutChart(successCallback) {
+    axios({
+        url: baseUrl + "customer/entity_donut",
+        method: "POST",
+        headers: getHeaders(),
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getTriplesAndEvidencesGraph(successCallback) {
+    axios({
+        url: baseUrl + "customer/evidence_triple_histogram",
+        method: "POST",
+        headers: getHeaders(),
+        data: { last: 10 }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}

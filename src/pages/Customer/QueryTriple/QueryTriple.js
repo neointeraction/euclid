@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Grid, Menu, MenuItem } from "@mui/material";
 
 import { PageHeader, Dropdown, AutoComplete, Button, Chip } from "components";
@@ -22,6 +22,7 @@ const QueryTriple = () => {
   const [contextOptions, setContextOptions] = useState([]);
   const [selectedContexts, setSelectedContexts] = useState([]);
   const [selectedEntities, setSelectedEntities] = useState([]);
+  const location = useLocation();
   const navigate = useNavigate();
   // Forms
   const [state, setState] = useState({
@@ -181,8 +182,17 @@ const QueryTriple = () => {
       context: tempContext,
       entity: tempEntity
     }
-    searchTriples(data, (result) => console.log("zrk", result));
+    searchTriples(data, (result) => navigate(`/search-result`, { state: { context: selectedContexts, entities: selectedEntities, searchData: result } }));
   }
+
+  useEffect(() => {
+    if (location?.state?.context?.length) {
+      setSelectedContexts(location?.state?.context);
+    }
+    if (location?.state?.entities?.length) {
+      setSelectedEntities(location?.state?.entities);
+    }
+  }, [location]);
 
 
   return (
@@ -356,7 +366,6 @@ const QueryTriple = () => {
                   btnText="Search"
                   variant="contained"
                   onClick={() => {
-                    navigate("/search-result");
                     handleSearchTriples();
                   }}
                 />
