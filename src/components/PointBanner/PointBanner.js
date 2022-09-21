@@ -43,7 +43,7 @@ const PointBanner = ({ points, user, infoText }) => {
         </BannerContent>
         <BannerInfoBlock>
           <InfoText>
-            Congratulations, {user} <Confetti />
+            Congratulations {user} <Confetti />
           </InfoText>
           <InfoDescription>{infoText}</InfoDescription>
 

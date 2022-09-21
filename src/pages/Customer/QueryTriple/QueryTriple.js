@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Grid, Menu, MenuItem } from "@mui/material";
 
 import { PageHeader, Dropdown, AutoComplete, Button, Chip } from "components";
@@ -14,6 +14,7 @@ import {
   ActionBox,
 } from "assets/styles/main.styles";
 import { getCustomerContext, getCustomerContextValues, getCustomerEntities, getCustomerEntityTypes, searchTriples } from "config/api.service";
+import { ResetTv } from "@mui/icons-material";
 
 const QueryTriple = () => {
   const [context, setContext] = useState([]);
@@ -22,6 +23,7 @@ const QueryTriple = () => {
   const [contextOptions, setContextOptions] = useState([]);
   const [selectedContexts, setSelectedContexts] = useState([]);
   const [selectedEntities, setSelectedEntities] = useState([]);
+  const location = useLocation();
   const navigate = useNavigate();
   // Forms
   const [state, setState] = useState({
@@ -112,7 +114,6 @@ const QueryTriple = () => {
   }
 
   const handleContextOperations = (type) => {
-    console.log("zrk", type);
     let temp = [...selectedContexts]
     if (type === "ADD") {
       temp.push(state);
@@ -181,9 +182,24 @@ const QueryTriple = () => {
       context: tempContext,
       entity: tempEntity
     }
-    searchTriples(data, (result) => console.log("zrk", result));
+    searchTriples(data, (result) => navigate(`/search-result`, { state: { context: selectedContexts, entities: selectedEntities, searchData: result } }));
   }
 
+  useEffect(() => {
+    if (location?.state?.context?.length) {
+      setSelectedContexts(location?.state?.context);
+    }
+    if (location?.state?.entities?.length) {
+      setSelectedEntities(location?.state?.entities);
+    }
+  }, [location]);
+
+  const reset = () => {
+    setSelectedContexts([]);
+    setSelectedEntities([]);
+    setState({context: "",contextValue: ""});
+    setEntityState({entityType: "",entityValue: ""});
+  }
 
   return (
     <div>
@@ -348,7 +364,7 @@ const QueryTriple = () => {
                 <Button
                   btnText="Reset"
                   variant="outlined"
-                  onClick={() => console.log("clicked")}
+                  onClick={() => reset()}
                 />
               </Grid>
               <Grid item xs={3} textAlign="right">
@@ -356,7 +372,6 @@ const QueryTriple = () => {
                   btnText="Search"
                   variant="contained"
                   onClick={() => {
-                    navigate("/search-result");
                     handleSearchTriples();
                   }}
                 />

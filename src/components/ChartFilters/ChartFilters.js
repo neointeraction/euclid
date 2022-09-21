@@ -32,24 +32,29 @@ const ChartFilters = ({
               value={valueType}
               options={[
                 {
-                  id: "Evidences",
-                  optionText: "Evidences",
+                  id: "evidences",
+                  optionText: "evidences",
+                  value: "evidences"
                 },
                 {
-                  id: "Triples Validated",
-                  optionText: "Triples Validated",
+                  id: "triples_validated",
+                  optionText: "triples_validated",
+                  value: "triples_validated"
                 },
                 {
-                  id: "Triples Committed",
-                  optionText: "Triples Committed",
+                  id: "triples_committed",
+                  optionText: "triples_committed",
+                  value: "triples_committed"
                 },
                 {
-                  id: "Triples in Draft",
-                  optionText: "Triples in Draft",
+                  id: "triples_in_draft",
+                  optionText: "triples_in_draft",
+                  value: "triples_in_draft"
                 },
                 {
-                  id: "Triples Reverted",
-                  optionText: "Triples Reverted",
+                  id: "triples_reverted",
+                  optionText: "triples_reverted",
+                  value: "triples_reverted"
                 },
               ]}
             />
@@ -62,20 +67,20 @@ const ChartFilters = ({
               value={valueDuration}
               options={[
                 {
-                  id: "By days",
-                  optionText: "By days",
+                  id: "days",
+                  optionText: "days",
                 },
                 {
-                  id: "By weeks",
-                  optionText: "By weeks",
+                  id: "weeks",
+                  optionText: "weeks",
                 },
                 {
-                  id: "By months",
-                  optionText: "By months",
+                  id: "months",
+                  optionText: "months",
                 },
                 {
-                  id: "By years",
-                  optionText: "By years",
+                  id: "year",
+                  optionText: "year",
                 },
               ]}
             />
@@ -93,10 +98,12 @@ const ChartFilters = ({
                 <ArrowUpwardOutlinedIcon fontSize="small" htmlColor="#59A14F" />
               )}
             </SummaryIcon>
-            <SummaryText>
-              <span>Last 10 days</span>
-              {averageText}
-            </SummaryText>
+            {valueDuration === "days" ?
+              <SummaryText>
+                <span>Last 10 days</span>
+              </SummaryText>
+              :
+              null}
           </SummaryBlock>
         </Grid>
       </Grid>

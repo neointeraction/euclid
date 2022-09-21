@@ -32,6 +32,8 @@ import { addEvidence, commitTriples, getContext, getDraft, getEntityLeft, getEnt
 import { UserContext } from "layout/MainLayout/MainLayout";
 import { ROOT, SUBJECT_LEFT, SUBJECT_RIGHT, subRelations } from "config/constants";
 import { v4 as uuidv4 } from 'uuid';
+import Loading from "components/Loading";
+
 // Dummy popover data
 
 function createData(curie, subcurie, prefferedLabel) {
@@ -53,6 +55,8 @@ const AddTriple = () => {
 
   const [openModalConfirm, setOpenModalConfirm] = useState(false);
 
+  const [openModalConfirmCommit, setOpenModalConfirmCommit] = useState(false);
+
   const { userDetails } = useContext(UserContext);
 
   const [snippets, setSnippets] = useState({});
@@ -63,7 +67,15 @@ const AddTriple = () => {
 
   const [alertMessage, setAlertMessage] = useState("");
 
-  const [draft, setDraft] = useState([]);
+  const [alertType, setAlertType] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const [editList, setEditList] = useState([]);
+
+  const [openList, setOpenList] = useState([]);
+
+  const [tripleDataToCommit, setTripleDataToCommit] = useState({});
 
   const [tripleData, setTripleData] = useState({
     pubid: snippets.pubid, evidences: [{
@@ -83,6 +95,8 @@ const AddTriple = () => {
       }]
     }]
   });
+
+
 
   const [relations, setRelations] = useState([]);
 
@@ -112,6 +126,7 @@ const AddTriple = () => {
   const notRelevantConfirm = () => {
     handleCloseConfirm(false);
     setInvalidSnippet({ pubid: snippets.pubid, evidence_num: snippetIndex }, () => {
+      setAlertType("success");
       setAlertMessage("Evidence marked as Not Relevent");
       setShowAlert(true)
     }, userDetails.sub);
@@ -146,17 +161,19 @@ const AddTriple = () => {
                 selectedValue: "",
                 options: [],
                 type: ROOT
-              }], relation: "", code: "", contextList: [], evidenceId: ""
+              }], relation: "", code: "", contextList: [], evidenceId: "", isNew: false
             }]
           }
         })
       })
     }
     setSnippets(result);
+    setLoading(false);
   }
 
   useEffect(() => {
     if (userDetails) {
+      setLoading(true);
       getPaperSnippets(getSnippets);
     }
   }, [userDetails]);
@@ -169,7 +186,13 @@ const AddTriple = () => {
 
   const snippetControl = (type) => {
     if (type === "next") {
-      setSnippetIndex(oldData => oldData < (snippets?.evidences.length - 1) ? oldData + 1 : oldData);
+      if (snippetIndex < (snippets?.evidences.length - 1)) {
+        setSnippetIndex(oldData => oldData + 1);
+      } else {
+        setAlertType("error");
+        setAlertMessage("Please commit for viewing next publication");
+        setShowAlert(true);
+      }
     } else {
       setSnippetIndex(oldData => oldData > 0 ? oldData - 1 : oldData);
     }
@@ -199,6 +222,7 @@ const AddTriple = () => {
     let tempTripleData = { ...tripleData }
     tempTripleData.evidences.push(data);
     setTripleData(tempTripleData);
+    setAlertType("success");
     setAlertMessage("Added Evidence Successfully");
     setShowAlert(true);
   }
@@ -207,30 +231,61 @@ const AddTriple = () => {
     addEvidence({ pubid: snippets.pubid, evidence: { [`${snippets?.pubid}_${snippets?.evidences.length + 1}`]: evidenceToAdd } }, addEvidenceCallBack, userDetails.sub)
   }
 
+  const fadeOutFunction = () => {
+    setTimeout(() => {
+      let newTemp = { ...tripleData }
+      newTemp.evidences[snippetIndex].codes = newTemp.evidences[snippetIndex].codes.map((item) => {
+        return {
+          id: item.id,
+          subjectData: item.subjectData,
+          objectData: item.objectData,
+          relation: item.relation,
+          code: item.code,
+          contextList: item.contextList,
+          evidenceId: item.evidenceId,
+          isNew: false
+        }
+      })
+      setTripleData(newTemp);
+    }, 1000);
+  }
+
   const addNewTriple = () => {
     let temp = { ...tripleData }
+    let id = uuidv4();
     temp.evidences[snippetIndex].codes.push({
+      id,
       subjectData: [{
         id: 0, // todo: use unique id. eg uuid library
         selectedValue: "",
         options: [],
-        type: ROOT
+        type: ROOT,
       }],
       objectData: [{
         id: 0, // todo: use unique id. eg uuid library
         selectedValue: "",
         options: [],
         type: ROOT
-      }], relation: "", code: "", contextList: [], evidenceId: ""
+      }], relation: "", code: "", contextList: [], evidenceId: "", isNew: true
     })
+    setEditList([...editList, id]);
     setTripleData(temp);
+    handleOpen("open", id);
+    fadeOutFunction();
   }
 
   const duplicateTriple = (index) => {
     let tempTripleData = { ...tripleData };
+    const previousId = tempTripleData.evidences[snippetIndex].codes[index].id
+    const id = uuidv4();
     let temp = tempTripleData.evidences[snippetIndex].codes;
-    temp.push(temp[index])
+    temp.splice(index + 1, 0, { ...temp[index], id, isNew: true });
+    handleOpen("open", id);
+    handleOpen("close", previousId);
+    handleEdit("edit", id);
+    handleEdit("close", previousId);
     setTripleData(tempTripleData);
+    fadeOutFunction();
   }
 
   const deleteTriple = (index) => {
@@ -284,15 +339,15 @@ const AddTriple = () => {
           id: uuidv4(),
           selectedValue: "",
           options: element.options,
-          type: SUBJECT_LEFT,
+          type: findTypeOfNode(element.type, SUBJECT_LEFT),
           entityType: []
         });
       } else {
-        newData.splice(innerIndex - 1, 0, {
+        newData.splice(innerIndex, 0, {
           id: uuidv4(),
           selectedValue: "",
           options: element.options,
-          type: SUBJECT_LEFT,
+          type: findTypeOfNode(element.type, SUBJECT_LEFT),
           entityType: []
         });
       }
@@ -308,7 +363,7 @@ const AddTriple = () => {
             entityType: result
           });
         } else {
-          newData.splice(innerIndex - 1, 0, {
+          newData.splice(innerIndex, 0, {
             id: uuidv4(),
             selectedValue: "",
             options: element.options,
@@ -337,7 +392,7 @@ const AddTriple = () => {
           entityType: []
         });
       } else {
-        newData.splice(innerIndex - 1, 0, {
+        newData.splice(innerIndex, 0, {
           id: uuidv4(),
           selectedValue: "",
           options: element.options,
@@ -357,7 +412,7 @@ const AddTriple = () => {
             entityType: result
           });
         } else {
-          newData.splice(innerIndex - 1, 0, {
+          newData.splice(innerIndex, 0, {
             id: uuidv4(),
             selectedValue: "",
             options: element.options,
@@ -377,7 +432,7 @@ const AddTriple = () => {
       for (let i = 0; i < subject?.length; i++) {
         if (subject[i].selectedValue) {
           if (subRelations.includes(subject[i].selectedValue)) {
-            subjectCode = `${subjectCode} ${subject[i].selectedValue}'`
+            subjectCode = `${subjectCode} ${subject[i].selectedValue}`
           } else {
             let temp = subject[i].selectedValue.split(":");
             if (subRelations.includes(subject[i + 1]?.selectedValue) || subRelations.includes(subject[i - 1]?.selectedValue)) {
@@ -395,7 +450,7 @@ const AddTriple = () => {
       for (let i = 0; i < object?.length; i++) {
         if (object[i].selectedValue) {
           if (subRelations.includes(object[i].selectedValue)) {
-            objectCode = `${objectCode} ${object[i].selectedValue}'`
+            objectCode = `${objectCode} ${object[i].selectedValue}`
           } else {
             let temp = object[i].selectedValue.split(":");
             if (subRelations.includes(object[i + 1]?.selectedValue) || subRelations.includes(object[i - 1]?.selectedValue)) {
@@ -418,22 +473,39 @@ const AddTriple = () => {
     setTripleData(tempTripleData);
   }
 
-  const removeSubject = (id, index) => {
+  const removeSubject = (id, index, type) => {
     let tempTripleData = { ...tripleData };
     let temp = tempTripleData.evidences[snippetIndex].codes;
-    temp[index].subjectData = temp[index].subjectData.filter((item) => item.id !== id);
+    const innerIndex = temp[index].subjectData.findIndex((item) => item.id === id);
+    if (type === SUBJECT_LEFT) {
+      temp[index].subjectData = temp[index].subjectData.filter((item, i) => i > innerIndex);
+    } else {
+      temp[index].subjectData = temp[index].subjectData.filter((item, i) => i < innerIndex);
+    }
     temp[index].code = createCode(temp, index);
     setTripleData(tempTripleData);
   }
 
-  const removeObject = (id, index) => {
+  const removeObject = (id, index, type) => {
     let tempTripleData = { ...tripleData };
     let temp = tempTripleData.evidences[snippetIndex].codes;
-    temp[index].objectData = temp[index].objectData.filter((item) => item.id !== id);
+    const innerIndex = temp[index].objectData.findIndex((item) => item.id === id);
+    if (type === SUBJECT_LEFT) {
+      temp[index].objectData = temp[index].objectData.filter((item, i) => i > innerIndex);
+    } else {
+      temp[index].objectData = temp[index].objectData.filter((item, i) => i < innerIndex);
+    }
     temp[index].code = createCode(temp, index);
     setTripleData(tempTripleData);
   }
 
+  const findTypeOfNode = (parentType, functionType) => {
+    if (parentType === ROOT) {
+      return functionType;
+    } else {
+      return parentType;
+    }
+  }
 
   const onAddToRightOfSubjectType = (element, index, innerIndex) => {
     console.log("element to add to", element);
@@ -445,7 +517,7 @@ const AddTriple = () => {
         id: uuidv4(),
         selectedValue: "",
         options: element.options,
-        type: SUBJECT_RIGHT,
+        type: findTypeOfNode(element.type, SUBJECT_RIGHT),
         entityType: []
       });
       setTripleData(tempTripleData);
@@ -459,7 +531,7 @@ const AddTriple = () => {
           id: uuidv4(),
           selectedValue: "",
           options: element.options,
-          type: SUBJECT_RIGHT,
+          type: findTypeOfNode(element.type, SUBJECT_RIGHT),
           entityType: result
         });
         setTripleData(tempTripleData);
@@ -477,7 +549,7 @@ const AddTriple = () => {
         id: uuidv4(),
         selectedValue: "",
         options: element.options,
-        type: SUBJECT_RIGHT,
+        type: findTypeOfNode(element.type, SUBJECT_RIGHT),
         entityType: []
       });
       setTripleData(tempTripleData);
@@ -491,7 +563,7 @@ const AddTriple = () => {
           id: uuidv4(),
           selectedValue: "",
           options: element.options,
-          type: SUBJECT_RIGHT,
+          type: findTypeOfNode(element.type, SUBJECT_RIGHT),
           entityType: result
         });
         setTripleData(tempTripleData);
@@ -507,10 +579,17 @@ const AddTriple = () => {
   }
 
   const addContext = (index, data) => {
-    let tempTripleData = { ...tripleData };
-    let temp = tempTripleData.evidences[snippetIndex].codes;
-    temp[index].contextList.push(data);
-    setTripleData(tempTripleData);
+    if (data.context && data.contextValue) {
+      let tempTripleData = { ...tripleData };
+      let temp = tempTripleData.evidences[snippetIndex].codes;
+      temp[index].contextList.push(data);
+      setTripleData(tempTripleData);
+    } else {
+      setShowAlert(false);
+      setAlertType("error");
+      setAlertMessage("please add data before adding context");
+      setShowAlert(true)
+    }
   }
 
   const removeContext = (index, innerIndex) => {
@@ -559,17 +638,35 @@ const AddTriple = () => {
     })
     temp.evidences = temp.evidences.filter((item) => item.codes.length > 0);
     if (type === "COMMIT") {
-      commitTriples(temp, (result) => {
-        setAlertMessage("Committed Triples successfully");
-        setShowAlert(true);
-        getPaperSnippets(getSnippets);
-      })
+      if (temp.evidences.length !== snippets.evidences.length) {
+        setTripleDataToCommit(temp);
+        setOpenModalConfirmCommit(true);
+      } else {
+        commitFunction(temp);
+      }
     } else {
       saveTriples(temp, (result) => {
+        setAlertType("success");
         setAlertMessage("Saved Triples successfully");
         setShowAlert(true);
       })
     }
+  }
+
+  const commitFunction = (temp) => {
+    commitTriples(temp, (result) => {
+      setOpenModalConfirmCommit(false);
+      setAlertType("success");
+      setAlertMessage("Committed Triples successfully");
+      setShowAlert(true);
+      getPaperSnippets(getSnippets);
+      setSnippetIndex(0);
+    }, (error) => {
+      setOpenModalConfirmCommit(false);
+      setAlertType("error");
+      setAlertMessage(error);
+      setShowAlert(true);
+    })
   }
 
   const decodeInComingCode = (result) => {
@@ -662,6 +759,27 @@ const AddTriple = () => {
     getDraft(snippets?.pubid, decodeInComingCode);
   }, [snippets]);
 
+  const handleEdit = (type, id) => {
+    let temp = [...editList];
+    if (type === "edit") {
+      const isPresent = temp.filter(item => item === id).length > 0;
+      !isPresent && temp.push(id);
+    } else {
+      temp = temp.filter(item => item !== id);
+    }
+    setEditList(temp);
+  }
+
+  const handleOpen = (type, id) => {
+    let temp = [...openList];
+    if (type === "open") {
+      const isPresent = temp.filter(item => item === id).length > 0;
+      !isPresent && temp.push(id);
+    } else {
+      temp = temp.filter(item => item !== id);
+    }
+    setOpenList(temp);
+  }
 
   return (
     <div>
@@ -670,10 +788,16 @@ const AddTriple = () => {
       </a>
       <Section>
         <Box bordered>
-          <BodyText dangerouslySetInnerHTML={snippets?.evidences?.length ? { __html: snippets?.evidences[snippetIndex][Object.keys(snippets?.evidences[snippetIndex])[0]] } : { __html: "<div></div>" }} />
-          <BodyTextLight>
-            {`${snippetIndex + 1}/${snippets?.evidences?.length}`}
-          </BodyTextLight>
+          {loading ?
+            <Loading />
+            :
+            <>
+              <BodyText dangerouslySetInnerHTML={snippets?.evidences?.length ? { __html: snippets?.evidences[snippetIndex][Object.keys(snippets?.evidences[snippetIndex])[0]] } : { __html: "<div></div>" }} />
+              <BodyTextLight>
+                {`${snippetIndex + 1}/${snippets?.evidences?.length}`}
+              </BodyTextLight>
+            </>
+          }
           {/* Popover grid compnent  */}
           <PopoverGrid
             anchorEl={anchorEl}
@@ -749,16 +873,22 @@ const AddTriple = () => {
               index={i}
               key={i}
               chipContent={item.code}
+              addToEditList={() => handleEdit("edit", item.id)}
+              deleteFromEditList={() => handleEdit("readOnly", item.id)}
+              isNew={item.isNew}
+              isOpen={openList?.includes(item.id)}
+              isFlagged={item.flagged}
             >
               <TripleCollapseContainer>
-                <TripleForm addContext={addContext} removeContext={removeContext} addFlagAndComment={addFlagAndComment} removeObject={removeObject} removeSubject={removeSubject} handleRelationSelect={handleRelationSelect} addSubjectLeft={onAddToLeftOfSubjectType} addSubjectRight={onAddToRightOfSubjectType} addObjectLeft={onAddToLeftOfObjectType} addObjectRight={onAddToRightOfObjectType} onSubjectValueUpdate={onSubjectValueUpdate} onObjectValueUpdate={onObjectValueUpdate} data={item} addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={i} relations={relations} tripleDataUpdate={tripleDataUpdate} />
+                <TripleForm addContext={addContext} removeContext={removeContext} addFlagAndComment={addFlagAndComment} removeObject={removeObject} removeSubject={removeSubject} handleRelationSelect={handleRelationSelect} addSubjectLeft={onAddToLeftOfSubjectType} addSubjectRight={onAddToRightOfSubjectType} addObjectLeft={onAddToLeftOfObjectType} addObjectRight={onAddToRightOfObjectType} onSubjectValueUpdate={onSubjectValueUpdate} onObjectValueUpdate={onObjectValueUpdate} data={item} addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={i} relations={relations} tripleDataUpdate={tripleDataUpdate} isEdit={editList.includes(item.id)} deleteFromOpenList={() => handleOpen("close", item.id)}
+                  deleteFromEditList={() => handleEdit("readOnly", item.id)} />
               </TripleCollapseContainer>
             </TrippleCollapsed>
           ))
         ) : (
           tripleData?.evidences?.length &&
           tripleData.evidences[snippetIndex].codes.map((item, i) => (
-            <TripleForm addContext={addContext} removeContext={removeContext} removeObject={removeObject} addFlagAndComment={addFlagAndComment} removeSubject={removeSubject} handleRelationSelect={handleRelationSelect} addSubjectLeft={onAddToLeftOfSubjectType} addSubjectRight={onAddToRightOfSubjectType} addObjectLeft={onAddToLeftOfObjectType} addObjectRight={onAddToRightOfObjectType} onObjectValueUpdate={onObjectValueUpdate} onSubjectValueUpdate={onSubjectValueUpdate} data={item} key={i} addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={0} relations={relations} tripleDataUpdate={tripleDataUpdate} />
+            <TripleForm addContext={addContext} removeContext={removeContext} removeObject={removeObject} addFlagAndComment={addFlagAndComment} removeSubject={removeSubject} handleRelationSelect={handleRelationSelect} addSubjectLeft={onAddToLeftOfSubjectType} addSubjectRight={onAddToRightOfSubjectType} addObjectLeft={onAddToLeftOfObjectType} addObjectRight={onAddToRightOfObjectType} onObjectValueUpdate={onObjectValueUpdate} onSubjectValueUpdate={onSubjectValueUpdate} data={item} key={i} addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={0} relations={relations} tripleDataUpdate={tripleDataUpdate} isEdit={true} deleteFromOpenList={() => handleOpen("close", item.id)} />
           ))
         )}
         <ActionBox>
@@ -808,7 +938,7 @@ const AddTriple = () => {
         showAlert && (
           <AlertWrapper>
             <Alert
-              type="success"
+              type={alertType}
               message={alertMessage}
               onClose={() => setShowAlert(false)}
             />
@@ -822,6 +952,14 @@ const AddTriple = () => {
         subtitle={"Are you sure you want to mark this as Irrelevant ?"}
         btnText="Mark As Irrelevant"
         onClick={() => notRelevantConfirm()}
+      />
+      <ConfirmationModal
+        openModal={openModalConfirmCommit}
+        handleClose={() => setOpenModalConfirmCommit(false)}
+        title="Confirm Commit"
+        subtitle={"You have some evidences without triples.Are you sure you want to Commit ?"}
+        btnText="Commit"
+        onClick={() => commitFunction(tripleDataToCommit)}
       />
     </div >
   );

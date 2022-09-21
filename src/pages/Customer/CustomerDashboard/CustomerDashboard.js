@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Grid from "@mui/material/Grid";
@@ -25,7 +25,8 @@ import {
   ActionFlexTitle,
   SectionFlex,
 } from "assets/styles/main.styles";
-import { getCustomerDashboardDetails, getLastPurchaseDetails, getLastSearchDetails } from "config/api.service";
+import { getCustomerDashboardDetails, getCustomerHistogram, getCustomerRealTimeGraph } from "config/api.service";
+import { UserContext } from "layout/MainLayout/MainLayout";
 
 const dataBar = [
   {
@@ -75,16 +76,32 @@ const dataBar = [
 const CustomerDashboard = () => {
   const navigate = useNavigate();
   const [dataCounts, setDataCounts] = useState({});
+  const [graphFilter, setGraphFilter] = useState({ by: "days", last: "10" });
+  const [graphData, setGraphData] = useState([]);
+  const [realTimeGraphData, setRealTimeGraphData] = useState([]);
+  const { userDetails } = useContext(UserContext);
 
   useEffect(() => {
     getCustomerDashboardDetails((result) => { setDataCounts(result) });
   }, []);
 
+  const handleDurationChange = (e) => {
+    setGraphFilter({ ...graphFilter, by: e.target.value });
+  }
+
+  useEffect(() => {
+    getCustomerHistogram(graphFilter, (result) => { setGraphData(result) });
+  }, [graphFilter])
+
+  useEffect(() => {
+    getCustomerRealTimeGraph((result) => { setRealTimeGraphData(result) });
+  }, [])
+
   return (
     <div>
       <PageHeader
         isHomePage
-        user="Rob"
+        user={userDetails?.nickname}
         rightSideContent={
           <ActionFlexTitle>
             <Tooltip message="Go to Cart" position="bottom">
@@ -111,7 +128,7 @@ const CustomerDashboard = () => {
                 <SectionTitle>Real time Data</SectionTitle>
                 <ChartFilters averageText={"120 Triples coded"} />
               </SectionFlex>
-              <BarGraphChart data={dataBar} layout="vertical" />
+              <BarGraphChart data={realTimeGraphData} layout="vertical" />
             </Box>
           </Grid>
           <Grid item xs={6}>
@@ -119,13 +136,14 @@ const CustomerDashboard = () => {
               <SectionFlex>
                 <SectionTitle>Overview of Triples Quered</SectionTitle>
                 <ChartFilters
+                  handleChangeDuration={handleDurationChange}
                   byDuration
-                  valueDuration={"By days"}
-                  averageText={"12 Evidence"}
+                  valueDuration={graphFilter.by}
+                  averageText={graphFilter.last}
                   isDown
                 />
               </SectionFlex>
-              <BarGraphChart data={dataBar} />
+              <BarGraphChart data={graphData} />
             </Box>
           </Grid>
         </Grid>
@@ -133,14 +151,14 @@ const CustomerDashboard = () => {
       <Section>
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={3}>
-            <Card count={dataCounts.n_evidence_downloaded} title="Evidence Downloaded" color="purple" />
+            <Card count={dataCounts.n_evidence_downloaded} title="Evidence Downloaded" color="purple" isNotClickable={true} />
           </Grid>
           <Grid item xs={3}>
             <Card
               count={dataCounts.n_triples_downloaded}
               title="Triples Downloaded"
               color="green"
-              onClick={() => { }}
+              isNotClickable={true}
             />
           </Grid>
           <Grid item xs={3}>
@@ -148,7 +166,7 @@ const CustomerDashboard = () => {
               count={dataCounts.amount_paid}
               title="Amount Paid"
               color="red"
-              onClick={() => { }}
+              isNotClickable={true}
             />
           </Grid>
           <Grid item xs={3}>
@@ -156,7 +174,7 @@ const CustomerDashboard = () => {
               count={dataCounts.n_triples_in_cart}
               title="Triples in Cart"
               color="blue"
-              onClick={() => { }}
+              isNotClickable={true}
             />
           </Grid>
         </Grid>

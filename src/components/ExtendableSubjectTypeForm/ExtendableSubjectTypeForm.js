@@ -29,7 +29,8 @@ const ExtendableSubjectTypeForm = ({
   index,
   setInFocusIndex,
   valueUpdate,
-  data
+  data,
+  isRoot
 }) => {
 
   const selectedValueUpdate = (value) => {
@@ -37,11 +38,11 @@ const ExtendableSubjectTypeForm = ({
   }
 
   return (
-    <ExtendableSubjectTypeContainer noBg={noBg} onClick={() => (type === RELATION) ? setInFocusIndex(RELATION) : setInFocusIndex(index)}>
+    <ExtendableSubjectTypeContainer bgColor={isRoot ? "#A3BEDF" : null} noBg={noBg} onClick={() => (type === RELATION) ? setInFocusIndex(RELATION) : setInFocusIndex(index)}>
       <ExtendableSubjectTypeFormContainer>
         <ExtendableSubjectTypeFormHeaderWrap>
           <Typography variant="body1">{label} </Typography>
-          {onRemove && (
+          {(onRemove && !isRoot) && (
             <CloseOutlined
               style={{ cursor: "pointer" }}
               onClick={onRemove}
@@ -51,10 +52,19 @@ const ExtendableSubjectTypeForm = ({
         </ExtendableSubjectTypeFormHeaderWrap>
         <AutoComplete value={data} type={type === RELATION ? NORMAL_SCROLL : INFINITE_SCROLL} options={type === RELATION ? relations : options} onChange={onChange} isDropdown onScrollFunction={infiniteScrollFunction} searchFunction={searchFunction} valueUpdate={selectedValueUpdate} />
         {type !== RELATION ?
-          <div className="action-icons-wrapper">
-            <img src={BackIcon} onClick={onAddToLeft} alt="" />
-            <img src={NextIcon} onClick={onAddToRight} alt="" />
-          </div>
+          <>
+            {data?.trim().length ?
+              <div className="action-icons-wrapper">
+                <img src={BackIcon} onClick={onAddToLeft} alt="" />
+                <img src={NextIcon} onClick={onAddToRight} alt="" />
+              </div>
+              :
+              <div className="action-icons-wrapper-disabled">
+                <img src={BackIcon} onClick={onAddToLeft} alt="" />
+                <img src={NextIcon} onClick={onAddToRight} alt="" />
+              </div>
+            }
+          </>
           :
           <div className="action-icons-wrapper"></div>
         }

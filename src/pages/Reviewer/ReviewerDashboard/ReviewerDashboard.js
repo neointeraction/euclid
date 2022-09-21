@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -14,9 +14,12 @@ import {
   ViewAllBtn,
 } from "assets/styles/main.styles";
 import { getRecentHistory, getTripleStatuses } from "config/api.service";
+import { UserContext } from "layout/MainLayout/MainLayout";
 
 const ReviewerDashboard = () => {
   const navigate = useNavigate();
+  const { userDetails } = useContext(UserContext);
+
   const [summaryCounts, setSummaryCounts] = useState({});
   const [recentHistory, setRecentHistory] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("all")
@@ -36,7 +39,7 @@ const ReviewerDashboard = () => {
 
   return (
     <div>
-      <PageHeader isHomePage user="Rob" />
+      <PageHeader isHomePage user={userDetails?.nickname} />
       <Section>
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={3}>

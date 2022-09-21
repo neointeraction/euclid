@@ -60,7 +60,6 @@ const PurchaseHistoryTable = ({
 
 
 
-  console.log("zrk", purchaseDetails);
   return (
     <div className="table-container">
       <Table

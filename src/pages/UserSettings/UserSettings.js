@@ -95,15 +95,7 @@ const UserSettings = () => {
           if (err) {
             console.log(err);
           } else {
-            if (userDetails.userRoles.includes(ADMIN)) {
-              navigate("/admin-dashboard");
-            } else if (result.userRoles.includes(CUSTOMER)) {
-              navigate("/customer-dashboard");
-            } else if (result.userRoles.includes(CONTRIBUTOR)) {
-              navigate("/contributor-dashboard");
-            } else {
-              navigate("/reviewer-dashboard")
-            }
+            navigate(-1);
           }
         })
       }
@@ -240,6 +232,7 @@ const UserSettings = () => {
                   btnText="Upload your Document"
                   variant="secondary"
                   onClick={() => fileInput.current.click()}
+                  disabled
                 >
                   upload file
                 </Button>
@@ -286,7 +279,7 @@ const UserSettings = () => {
                 <Button
                   btnText="Cancel"
                   variant="outlined"
-                  onClick={() => console.log("clicked")}
+                  onClick={() => navigate(-1)}
                 />
               </Grid>
               <Grid item xs={3} textAlign="right">

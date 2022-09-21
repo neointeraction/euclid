@@ -4,6 +4,7 @@ import { Tag, Table, Modal } from "components";
 import { TableTagContainer } from "assets/styles/main.styles";
 
 import ViewTripleModal from "../ViewTripleModal";
+import { getCompleteContributorHistory, getRecentContributorHistory } from "config/api.service";
 
 const TripleHistoryTable = ({
   isCompleteList,
@@ -12,6 +13,7 @@ const TripleHistoryTable = ({
   hideFilter,
 }) => {
   const [openModal, setOpenModal] = useState(false);
+
   const handleClickOpen = () => {
     setOpenModal(true);
   };
@@ -26,24 +28,24 @@ const TripleHistoryTable = ({
     () => [
       {
         Header: "Triple",
-        accessor: "Triple",
+        accessor: "pmid",
         Cell: (row) => {
           return (
-            <div className="table-nav-link" onClick={handleClickOpen}>
-              {row.row.original.Triple}
+            <div role={"button"} >
+              {`${row.row.original.pmid} (${row.row.original.n_evidences ?? 0} Evidences, ${row.row.original.n_triples ?? 0} Triples)`}
             </div>
           );
         },
       },
       {
         Header: "Triple status",
-        accessor: "status",
+        accessor: "triples_status",
         Cell: (row) => {
           return (
             <TableTagContainer>
               <Tag
-                label={row.row.original.status}
-                type={row.row.original.status.toLowerCase()}
+                label={row.row.original.triples_status ?? row.row.original.status}
+                type={row.row.original.status ? row.row.original.status?.toLowerCase() : row.row.original.triples_status?.toLowerCase}
               />
             </TableTagContainer>
           );
@@ -51,83 +53,25 @@ const TripleHistoryTable = ({
       },
       {
         Header: "Date and time",
-        accessor: "Date and time",
+        accessor: "data_time",
       },
     ],
-    []
+    [data]
   );
 
-  useEffect(() => {
-    // dummy data
-    setData([
-      {
-        Triple: "134678 (12 Evidences, 20 Triples)",
-        status: "Approved",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "434678 (12 Evidences, 20 Triples)",
-        status: "Reverted",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "534678 (12 Evidences, 20 Triples)",
-        status: "Approved",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "534678 (12 Evidences, 20 Triples)",
-        status: "Approved",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "434678 (12 Evidences, 20 Triples)",
-        status: "Reverted",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
-        "Date and time": "22-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
-        "Date and time": "11-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "234678 (12 Evidences, 20 Triples)",
-        status: "Committed",
-        "Date and time": "19-05-2022 at 5:30 PM",
-      },
-      {
-        Triple: "334678 (12 Evidences, 20 Triples)",
-        status: "In Draft",
-        "Date and time": "22-05-2022 at 5:30 PM",
-      },
-    ]);
+  const handleData = (result) => {
+    setData(result);
     setLoading(false);
-    // dummy data
+  }
+
+
+  useEffect(() => {
+    setLoading(true);
+    if (isCompleteList) {
+      getCompleteContributorHistory(filter, handleData);
+    } else {
+      getRecentContributorHistory(handleData);
+    }
   }, []);
 
   return (

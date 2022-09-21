@@ -10,7 +10,7 @@ import {
 } from "assets/styles/main.styles";
 
 
-const TripleBlock = ({ commentData, chipContent, code }) => {
+const TripleBlock = ({ commentData, chipContent, code,addedCommentData }) => {
   return (
     <>
       <Box>
@@ -40,6 +40,17 @@ const TripleBlock = ({ commentData, chipContent, code }) => {
             <TextBlock label={item.user} value={item.comment} />
           </CommentBlock>
         ))}
+        {(addedCommentData?.length && addedCommentData[0].comment_reviewer) ?
+            <>
+              {addedCommentData?.map((item) => (
+                <CommentBlock>
+                  <TextBlock label={"Reviewer"} value={item.comment_reviewer} />
+                </CommentBlock>
+              ))}
+            </>
+            :
+            null
+          }
       </Box>
     </>
   );

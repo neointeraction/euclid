@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Grid } from "@mui/material";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 
@@ -17,57 +17,41 @@ import {
 } from "assets/styles/main.styles";
 
 import Chart1 from "assets/images/temp/chart1.png";
+import { getDonutChart, getTop10EntitiesGraph, getTriplesAndEvidencesGraph } from "config/api.service";
+import PieChart from "components/Charts/PieChart";
 // import Chart2 from "assets/images/temp/chart2.png";
 // import Chart3 from "assets/images/temp/chart3.png";
 // import Chart4 from "assets/images/temp/chart4.png";
 
-const dataBar = [
-  {
-    name: "8 Jun",
-    uv: 2780,
-    pv: 34,
-    amt: 30,
-  },
-  {
-    name: "9 Jun",
-    uv: 1890,
-    pv: 20,
-    amt: 40,
-  },
-  {
-    name: "10 Jun",
-    uv: 2390,
-    pv: 40,
-    amt: 15,
-  },
-  {
-    name: "11 Jun",
-    uv: 3490,
-    pv: 15,
-    amt: 20,
-  },
-  {
-    name: "12 Jun",
-    uv: 3490,
-    pv: 5,
-    amt: 5,
-  },
-  {
-    name: "13 Jun",
-    uv: 3490,
-    pv: 32,
-    amt: 20,
-  },
-  {
-    name: "14 Jun",
-    uv: 3490,
-    pv: 22,
-    amt: 20,
-  },
-];
 
 const SearchResult = () => {
   const navigate = useNavigate();
+  const [top10EntitiesGraphData, setTop10EntitiesGraphData] = useState([]);
+  const [triplesAndEvidencesGraph, setTriplesAndEvidencesGraphData] = useState([]);
+  const [donutGraphDatas, setDonutGraphDatas] = useState([]);
+  const [innerDonutGraphDatas, setInnerDonutGraphDatas] = useState([]);
+  const location = useLocation();
+  const searchData = Object.keys(location.state.searchData);
+
+  useEffect(() => {
+    getTop10EntitiesGraph((result) => setTop10EntitiesGraphData(result));
+    getTriplesAndEvidencesGraph((result) => setTriplesAndEvidencesGraphData(result));
+    getDonutChart((result) => setDonutGraphDatas(result));
+  }, [])
+
+  const [levelId, setLevelId] = useState(1);
+
+  const handleChartLevel = (e) => {
+    if (levelId === 1) {
+      if (e?.payload?.payload?.dataPie2?.length) {
+        setInnerDonutGraphDatas(e?.payload?.payload?.dataPie2);
+        setLevelId(2);
+      }
+    } else {
+      setLevelId(1);
+    }
+  };
+
   return (
     <div>
       <PageHeader
@@ -76,15 +60,17 @@ const SearchResult = () => {
           <ActionFlexTitle>
             <Tooltip message="Add to Cart" position="bottom">
               <IconButton
+                disabled
                 secondary
-                onClick={() => {}}
+                onClick={() => { }}
                 icon={<AddShoppingCartOutlinedIcon fontSize="small" />}
               />
             </Tooltip>
             <Button
               btnText="Buy now for $200"
               variant="contained"
-              onClick={() => {}}
+              onClick={() => { }}
+              disabled
             />
           </ActionFlexTitle>
         }
@@ -103,25 +89,65 @@ const SearchResult = () => {
               alignItems="center"
               justifyContent="flex-end"
             >
-              <Grid item xs={11} textAlign="right">
+              <Grid item xs={5} textAlign="left">
+                <ChipsContainer >
+                  {searchData.map((item, i) => {
+                    return (
+                      <>
+                        {
+                          <Chip
+                            content={[{ labelKey: item, labelValue: location.state.searchData[item] }]}
+                          />
+                        }
+                      </>
+                    )
+                  })
+                  }
+                </ChipsContainer>
+              </Grid>
+              <Grid item xs={6} textAlign="right">
                 <ChipsContainer moMargin>
-                  <Chip
-                    content={[
-                      { labelKey: "Species", labelValue: "Human Beings" },
-                    ]}
-                  />
-                  <Chip
-                    content={[
-                      { labelKey: "Species", labelValue: "Human Beings" },
-                    ]}
-                  />
+                  {location.state.context.map((item, i) => {
+                    return (
+                      <>
+                        {typeof (item) === "string" ?
+                          <Chip
+                            isSingleString={true}
+                            content={item}
+                          />
+                          :
+                          <Chip
+                            content={[{ labelKey: item.context, labelValue: item.contextValue }]}
+                          />
+                        }
+                      </>
+                    )
+                  })
+                  }
+                  {location.state.entities.map((item, i) => {
+                    return (
+                      <>
+                        {typeof (item) === "string" ?
+                          <Chip
+                            isSingleString={true}
+                            content={item}
+                          />
+                          :
+                          <Chip
+                            content={[{ labelKey: item.entityType, labelValue: item.entityValue }]}
+                          />
+                        }
+                      </>
+                    )
+                  })
+                  }
                 </ChipsContainer>
               </Grid>
               <Grid item xs={1} textAlign="right">
                 <Button
                   btnText="Modify"
                   variant="outlined"
-                  onClick={() => navigate("/query-triple")}
+                  onClick={() => navigate("/query-triple", { state: { context: location.state.context, entities: location.state.entities } })}
                 />
               </Grid>
             </Grid>
@@ -131,7 +157,12 @@ const SearchResult = () => {
       <Section>
         <Box>
           <SectionTitle>Types of Entities:</SectionTitle>
-          <TempImage src={Chart1} alt="Temp1" />
+          <PieChart
+            data={levelId === 1 ? donutGraphDatas : innerDonutGraphDatas}
+            onClickHandler={handleChartLevel}
+            levelId={levelId}
+            setLevelId={setLevelId}
+          />
         </Box>
       </Section>
       <Grid container spacing={2} alignItems="baseline">
@@ -141,7 +172,7 @@ const SearchResult = () => {
               <SectionTitle>
                 Top 10 Entities & Its Number of occurance:
               </SectionTitle>
-              <BarGraphChart data={dataBar} />
+              <BarGraphChart data={top10EntitiesGraphData} />
             </Box>
           </Section>
         </Grid>
@@ -150,7 +181,7 @@ const SearchResult = () => {
       <Section>
         <Box>
           <SectionTitle>Evidence supporting each Triple:</SectionTitle>
-          <BarGraphChart data={dataBar} layout="vertical" />
+          <BarGraphChart height={430} data={triplesAndEvidencesGraph} layout="vertical" />
         </Box>
       </Section>
     </div>
