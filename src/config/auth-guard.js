@@ -7,7 +7,6 @@ export const PrivateRouteComponent = ({ child, roles, shouldAuthenticate }) => {
     const [isAuthorized, setIsAuthorized] = useState(false);
 
     useEffect(() => {
-        console.log(userDetails, roles?.length)
         if (userDetails?.userRoles?.length && roles?.length) {
             setIsAuthorized(roles.includes(userDetails?.userRoles[0]));
         }

@@ -61,16 +61,17 @@ const TripleHistoryTable = ({
 
   const handleData = (result) => {
     setData(result);
+    setLoading(false);
   }
 
 
   useEffect(() => {
+    setLoading(true);
     if (isCompleteList) {
-      getCompleteContributorHistory(handleData);
+      getCompleteContributorHistory(filter, handleData);
     } else {
       getRecentContributorHistory(handleData);
     }
-    setLoading(false);
   }, []);
 
   return (

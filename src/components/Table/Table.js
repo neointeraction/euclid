@@ -32,6 +32,8 @@ import {
   CustomTable,
   TableHeader,
 } from "./table.styles";
+import { CircularProgress } from "@mui/material";
+import Loading from "components/Loading";
 
 const Table = ({
   columns,
@@ -215,7 +217,7 @@ const Table = ({
         </div>
         <div className="tbody">
           {isLoading ? (
-            "loading"
+            <Loading />
           ) : page.length === 0 ? (
             <div className="empty-table">
               <div className="empty-table-content">

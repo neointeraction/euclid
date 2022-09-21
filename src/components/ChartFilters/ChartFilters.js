@@ -98,10 +98,12 @@ const ChartFilters = ({
                 <ArrowUpwardOutlinedIcon fontSize="small" htmlColor="#59A14F" />
               )}
             </SummaryIcon>
-            <SummaryText>
-              <span>Last 10 days</span>
-              {averageText}
-            </SummaryText>
+            {valueDuration === "days" ?
+              <SummaryText>
+                <span>Last 10 days</span>
+              </SummaryText>
+              :
+              null}
           </SummaryBlock>
         </Grid>
       </Grid>

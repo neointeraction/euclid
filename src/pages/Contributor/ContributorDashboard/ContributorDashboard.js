@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Grid from "@mui/material/Grid";
@@ -21,6 +21,7 @@ import {
 } from "assets/styles/main.styles";
 import { BarGraphChart, RadialChart } from "components/Charts";
 import { getContributorDashboardDetails, getContributorHistogram, getPoints, getSatisfaction } from "config/api.service";
+import { UserContext } from "layout/MainLayout/MainLayout";
 
 const ContributorDashboard = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const ContributorDashboard = () => {
   const [point, setPoint] = useState(0);
   const [graphData, setGraphData] = useState([]);
   const [graphFilter, setGraphFilter] = useState({ type: "evidences", by: "days", last: "10" });
+  const { userDetails } = useContext(UserContext);
 
   const handleSatisfaction = (result) => {
     setSatisfaction([{ name: "Overall Satisfaction", value: result }])
@@ -45,7 +47,7 @@ const ContributorDashboard = () => {
   }, []);
 
   useEffect(() => {
-    getContributorHistogram(graphFilter,(result) => { setGraphData(result) });
+    getContributorHistogram(graphFilter, (result) => { setGraphData(result) });
   }, [graphFilter])
 
   const handleDurtionChange = (e) => {
@@ -60,13 +62,13 @@ const ContributorDashboard = () => {
     <div>
       <PageHeader
         isHomePage
-        user="Rob"
+        user={userDetails.nickname}
         btnText="Add Triple"
         onClick={() => navigate("/add-triple")}
       />
       <PointBanner
         points={point}
-        user="Rob"
+        user=""
         infoText="You’ve been rewarded with Rs. 2000 in your Zeta Gift Card from
             Better world Technologies."
       />
@@ -110,7 +112,7 @@ const ContributorDashboard = () => {
               onClick={() =>
                 navigate("/triple-history", {
                   state: {
-                    filter: "Approved",
+                    filter: "valid",
                   },
                 })
               }
@@ -124,7 +126,7 @@ const ContributorDashboard = () => {
               onClick={() =>
                 navigate("/triple-history", {
                   state: {
-                    filter: "Reverted",
+                    filter: "reverted",
                   },
                 })
               }
@@ -138,7 +140,7 @@ const ContributorDashboard = () => {
               onClick={() =>
                 navigate("/triple-history", {
                   state: {
-                    filter: "Committed",
+                    filter: "committed",
                   },
                 })
               }

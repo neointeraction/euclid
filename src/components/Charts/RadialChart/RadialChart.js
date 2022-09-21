@@ -47,7 +47,7 @@ const RadialChart = ({ data, circleSize }) => {
           />
 
           <text
-            x={circleSize / 1.6}
+            x={circleSize/1.3}
             y={circleSize / 2}
             textAnchor="middle"
             dominantBaseline="middle"
@@ -56,7 +56,7 @@ const RadialChart = ({ data, circleSize }) => {
             {data[0].value}%
           </text>
           <text
-            x={circleSize / 1.6}
+            x={circleSize / 1.3}
             y={circleSize / 1.7}
             textAnchor="middle"
             dominantBaseline="middle"

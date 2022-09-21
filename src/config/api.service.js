@@ -98,7 +98,7 @@ export function saveTriples(data, successCallback) {
         });
 }
 
-export function commitTriples(data, successCallback) {
+export function commitTriples(data, successCallback, errorCallback) {
     axios({
         url: baseUrl + "contributor/commit",
         method: "POST",
@@ -106,7 +106,11 @@ export function commitTriples(data, successCallback) {
         data
     })
         .then((response) => {
-            if (response.data.result === SUCCESS) successCallback(response.data.message);
+            if (response.data.result === SUCCESS) {
+                successCallback(response.data.message);
+            } else {
+                errorCallback(response.data.message);
+            }
         })
         .catch((error) => {
             console.log(error);
@@ -159,6 +163,21 @@ export function getFullHistory(data, successCallback) {
 export function getEvidence(pubId, successCallback) {
     axios({
         url: baseUrl + "reviewer/get_evidence",
+        method: "POST",
+        headers: getHeaders(),
+        data: { pubid: pubId }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getAdminEvidence(pubId, successCallback) {
+    axios({
+        url: baseUrl + "admin/get_evidence",
         method: "POST",
         headers: getHeaders(),
         data: { pubid: pubId }
@@ -641,12 +660,12 @@ export function getPoints(successCallback) {
 }
 
 
-export function getCompleteContributorHistory(successCallback) {
+export function getCompleteContributorHistory(status, successCallback) {
     axios({
         url: baseUrl + "contributor/get_full_history",
         method: "POST",
         headers: getHeaders(),
-        data: { page_num: "0", page_size: "10" }
+        data: { page_num: "0", page_size: "10", status }
     })
         .then((response) => {
             if (response.data.result === SUCCESS) successCallback(response.data.message);

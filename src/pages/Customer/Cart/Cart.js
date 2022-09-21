@@ -18,7 +18,7 @@ const Cart = () => {
           <Button
             btnText="Buy Triple"
             variant="contained"
-            disabled={selectedRow.length <= 0 ? true : false}
+            disabled={true}
             onClick={() => navigate("/search-result")}
           />
         }

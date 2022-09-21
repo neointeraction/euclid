@@ -10,13 +10,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const BarGraphChart = ({ data, layout }) => {
+const BarGraphChart = ({ data, layout, height }) => {
   return (
     <div>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={height ?? 300}>
         <BarChart
           width={600}
-          height={300}
+          height={height ?? 300}
           layout={layout}
           data={data}
           margin={{

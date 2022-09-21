@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Grid from "@mui/material/Grid";
@@ -26,6 +26,7 @@ import {
   SectionFlex,
 } from "assets/styles/main.styles";
 import { getCustomerDashboardDetails, getCustomerHistogram, getCustomerRealTimeGraph } from "config/api.service";
+import { UserContext } from "layout/MainLayout/MainLayout";
 
 const dataBar = [
   {
@@ -78,6 +79,7 @@ const CustomerDashboard = () => {
   const [graphFilter, setGraphFilter] = useState({ by: "days", last: "10" });
   const [graphData, setGraphData] = useState([]);
   const [realTimeGraphData, setRealTimeGraphData] = useState([]);
+  const { userDetails } = useContext(UserContext);
 
   useEffect(() => {
     getCustomerDashboardDetails((result) => { setDataCounts(result) });
@@ -99,7 +101,7 @@ const CustomerDashboard = () => {
     <div>
       <PageHeader
         isHomePage
-        user="Rob"
+        user={userDetails?.nickname}
         rightSideContent={
           <ActionFlexTitle>
             <Tooltip message="Go to Cart" position="bottom">
@@ -149,14 +151,14 @@ const CustomerDashboard = () => {
       <Section>
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={3}>
-            <Card count={dataCounts.n_evidence_downloaded} title="Evidence Downloaded" color="purple" />
+            <Card count={dataCounts.n_evidence_downloaded} title="Evidence Downloaded" color="purple" isNotClickable={true} />
           </Grid>
           <Grid item xs={3}>
             <Card
               count={dataCounts.n_triples_downloaded}
               title="Triples Downloaded"
               color="green"
-              onClick={() => { }}
+              isNotClickable={true}
             />
           </Grid>
           <Grid item xs={3}>
@@ -164,7 +166,7 @@ const CustomerDashboard = () => {
               count={dataCounts.amount_paid}
               title="Amount Paid"
               color="red"
-              onClick={() => { }}
+              isNotClickable={true}
             />
           </Grid>
           <Grid item xs={3}>
@@ -172,7 +174,7 @@ const CustomerDashboard = () => {
               count={dataCounts.n_triples_in_cart}
               title="Triples in Cart"
               color="blue"
-              onClick={() => { }}
+              isNotClickable={true}
             />
           </Grid>
         </Grid>

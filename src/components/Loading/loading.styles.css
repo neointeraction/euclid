@@ -1,0 +1,19 @@
+.loading-table {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-table-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loading-data-text {
+  font-size: 14px;
+  font-weight: 300;
+  margin-top: 10px;
+}

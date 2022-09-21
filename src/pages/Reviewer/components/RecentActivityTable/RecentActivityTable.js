@@ -56,7 +56,7 @@ const RecentActivityTable = ({
         accessor: "pmid",
         Cell: (row) => {
           return (
-            <div role={"button"} onClick={() => handleOnClick(row.row.original.triples_status ?? row.row.original.status, row.row.original.pmid)}>
+            <div className="table-nav-link" onClick={() => handleOnClick(row.row.original.triples_status ?? row.row.original.status, row.row.original.pmid)}>
               {`${row.row.original.pmid} (${row.row.original.n_evidences ?? 0} Evidences, ${row.row.original.n_triples ?? 0} Triples)`}
             </div>
           );
@@ -70,7 +70,7 @@ const RecentActivityTable = ({
             <TableTagContainer>
               <Tag
                 label={row.row.original.triples_status ?? row.row.original.status}
-                type={row.row.original.status ? row.row.original.status?.toLowerCase() : row.row.original.triples_status?.toLowerCase}
+                type={row.row.original.status ? row.row.original.status?.toLowerCase() : row.row.original.triples_status?.toLowerCase()}
               />
             </TableTagContainer>
           );
@@ -81,14 +81,16 @@ const RecentActivityTable = ({
         accessor: "data_time",
       },
     ],
-    [dataList]
-  );
+    [dataList]);
 
 
   useEffect(() => {
     // dummy data
-    setData(dataList);
-    setLoading(false);
+    setLoading(true);
+    if (dataList?.length) {
+      setData(dataList);
+      setLoading(false);
+    }
     // dummy data
   }, [dataList]);
 

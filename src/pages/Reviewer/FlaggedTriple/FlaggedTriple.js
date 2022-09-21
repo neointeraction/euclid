@@ -86,10 +86,15 @@ const FlaggedTriple = () => {
 
   const handleTripleChecked = (id, checked) => {
     let temp = [...checkedTriple];
+    const i = temp.findIndex(item => item.id === id);
     if (checked) {
-      temp.push({ id });
+      if (i >= 0) {
+        temp[i] = { ...temp[i], notChecked: false }
+      } else {
+        temp.push({ id, notChecked: false });
+      }
     } else {
-      temp = temp.filter(item => item.id !== id)
+      temp[i] = { ...temp[i], notChecked: true }
     }
     setTripleChecked(temp);
   }
@@ -103,13 +108,14 @@ const FlaggedTriple = () => {
   const forwardToAdminCallback = (result) => {
     setShowAlert(true);
     getEvidence(id, handleData);
+    navigate(-1);
   }
 
   const forwardToAdmin = () => {
     let commentData = {
       pubid: id,
       evidence_no: data[index].id,
-      triples: checkedTriple
+      triples: checkedTriple.filter(item => item.notChecked === false)
     }
     forwardTripleToAdmin(commentData, forwardToAdminCallback)
   }
@@ -119,7 +125,7 @@ const FlaggedTriple = () => {
       <PageHeader subText="Triples" pageTitleText={id} />
       <Section>
         <Box bordered>
-          <BodyText dangerouslySetInnerHTML={{ __html: data[index]?.text }} onClick={handlePopoverOpen}/>
+          <BodyText dangerouslySetInnerHTML={{ __html: data[index]?.text }} onClick={handlePopoverOpen} />
           <BodyTextLight>
             {`${index + 1}/${data.length}`}
           </BodyTextLight>
@@ -175,6 +181,7 @@ const FlaggedTriple = () => {
         if (item?.comment_reviewer) {
           commentData.push({ user: "Reviewer", comment: item.comment_reviewer })
         }
+        const addedCommentData = checkedTriple.filter(element => element.id === item.id);
         return (
           <Section>
             <TrippleCollapsed
@@ -182,12 +189,14 @@ const FlaggedTriple = () => {
               hasCheckbox
               setTripleChecked={(checked) => handleTripleChecked(item.id, checked)}
               commentData={commentData}
+              addedCommentData={addedCommentData}
               key={item}
               chipContent={item.code}
-              onChange={(e) => addComment(item.id, e.target.value)}
+              onChange={(value) => addComment(item.id, value)}
+              checked={(checkedTriple.filter(element => (element.id === item.id && element?.notChecked === false)))?.length > 0}
             >
               <TripleCollapseContainer>
-                <TripleBlock commentData={commentData} chipContent={contextValues} code={item.code} />
+                <TripleBlock commentData={commentData} chipContent={contextValues} code={item.code} addedCommentData={addedCommentData} />
                 {/* condition added for Demo  */}
               </TripleCollapseContainer>
             </TrippleCollapsed>
@@ -225,7 +234,7 @@ const FlaggedTriple = () => {
                     <Grid item xs={3} textAlign="right">
                       <Button
                         btnText="Forward to Admin"
-                        disabled={checkedTriple.length === 0}
+                        disabled={(checkedTriple.filter(item => item.notChecked === false)).length === 0}
                         variant="contained"
                         onClick={() => forwardToAdmin()}
                       />

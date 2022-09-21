@@ -8,7 +8,7 @@ export const ExtendableSubjectTypeContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   gap: 15px;
-  background: ${(props) => (props.noBg ? "#fff" : " #daeaf3")};
+  background: ${(props) => (props.noBg ? "#fff" : props.bgColor !== null ? props.bgColor : " #daeaf3")};
   border: 1px solid #005585;
   border-radius: 4px;
   transition: all;
@@ -26,10 +26,24 @@ export const ExtendableSubjectTypeContainer = styled.div`
     opacity: 0;
     margin-top: -5px;
   }
+  & .action-icons-wrapper-disabled {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0;
+    margin-top: -5px;
+  }
   &:hover {
     & .action-icons-wrapper {
       opacity: 1;
       transition: 0.3s all ease-in-out;
+    }
+    & .action-icons-wrapper-disabled {
+      opacity: 0.3;
+      transition: 0.3s all ease-in-out;
+      & img {
+        cursor: pointer;
+      }
     }
   }
 `;

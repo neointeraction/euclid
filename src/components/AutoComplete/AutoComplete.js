@@ -8,7 +8,7 @@ import { TextField } from "@mui/material";
 import { mockData } from "./mock";
 import { INFINITE_SCROLL } from "config/constants";
 
-const AutoComplete = ({ value, label, placeholder, isDropdown, options, onChange, type, onScrollFunction, valueUpdate, searchFunction, ...rest }) => {
+const AutoComplete = ({ value, label, placeholder, isDropdown, options, onChange, type, onScrollFunction, valueUpdate, searchFunction, onKeyDown, ...rest }) => {
   return (
     <AutoCompleteContainer>
       <InputLabel size="normal" shrink htmlFor="custom-input">
@@ -16,18 +16,21 @@ const AutoComplete = ({ value, label, placeholder, isDropdown, options, onChange
       </InputLabel>
       {type !== INFINITE_SCROLL ?
         <Autocomplete
+          onKeyDown={onKeyDown}
           value={value}
           onChange={(e, values) => onChange(values)}
           disablePortal
           options={options ? options : mockData}
           freeSolo={isDropdown ? false : true}
           renderInput={(params) => (
-            <TextField {...params} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} value={value} />
+            <TextField onKeyDown={onKeyDown} {...params} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} value={value} />
           )}
           {...rest}
         />
         :
         <Autocomplete
+          onKeyDown={onKeyDown}
+
           value={value}
           ListboxProps={{
             onScroll: (e) => {

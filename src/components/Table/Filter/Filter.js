@@ -13,12 +13,12 @@ const Filter = ({ setFilterValue, reviewerFilter }) => {
           <span>Filter By:</span>
           <Tag label="All" type="all" onClick={() => setFilterValue("all")} />
           <Tag
-            label="Triples Validated"
+            label="Validated"
             type="approved"
             onClick={() => setFilterValue(VALIDATED)}
           />
           <Tag
-            label="Triples Flagged"
+            label="Flagged"
             type="in draft"
             onClick={() => {
               setFilterValue(FLAGGED);
@@ -30,7 +30,7 @@ const Filter = ({ setFilterValue, reviewerFilter }) => {
             onClick={() => setFilterValue(INVALID)}
           />
           <Tag
-            label="Triples Reverted"
+            label="Reverted"
             type="reverted"
             onClick={() => setFilterValue(REVERTED)}
           />

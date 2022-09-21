@@ -14,6 +14,7 @@ import {
   ActionBox,
 } from "assets/styles/main.styles";
 import { getCustomerContext, getCustomerContextValues, getCustomerEntities, getCustomerEntityTypes, searchTriples } from "config/api.service";
+import { ResetTv } from "@mui/icons-material";
 
 const QueryTriple = () => {
   const [context, setContext] = useState([]);
@@ -113,7 +114,6 @@ const QueryTriple = () => {
   }
 
   const handleContextOperations = (type) => {
-    console.log("zrk", type);
     let temp = [...selectedContexts]
     if (type === "ADD") {
       temp.push(state);
@@ -194,6 +194,12 @@ const QueryTriple = () => {
     }
   }, [location]);
 
+  const reset = () => {
+    setSelectedContexts([]);
+    setSelectedEntities([]);
+    setState({context: "",contextValue: ""});
+    setEntityState({entityType: "",entityValue: ""});
+  }
 
   return (
     <div>
@@ -358,7 +364,7 @@ const QueryTriple = () => {
                 <Button
                   btnText="Reset"
                   variant="outlined"
-                  onClick={() => console.log("clicked")}
+                  onClick={() => reset()}
                 />
               </Grid>
               <Grid item xs={3} textAlign="right">

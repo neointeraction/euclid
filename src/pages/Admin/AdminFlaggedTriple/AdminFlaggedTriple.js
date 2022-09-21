@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Grid } from "@mui/material";
+import { bottomNavigationClasses, Grid } from "@mui/material";
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 
@@ -18,7 +18,7 @@ import {
   ActionBox,
   AlertWrapper,
 } from "assets/styles/main.styles";
-import { fixOrCloseTriple, getEvidence } from "config/api.service";
+import { fixOrCloseTriple, getAdminEvidence, getEvidence } from "config/api.service";
 
 const AdminFlaggedTriple = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const AdminFlaggedTriple = () => {
 
   useEffect(() => {
     if (id) {
-      getEvidence(id, handleData);
+      getAdminEvidence(id, handleData);
     }
   }, [id]);
 
@@ -74,7 +74,8 @@ const AdminFlaggedTriple = () => {
   const handleFixedOrClosedCallback = (result) => {
     setAlertMessage("The Fix or close is Successful");
     setShowAlert(true);
-    getEvidence(id, handleData);
+    getAdminEvidence(id, handleData);
+    navigate(-1);
   }
 
   const handleFixedOrClosed = () => {

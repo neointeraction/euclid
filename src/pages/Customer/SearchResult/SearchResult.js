@@ -52,7 +52,6 @@ const SearchResult = () => {
     }
   };
 
-  console.log("zrk", donutGraphDatas);
   return (
     <div>
       <PageHeader
@@ -61,6 +60,7 @@ const SearchResult = () => {
           <ActionFlexTitle>
             <Tooltip message="Add to Cart" position="bottom">
               <IconButton
+                disabled
                 secondary
                 onClick={() => { }}
                 icon={<AddShoppingCartOutlinedIcon fontSize="small" />}
@@ -70,6 +70,7 @@ const SearchResult = () => {
               btnText="Buy now for $200"
               variant="contained"
               onClick={() => { }}
+              disabled
             />
           </ActionFlexTitle>
         }
@@ -180,7 +181,7 @@ const SearchResult = () => {
       <Section>
         <Box>
           <SectionTitle>Evidence supporting each Triple:</SectionTitle>
-          <BarGraphChart data={triplesAndEvidencesGraph} layout="vertical" />
+          <BarGraphChart height={430} data={triplesAndEvidencesGraph} layout="vertical" />
         </Box>
       </Section>
     </div>

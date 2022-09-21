@@ -117,7 +117,7 @@ const EditTriple = () => {
                   labelValue: "Phosphorylation",
                 },
               ]}
-              setTripleChecked = {(checked)=>console.log(checked)}
+              setTripleChecked={(checked) => console.log(checked)}
             >
               <TripleCollapseContainer>
                 <TripleForm />
@@ -146,7 +146,7 @@ const EditTriple = () => {
                   <Button
                     btnText="Cancel"
                     variant="outlined"
-                    onClick={() => navigate("/triple-view")}
+                    onClick={() => navigate(-1)}
                   />
                 </Grid>
                 <Grid item xs={3} textAlign="right">
