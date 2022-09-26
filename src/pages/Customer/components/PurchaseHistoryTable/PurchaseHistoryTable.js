@@ -19,11 +19,16 @@ const PurchaseHistoryTable = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [purchaseDetails, setPurchaseDetails] = useState([]);
+  const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 });
+
+  const handlePagination = (pagination) => {
+    setPagination(pagination);
+  }
 
   useEffect(() => {
     setLoading(true);
     isCompleteList ?
-      getCompletePurchaseDetails((result) => {
+      getCompletePurchaseDetails(pagination,(result) => {
         setPurchaseDetails(result);
         setLoading(false);
       })
@@ -32,7 +37,7 @@ const PurchaseHistoryTable = ({
         setPurchaseDetails(result);
         setLoading(false);
       })
-  }, []);
+  }, [pagination]);
 
   const columns = React.useMemo(
     () => [
@@ -70,6 +75,7 @@ const PurchaseHistoryTable = ({
         defaultFilter={filter}
         hideSearch={hideSearch}
         hideFilter={hideFilter}
+        handlePagination={handlePagination}
       />
     </div>
   );

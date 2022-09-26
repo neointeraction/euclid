@@ -14,15 +14,16 @@ const TripleHistoryTable = ({
 }) => {
   const [openModal, setOpenModal] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpenModal(true);
-  };
-
   const handleClose = () => {
     setOpenModal(false);
   };
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 });
+
+  const handlePagination = (pagination) => {
+    setPagination(pagination);
+  }
 
   const columns = React.useMemo(
     () => [
@@ -68,11 +69,11 @@ const TripleHistoryTable = ({
   useEffect(() => {
     setLoading(true);
     if (isCompleteList) {
-      getCompleteContributorHistory(filter, handleData);
+      getCompleteContributorHistory(pagination, filter, handleData);
     } else {
       getRecentContributorHistory(handleData);
     }
-  }, []);
+  }, [pagination]);
 
   return (
     <div className="table-container">
@@ -84,6 +85,7 @@ const TripleHistoryTable = ({
         defaultFilter={filter}
         hideSearch={hideSearch}
         hideFilter
+        handlePagination={handlePagination}
       />
       <Modal
         size="lg"

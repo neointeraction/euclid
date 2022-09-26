@@ -18,11 +18,11 @@ const RecentActivityTable = ({
   hideSearch,
   hideFilter,
   dataList,
-  setSelectedFilter
+  setSelectedFilter,
+  handlePagination
 }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 });
   const [viewValidatedEvidence, setViewValidatedEvidence] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const navigate = useNavigate();
@@ -30,6 +30,8 @@ const RecentActivityTable = ({
   const handleValidatedEvidenceClose = () => {
     setViewValidatedEvidence(false);
   }
+
+  
 
   const handleOnClick = (status, id) => {
     switch (status) {
@@ -85,13 +87,9 @@ const RecentActivityTable = ({
 
 
   useEffect(() => {
-    // dummy data
     setLoading(true);
-    if (dataList?.length) {
-      setData(dataList);
-      setLoading(false);
-    }
-    // dummy data
+    setData(dataList);
+    setLoading(false);
   }, [dataList]);
 
   return (
@@ -105,6 +103,7 @@ const RecentActivityTable = ({
         hideSearch={hideSearch}
         isReviewerFilter={true}
         setSelectedFilter={setSelectedFilter}
+        handlePagination={handlePagination}
       />
       {viewValidatedEvidence &&
         <Modal

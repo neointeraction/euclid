@@ -8,14 +8,19 @@ import { getTriplesFlagged } from "config/api.service";
 const FlaggedTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 });
+
+  const handlePagination = (pagination) => {
+    setPagination(pagination);
+  }
 
   const handleData = (result) => {
     setData(result);
   }
 
   useEffect(() => {
-    getTriplesFlagged(handleData)
-  }, [])
+    getTriplesFlagged(pagination, handleData)
+  }, [pagination])
 
   const columns = React.useMemo(
     () => [
@@ -63,6 +68,7 @@ const FlaggedTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
         hideSearch={hideSearch}
         hideFilter={hideFilter}
         setSelectedRow={setSelectedRow}
+        handlePagination={handlePagination}
       />
     </div>
   );

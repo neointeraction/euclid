@@ -32,9 +32,15 @@ const CartTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 });
+
+  const handlePagination = (pagination) => {
+    setPagination(pagination);
+  }
+
   useEffect(() => {
-    getCartItems((result) => setData(result))
-  }, [])
+    getCartItems(pagination, (result) => setData(result))
+  }, [pagination])
 
   const columns = React.useMemo(
     () => [
@@ -158,6 +164,7 @@ const CartTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
         hideSearch={hideSearch}
         hideFilter={hideFilter}
         setSelectedRow={setSelectedRow}
+        handlePagination={handlePagination}
       />
       <ConfirmationModal
         openModal={openModalConfirm}

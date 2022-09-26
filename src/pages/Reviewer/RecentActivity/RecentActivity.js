@@ -11,21 +11,26 @@ const RecentActivity = () => {
   const { state } = useLocation();
   const [fullHistory, setFullHistory] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("all")
+  const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 });
 
   const saveFullHistoryList = (result) => {
     setFullHistory(result);
   }
 
   useEffect(() => {
-    getFullHistory({ page_num: 0, page_size: 1000, status: selectedFilter }, saveFullHistoryList);
-  }, [selectedFilter])
+    getFullHistory({ ...pagination, status: selectedFilter }, saveFullHistoryList);
+  }, [selectedFilter,pagination])
+
+  const handlePagination = (pagination) => {
+    setPagination(pagination);
+  }
 
   return (
     <div>
       <PageHeader pageTitleText="Recent Activity" />
       <Section>
         <Box>
-          <RecentActivityTable isCompleteList filter={state?.filter} dataList={fullHistory} setSelectedFilter={setSelectedFilter} />
+          <RecentActivityTable  isCompleteList handlePagination={handlePagination} filter={state?.filter} dataList={fullHistory} setSelectedFilter={setSelectedFilter} />
         </Box>
       </Section>
     </div>

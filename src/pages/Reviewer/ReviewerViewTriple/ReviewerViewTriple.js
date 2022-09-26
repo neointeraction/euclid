@@ -46,7 +46,7 @@ const ReviewerViewTriple = () => {
   const [data, setData] = useState([]);
   const [index, setIndex] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
-  const [checkedTriples, setCheckedTriples] = useState([]);
+  const [checkedTriples, setCheckedTriples] = useState({});
 
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -100,6 +100,15 @@ const ReviewerViewTriple = () => {
     }
   }, [id]);
 
+  const handleChecked = (isChecked, item) => {
+    if (isChecked) {
+      setCheckedTriples(item);
+    } else {
+      setCheckedTriples({});
+    }
+  }
+
+  
   return (
     <div>
       <PageHeader subText="Triples" pageTitleText={id} />
@@ -151,7 +160,7 @@ const ReviewerViewTriple = () => {
           </Grid>
         </Grid>
       </ActionBox>
-      {data[0]?.codes?.map((item, index) => {
+      {data[index]?.codes?.map((item, i) => {
         const contextValues = [];
         for (let context of Object.keys(item.context)) {
           contextValues.push({ labelKey: context, labelValue: item.context[context] })
@@ -163,61 +172,65 @@ const ReviewerViewTriple = () => {
               hasCheckbox
               key={item}
               chipContent={item.code}
+              setTripleChecked={(e) => handleChecked(e, item)}
+              checked={checkedTriples.id === item.id}
             >
               <TripleCollapseContainer>
                 <TripleBlock chipContent={contextValues} code={item.code} />
               </TripleCollapseContainer>
             </TrippleCollapsed>
-            <ActionBox>
-              <Grid
-                container
-                spacing={0}
-                alignItems="center"
-                justifyContent="flex-end"
-              >
-                <Grid item xs={6} textAlign="left">
-                  <Grid
-                    container
-                    spacing={2}
-                    alignItems="center"
-                    justifyContent="flex-start"
-                  >
-                    <Grid item xs={2} textAlign="left">
-                      <Button
-                        btnText="Back"
-                        variant="secondary"
-                        onClick={() => navigate(-1)}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={6} textAlign="right">
-                  <Grid
-                    container
-                    spacing={2}
-                    alignItems="center"
-                    justifyContent="flex-end"
-                  >
-                    <Grid item xs={3} textAlign="right">
-                      <Button
-                        btnText="Approve"
-                        variant="outlined"
-                        onClick={() => approveTripleData()}
-                      />
-                    </Grid>
-                    <Grid item xs={3} textAlign="right">
-                      <Button
-                        btnText="Modify This"
-                        variant="contained"
-                        onClick={() => navigate(`/edit-triple/${id}`)}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </ActionBox>
           </Section>)
       })}
+      <ActionBox>
+        <Grid
+          container
+          spacing={0}
+          alignItems="center"
+          justifyContent="flex-end"
+        >
+          <Grid item xs={6} textAlign="left">
+            <Grid
+              container
+              spacing={2}
+              alignItems="center"
+              justifyContent="flex-start"
+            >
+              <Grid item xs={2} textAlign="left">
+                <Button
+                  btnText="Back"
+                  variant="secondary"
+                  onClick={() => navigate(-1)}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={6} textAlign="right">
+            <Grid
+              container
+              spacing={2}
+              alignItems="center"
+              justifyContent="flex-end"
+            >
+              <Grid item xs={3} textAlign="right">
+                <Button
+                  btnText="Approve"
+                  variant="outlined"
+                  onClick={() => approveTripleData()}
+                  disabled={Object.keys(checkedTriples)?.length === 0}
+                />
+              </Grid>
+              <Grid item xs={3} textAlign="right">
+                <Button
+                  btnText="Modify This"
+                  variant="contained"
+                  onClick={() => navigate(`/edit-triple/${id}`, { state: { ...data[index], codes: checkedTriples } })}
+                  disabled={Object.keys(checkedTriples)?.length === 0}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </ActionBox>
       {
         showAlert && (
           <AlertWrapper>

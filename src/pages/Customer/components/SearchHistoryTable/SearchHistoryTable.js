@@ -19,11 +19,16 @@ const SearchHistoryTable = ({
 }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 });
+
+  const handlePagination = (pagination) => {
+    setPagination(pagination);
+  }
 
   useEffect(() => {
     setLoading(true);
     isCompleteList ?
-      getCompleteSearchDetails((result) => {
+      getCompleteSearchDetails(pagination, (result) => {
         setData(result);
         setLoading(false);
       })
@@ -32,7 +37,7 @@ const SearchHistoryTable = ({
         setData(result);
         setLoading(false);
       })
-  }, []);
+  }, [pagination]);
 
   const columns = React.useMemo(
     () => [
@@ -69,6 +74,7 @@ const SearchHistoryTable = ({
         defaultFilter={filter}
         hideSearch={hideSearch}
         hideFilter={hideFilter}
+        handlePagination={handlePagination}
       />
     </div>
   );

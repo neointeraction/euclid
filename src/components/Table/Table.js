@@ -32,7 +32,6 @@ import {
   CustomTable,
   TableHeader,
 } from "./table.styles";
-import { CircularProgress } from "@mui/material";
 import Loading from "components/Loading";
 
 const Table = ({
@@ -45,7 +44,8 @@ const Table = ({
   hideFilter,
   hideSearch,
   isReviewerFilter,
-  setSelectedFilter
+  setSelectedFilter,
+  handlePagination
 }) => {
   const defaultColumn = React.useMemo(
     () => ({
@@ -56,6 +56,8 @@ const Table = ({
     }),
     []
   );
+
+  const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 })
 
   const {
     getTableProps,
@@ -80,7 +82,8 @@ const Table = ({
       columns,
       data,
       defaultColumn,
-      initialState: { pageIndex: 0, pageSize: hidePagination ? 100 : 10 },
+      initialState: { pageIndex: 0, pageSize: hidePagination ? 10 : 20 },
+      manualPagination: true
     },
     useResizeColumns,
     useFlexLayout,
@@ -91,6 +94,7 @@ const Table = ({
     usePagination,
     useRowSelect
   );
+
 
   useEffect(() => {
     let selectedRowList = selectedFlatRows.map((d) => d.original);
@@ -145,6 +149,14 @@ const Table = ({
     defaultFilter && setFilterValue(defaultFilter);
   }, [defaultFilter]);
 
+  useEffect(() => {
+    !hidePagination &&
+      handlePagination(pagination)
+  }, [pagination]);
+
+
+
+  console.log(pageIndex, pageSize);
   return (
     <CustomTable>
       <TableHeader hideSearch={hideSearch}>
@@ -270,24 +282,23 @@ const Table = ({
               <p className="table-label">Go to page:</p>
               <Input
                 type="number"
-                defaultValue={pageIndex + 1}
+                value={pagination.page_num + 1}
                 onChange={(e) => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                  gotoPage(page);
+                  setPagination({ ...pagination, page_num: Number(e.target.value) > 0 ? Number(e.target.value) : 0 });
                 }}
               />
             </div>
             <div className="table-select">
               <p className="table-label">Row per page:</p>
               <Dropdown
-                value={pageSize}
+                value={pagination.page_size}
                 options={[
                   { id: 5, optionText: 5 },
                   { id: 10, optionText: 10 },
                   { id: 20, optionText: 20 },
                 ]}
                 onChange={(e) => {
-                  setPageSize(Number(e.target.value));
+                  setPagination({ ...pagination, page_size: Number(e.target.value) > 0 ? Number(e.target.value) : 10 });
                 }}
               />
             </div>
@@ -298,29 +309,27 @@ const Table = ({
             </div>
             <span className="pagination-controls">
               <button
-                onClick={() => gotoPage(0)}
-                disabled={!canPreviousPage}
+                onClick={() => setPagination({ ...pagination, page_num: pagination.page_num > 0 ? pagination.page_num - 1 : 0 })}
                 className="pagination-btn"
               >
                 <img src={LeftStart} alt="LeftStart" />
               </button>
               <button
-                onClick={() => previousPage()}
-                disabled={!canPreviousPage}
+                onClick={() => setPagination({ ...pagination, page_num: pagination.page_num > 0 ? pagination.page_num - 1 : 0 })}
                 className="pagination-btn"
               >
                 <img src={Left} alt="Left" />
               </button>
               <button
-                onClick={() => nextPage()}
-                disabled={!canNextPage}
+                onClick={() => setPagination({ ...pagination, page_num: pagination.page_num + 1 })}
+                // disabled={!canNextPage}
                 className="pagination-btn"
               >
                 <img src={Right} alt="Right" />
               </button>
               <button
-                onClick={() => gotoPage(pageCount - 1)}
-                disabled={!canNextPage}
+                onClick={() => setPagination({ ...pagination, page_num: pagination.page_num + 1 })}
+                // disabled={!canNextPage}
                 className="pagination-btn"
               >
                 <img src={RightEnd} alt="RightEnd" />
