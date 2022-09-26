@@ -117,6 +117,25 @@ export function commitTriples(data, successCallback, errorCallback) {
         });
 }
 
+export function reviewerCommitTriples(data, successCallback, errorCallback) {
+    axios({
+        url: baseUrl + "reviewer/commit",
+        method: "POST",
+        headers: getHeaders(),
+        data
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) {
+                successCallback(response.data.message);
+            } else {
+                errorCallback(response.data.message);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
 export function getTripleStatuses(successCallback) {
     axios({
         url: baseUrl + "reviewer/get_number_triples_statuses",
@@ -382,11 +401,12 @@ export function getCustomerDetails(successCallback) {
         });
 }
 
-export function getTriplesFlagged(successCallback) {
+export function getTriplesFlagged(pagination, successCallback) {
     axios({
         url: baseUrl + "admin/get_dashboard_triples_flagged",
         method: "POST",
         headers: getHeaders(),
+        data: pagination
     })
         .then((response) => {
             if (response.data.result === SUCCESS) successCallback(response.data.message);
@@ -484,12 +504,12 @@ export function getLastPurchaseDetails(successCallback) {
         });
 }
 
-export function getCompletePurchaseDetails(successCallback) {
+export function getCompletePurchaseDetails(pagination, successCallback) {
     axios({
         url: baseUrl + "customer/get_detailed_purchase",
         method: "POST",
         headers: getHeaders(),
-        data: { page_num: "0", page_size: "10" }
+        data: pagination
     })
         .then((response) => {
             if (response.data.result === SUCCESS) successCallback(response.data.message);
@@ -499,12 +519,12 @@ export function getCompletePurchaseDetails(successCallback) {
         });
 }
 
-export function getCompleteSearchDetails(successCallback) {
+export function getCompleteSearchDetails(pagination, successCallback) {
     axios({
         url: baseUrl + "customer/get_detailed_search",
         method: "POST",
         headers: getHeaders(),
-        data: { page_num: "0", page_size: "10" }
+        data: pagination
     })
         .then((response) => {
             if (response.data.result === SUCCESS) successCallback(response.data.message);
@@ -514,12 +534,12 @@ export function getCompleteSearchDetails(successCallback) {
         });
 }
 
-export function getCartItems(successCallback) {
+export function getCartItems(pagination, successCallback) {
     axios({
         url: baseUrl + "customer/get_cart_items",
         method: "POST",
         headers: getHeaders(),
-        data: { page_num: "0", page_size: "10" }
+        data: pagination
     })
         .then((response) => {
             if (response.data.result === SUCCESS) successCallback(response.data.message);
@@ -660,12 +680,12 @@ export function getPoints(successCallback) {
 }
 
 
-export function getCompleteContributorHistory(status, successCallback) {
+export function getCompleteContributorHistory(pagination, status, successCallback) {
     axios({
         url: baseUrl + "contributor/get_full_history",
         method: "POST",
         headers: getHeaders(),
-        data: { page_num: "0", page_size: "10", status }
+        data: { ...pagination, status }
     })
         .then((response) => {
             if (response.data.result === SUCCESS) successCallback(response.data.message);

@@ -778,9 +778,12 @@ const AddTriple = () => {
     } else {
       temp = temp.filter(item => item !== id);
     }
+    console.log(temp);
     setOpenList(temp);
   }
 
+  console.log("zrk1",editList);
+  console.log("zrk2",openList);
   return (
     <div>
       <a className="link-without-decoration" target="_blank" href={snippets?.url} rel="noreferrer">
@@ -875,6 +878,8 @@ const AddTriple = () => {
               chipContent={item.code}
               addToEditList={() => handleEdit("edit", item.id)}
               deleteFromEditList={() => handleEdit("readOnly", item.id)}
+              addToOpenList={() => handleOpen("open", item.id)}
+              deleteFromOpenList={() => handleOpen("close", item.id)}
               isNew={item.isNew}
               isOpen={openList?.includes(item.id)}
               isFlagged={item.flagged}

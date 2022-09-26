@@ -38,9 +38,11 @@ const TrippleCollapsed = ({
   deleteFromEditList,
   isNew,
   isOpen,
-  isFlagged
+  isFlagged,
+  addToOpenList,
+  deleteFromOpenList,
 }) => {
-  const [open, setOpen] = useState(isOpen ?? false);
+  const [open, setOpen] = useState(isOpen);
   const [newComment, setNewComment] = useState("");
   const handleChange = (event) => {
     setTripleChecked(event.target.checked);
@@ -72,8 +74,6 @@ const TrippleCollapsed = ({
   }
 
 
-
-
   return (
     <Box
       sx={{
@@ -98,6 +98,7 @@ const TrippleCollapsed = ({
               setOpen((prevState) => !prevState)
               if (!hideActions) {
                 deleteFromEditList();
+                !!open ? addToOpenList() : deleteFromOpenList();
               }
             }}
             style={{ marginRight: "6px" }}

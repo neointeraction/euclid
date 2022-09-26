@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import {
   Button,
@@ -9,6 +9,7 @@ import {
   ExtendableSubjectTypeForm,
   Tooltip,
   Chip,
+  Alert,
 } from "components";
 
 import CommentModalContent from "../CommentModalContent";
@@ -23,11 +24,38 @@ import {
   MultiFormContainer,
   InfoWithActions,
   ChipsContainer,
+  AlertWrapper,
 } from "assets/styles/main.styles";
+import { UserContext } from "layout/MainLayout/MainLayout";
+import { getContext, getContextValues, getEntityWithOutType } from "config/api.service";
+import { INFINITE_SCROLL, OBJECT, RELATION, ROOT, SUBJECT, SUBJECT_LEFT, subRelations } from "config/constants";
+import { v4 as uuidv4 } from 'uuid';
+import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 
-const TripleForm = (data) => {
+
+
+const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onSubjectValueUpdate, onObjectValueUpdate, addSubjectLeft, addObjectLeft, addSubjectRight, addObjectRight, handleRelationSelect, removeObject, removeSubject, addFlagAndComment, addContext, removeContext, setEditList, deleteFromOpenList }) => {
   // CONFIRM MODAL
   const [openModalComment, setOpenModalComment] = useState(false);
+  const { userDetails } = useContext(UserContext);
+  const [contextValues, setContextValues] = useState([]);
+  const [contextOptions, setContextOptions] = useState([]);
+  const [structuredRelations, setStructuredRelation] = useState([]);
+  const [currentOptions, setCurrentOptions] = useState([]);
+  const [pagination, setPagination] = useState({ page_num: 0, page_size: 10, prefix: "" })
+  const [contextOptionPagination, setContextOptionPagination] = useState({ page_num: 0, page_size: 10, prefix: "" });
+  const [option, setOption] = useState([]);
+  const [inFocusIndex, setInFocusIndex] = useState(0);
+  const [inFocusType, setInFocusType] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [isEdit, setIsEdit] = useState(true);
+
+
+  const [state, setState] = useState({
+    context: "",
+    contextValue: ""
+  });
 
   const handleClickOpenComment = () => {
     setOpenModalComment(true);
@@ -38,236 +66,370 @@ const TripleForm = (data) => {
   };
 
   // Forms
-  const [state, setState] = useState({
-    context: "",
-  });
 
   const handleChange = (event) => {
     setState({ context: event.target.value });
+    getContextValues(event.target.value, contextOptionPagination, handleContextValues)
   };
 
-  const [multipleSubjectTypes, setMultipleSubjectTypes] = useState([
-    {
-      id: 0, // todo: use unique id. eg uuid library
-      selectedValue: "",
-      options: ["Option one for el one", "Option two for el two"],
-    },
-  ]);
+  const infiniteScrollFunction = (e) => {
+    setPagination({ ...pagination, page_num: pagination.page_num + 1 });
+  }
 
-  const onAddToLeftOfSubjectType = (element) => {
-    console.log("element to add to", element);
-    const newData = [...multipleSubjectTypes];
-    // todo: Add constrain to only element to the left
-    newData.unshift({
-      id: element.id + 1,
-      selectedValue: "",
-      options: element.options,
+  const infiniteScrollFunctionForContext = (e) => {
+    setContextOptionPagination({ ...contextOptionPagination, page_num: contextOptionPagination.page_num + 1 });
+  }
+
+  const searchFunctionForContext = (value) => {
+    setContextOptionPagination({ ...contextOptionPagination, page_num: 0, prefix: value });
+  }
+
+  const searchFunction = (value) => {
+    setPagination({ ...pagination, page_num: 0, prefix: value });
+  }
+
+  const mainEntityCallBackOnPagination = (result) => {
+    setCurrentOptions(result);
+  }
+
+  useEffect(() => {
+    getEntityWithOutType({ ...pagination }, mainEntityCallBackOnPagination);
+  }, [pagination])
+
+  useEffect(() => {
+    getContextValues(state.context, contextOptionPagination, handleContextValues);
+  }, [contextOptionPagination])
+
+  const handleSubjectOption = (result) => {
+    const tmp = currentOptions.map((item) => {
+      return {
+        label: item,
+        key: uuidv4()
+      }
     });
-    setMultipleSubjectTypes(newData);
+    if (pagination.page_num > 0) {
+      setOption([...option, ...tmp]);
+    } else {
+      setOption(tmp);
+    }
+  }
+
+  useEffect(() => {
+    if (currentOptions?.length) {
+      handleSubjectOption(currentOptions);
+    }
+  }, [currentOptions])
+
+  const invalidAddition = (element, validFunction) => {
+    if (element?.trim()?.length < 0) {
+      setAlertMessage("please select a value before you add next element");
+      setShowAlert(true);
+    } else {
+      validFunction();
+    }
+  }
+
+  const onAddToLeftOfSubjectType = (element, innerIndex) => {
+    invalidAddition(element, () => { addSubjectLeft(element, index, innerIndex) });
   };
 
-  const onAddToRightOfSubjectType = (element) => {
-    console.log("element to add to", element);
-    const newData = [...multipleSubjectTypes];
-    newData.push({
-      id: element.id + 1,
-      selectedValue: "",
-      options: element.options,
+  const onAddToLeftOfObjectType = (element, innerIndex) => {
+    invalidAddition(element, () => { addObjectLeft(element, index, innerIndex) });
+  };
+
+  const onAddToRightOfSubjectType = (element, innerIndex) => {
+    invalidAddition(element, () => { addSubjectRight(element, index, innerIndex) });
+  };
+
+  const onAddToRightOfObjectType = (element, innerIndex) => {
+    invalidAddition(element, () => { addObjectRight(element, index, innerIndex) });
+  };
+
+  const onRemoveFromMultipleSubjectType = (i) => {
+    removeSubject(i, SUBJECT_LEFT);
+  };
+
+  const onRemoveFromMultipleObjectType = (i) => {
+    removeObject(i, SUBJECT_LEFT);
+  };
+
+  const contextValuesStructuring = (result) => {
+    const temp = result?.map((item) => {
+      return {
+        id: item,
+        optionText: item
+      }
+    })
+    setContextValues(temp);
+  }
+
+  const handleContextValues = (result) => {
+    const tmp = result.map((item) => {
+      return {
+        label: item,
+        key: uuidv4()
+      }
     });
-    setMultipleSubjectTypes(newData);
-  };
+    if (contextOptionPagination.page_num > 0) {
+      setContextOptions([...contextOptions, ...tmp]);
+    } else {
+      setContextOptions(tmp);
+    }
+  }
 
-  const onRemoveFromMultipleSubjectType = (elementId) => {
-    if (multipleSubjectTypes.length <= 1) return;
-    const filteredList = multipleSubjectTypes.filter(
-      (item) => item.id !== elementId
-    );
-    setMultipleSubjectTypes(filteredList);
-  };
+  const addComments = (value) => {
+    addFlagAndComment(value, index);
+  }
+
+  useEffect(() => {
+    if (userDetails) {
+      getContext(contextValuesStructuring);
+    }
+  }, [userDetails]);
+
+  const handleContextAdd = () => {
+    addContext(state);
+  }
+
+  const handleContextOption = (value) => {
+    if (typeof (value) === "object") {
+      setState({ ...state, contextValue: value.label })
+    } else {
+      setState({ ...state, contextValue: value })
+    }
+  }
+
+  const deleteAddedContext = (item) => {
+    removeContext(item);
+  }
+
+  useEffect(() => {
+    if (relations?.length) {
+      setStructuredRelation(relations.map((item) => {
+        return {
+          label: item
+        }
+      }))
+    }
+  }, [relations])
+
+  const handleRelation = (value) => {
+    handleRelationSelect(value?.label, index);
+  }
+
+  const subjectValueUpdate = (value, innerIndex) => {
+    onSubjectValueUpdate(value, index, innerIndex);
+  }
+
+  const objectValueUpdate = (value, innerIndex) => {
+    onObjectValueUpdate(value, index, innerIndex);
+
+  }
+
+  const dataNormalization = (item) => {
+    if (item) {
+      if (subRelations.includes(item)) {
+        return item;
+      } else {
+        let [first, ...rest] = item?.split(":");
+        return `${first}: ${rest.join(':').replace(/'/g, "")}`;
+      }
+    } else {
+      return "";
+    }
+  }
+
+  
+
   return (
     <>
       <Box>
-        <Grid container spacing={2} alignItems="flex-end">
-          <Grid item xs={3}>
-            <Dropdown
-              label="Select context"
-              onChange={handleChange}
-              value={state.context}
-              options={[
-                {
-                  id: "option a",
-                  optionText: "Option A",
-                },
-                {
-                  id: "option b",
-                  optionText: "Option B",
-                },
-              ]}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <AutoComplete
-              label="Search or enter items"
-              placeholder="Enter here..."
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <Button
-              btnText="Add"
-              variant="contained"
-              onClick={() => console.log("clicked")}
-            />
-          </Grid>
-        </Grid>
+        {isEdit ?
+          <Grid container spacing={2} alignItems="flex-end">
+            <Grid item xs={3}>
+              <Dropdown
+                label="Select context"
+                onChange={handleChange}
+                value={state.context}
+                options={contextValues ?? []}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <AutoComplete
+                label="Search or enter items"
+                placeholder="Enter here..."
+                options={contextOptions ?? []}
+                onChange={handleContextOption}
+                type={INFINITE_SCROLL}
+                onScrollFunction={infiniteScrollFunctionForContext}
+                searchFunction={(value) => {
+                  searchFunctionForContext(value);
+                  handleContextOption(value);
+                }}
+                valueUpdate={handleContextOption}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleContextAdd()
+                  }
+                }}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                btnText="Add"
+                variant="contained"
+                onClick={() => handleContextAdd()}
+              />
+            </Grid>
+          </Grid> : null}
         <ChipsContainer>
-          <Chip
-            content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-            onDelete={() => {}}
-          />
-          <Chip
-            content={[{ labelKey: "Species", labelValue: "Human Beings" }]}
-            onDelete={() => {}}
-          />
+          {!isEdit ?
+            <h3>Context: </h3>
+            :
+            null
+          }
+          {data && Object.keys(data?.context).length > 0 ?
+            Object.keys(data?.context).map((item, i) => {
+              return (
+                <Chip
+                  content={[{ labelKey: item, labelValue: data.context[item] }]}
+                  onDelete={() => { deleteAddedContext(item) }}
+                />
+              )
+            })
+            :
+            null
+          }
         </ChipsContainer>
-        <TypesBlock>
-          <MultiFormContainer>
-            {multipleSubjectTypes.map((subjectType) => (
-              <React.Fragment key={subjectType.id}>
+        {isEdit ?
+          <TypesBlock>
+            <MultiFormContainer onClick={() => setInFocusType(SUBJECT)}>
+              {data?.subject?.map((subjectType, index) => {
+                return (
+                  <React.Fragment key={subjectType.id}>
+                    <ExtendableSubjectTypeForm
+                      isRoot={false}
+                      data={dataNormalization(subjectType)}
+                      index={index}
+                      valueUpdate={subjectValueUpdate}
+                      setInFocusIndex={setInFocusIndex}
+                      infiniteScrollFunction={infiniteScrollFunction}
+                      searchFunction={searchFunction}
+                      label={"Subject Relation"}
+                      onAddToLeft={() => onAddToLeftOfSubjectType(subjectType, index)}
+                      onAddToRight={() => onAddToRightOfSubjectType(subjectType, index)}
+                      onChange={(_e, value) =>
+                        console.log("selected value === ", {
+                          value,
+                          selectedValue: value,
+                        })
+                      }
+                      options={option}
+                      type={subjectType.type}
+                      onRemove={
+                        data.subject.length > 1
+                          ? () => {
+                            onRemoveFromMultipleSubjectType(index);
+                          }
+                          : undefined
+                      }
+                    />
+                  </React.Fragment>
+                )
+              })}
+            </MultiFormContainer>
+            <MultiFormContainer>
+              <React.Fragment >
                 <ExtendableSubjectTypeForm
-                  label="Subject type"
-                  onAddToLeft={() => onAddToLeftOfSubjectType(subjectType)}
-                  onAddToRight={() => onAddToRightOfSubjectType(subjectType)}
-                  onChange={(_e, value) =>
-                    console.log("selected value === ", {
-                      value,
-                      selectedValue: value,
-                    })
-                  }
-                  options={subjectType.options}
-                  onRemove={
-                    multipleSubjectTypes.length > 1
-                      ? () => {
-                          onRemoveFromMultipleSubjectType(subjectType.id);
-                        }
-                      : undefined
-                  }
-                />
-              </React.Fragment>
-            ))}
-          </MultiFormContainer>
-          <MultiFormContainer>
-            {multipleSubjectTypes.map((subjectType) => (
-              <React.Fragment key={subjectType.id}>
-                <ExtendableSubjectTypeForm
-                  label="Relationship type"
+                  data={data?.relation ? data?.relation : ""}
+                  setInFocusIndex={setInFocusIndex}
+                  label={index === 0 ? "Relationship type" : ""}
                   noBg
-                  onAddToLeft={() => onAddToLeftOfSubjectType(subjectType)}
-                  onAddToRight={() => onAddToRightOfSubjectType(subjectType)}
-                  onChange={(_e, value) =>
-                    console.log("selected value === ", {
-                      value,
-                      selectedValue: value,
-                    })
-                  }
-                  options={subjectType.options}
-                  onRemove={
-                    multipleSubjectTypes.length > 1
-                      ? () => {
-                          onRemoveFromMultipleSubjectType(subjectType.id);
-                        }
-                      : undefined
-                  }
+                  onChange={handleRelation}
+                  relations={structuredRelations}
+                  type={RELATION}
                 />
               </React.Fragment>
-            ))}
-          </MultiFormContainer>
-          <MultiFormContainer>
-            {multipleSubjectTypes.map((subjectType) => (
-              <React.Fragment key={subjectType.id}>
-                <ExtendableSubjectTypeForm
-                  label="Object type"
-                  onAddToLeft={() => onAddToLeftOfSubjectType(subjectType)}
-                  onAddToRight={() => onAddToRightOfSubjectType(subjectType)}
-                  onChange={(_e, value) =>
-                    console.log("selected value === ", {
-                      value,
-                      selectedValue: value,
-                    })
-                  }
-                  options={subjectType.options}
-                  onRemove={
-                    multipleSubjectTypes.length > 1
-                      ? () => {
-                          onRemoveFromMultipleSubjectType(subjectType.id);
+            </MultiFormContainer>
+            <MultiFormContainer onClick={() => setInFocusType(OBJECT)}>
+              {data?.object?.map((objectType, index) => (
+                <React.Fragment key={objectType.id}>
+                  <ExtendableSubjectTypeForm
+                    isRoot={objectType.type === ROOT}
+                    data={dataNormalization(objectType)}
+                    valueUpdate={objectValueUpdate}
+                    setInFocusIndex={setInFocusIndex}
+                    index={index}
+                    infiniteScrollFunction={infiniteScrollFunction}
+                    searchFunction={searchFunction}
+                    label={"Object Relation"}
+                    onAddToLeft={() => onAddToLeftOfObjectType(objectType, index)}
+                    onAddToRight={() => onAddToRightOfObjectType(objectType, index)}
+                    onChange={(_e, value) =>
+                      console.log("selected value === ", {
+                        value,
+                        selectedValue: value,
+                      })
+                    }
+                    options={option}
+                    type={objectType.type}
+                    onRemove={
+                      data.object.length > 1
+                        ? () => {
+                          onRemoveFromMultipleObjectType(index);
                         }
-                      : undefined
-                  }
-                />
-              </React.Fragment>
-            ))}
-          </MultiFormContainer>
-        </TypesBlock>
+                        : undefined
+                    }
+                  />
+                </React.Fragment>
+              ))}
+            </MultiFormContainer>
+          </TypesBlock> : null}
         <InfoWithActions>
           <Grid container spacing={2} alignItems="flex-start">
             <Grid item xs={9}>
-              <Chip
-                content={[
-                  { labelKey: "Protein", labelValue: "GSK3BB" },
-                  {
-                    labelKey: "protein_modification",
-                    labelValue: "Phosphorylationn",
-                  },
-                  { labelKey: " Amino_acid", labelValue: "Threoninee" },
-                  { labelKey: "Protein", labelValue: "GSK3B" },
-                  {
-                    labelKey: "protein_modification",
-                    labelValue: "Phosphorylation",
-                  },
-                ]}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <Grid
-                container
-                spacing={0}
-                alignItems="center"
-                justifyContent="flex-end"
-              >
-                <Grid item xs={2} textAlign="right">
-                  <Tooltip message="Add Comment" position="top">
-                    <IconButton
-                      onClick={handleClickOpenComment}
-                      icon={<AddCommentOutlinedIcon fontSize="small" />}
-                    />
-                  </Tooltip>
-                </Grid>
-                <Grid item xs={2} textAlign="right">
-                  <Tooltip message="Duplicate" position="top">
-                    <IconButton
-                      icon={<ContentCopyOutlinedIcon fontSize="small" />}
-                      onClick={() => data.push("2")}
-                    />
-                  </Tooltip>
-                </Grid>
-                <Grid item xs={2} textAlign="right">
-                  <Tooltip message="Add Triple" position="top">
-                    <IconButton icon={<AddIcon fontSize="medium" />} />
-                  </Tooltip>
-                </Grid>
-              </Grid>
+              {data?.code.trim() !== "" ?
+                <ChipsContainer>
+                  {!isEdit ?
+                    <h3>Code:</h3>
+                    : null
+                  }
+                  <Chip
+                    isSingleString={true}
+                    content={data?.code}
+                  />
+                </ChipsContainer>
+                :
+                <>
+                  <Chip
+                    isSingleString={true}
+                    content={data?.code}
+                  />
+                </>
+              }
             </Grid>
           </Grid>
         </InfoWithActions>
       </Box>
-
-      {/* Add Comment  */}
+      {/* Flag and Comment  */}
       <Modal
         size="sm"
         open={openModalComment}
         close={handleCloseComment}
-        title="Add Comment"
-        children={<CommentModalContent handleClose={handleCloseComment} />}
+        title="Flag and Comment"
+        children={<CommentModalContent onChange={addComments} handleClose={handleCloseComment} />}
       />
+      {
+        showAlert && (
+          <AlertWrapper>
+            <Alert
+              type="error"
+              message={alertMessage}
+              onClose={() => setShowAlert(false)}
+            />
+          </AlertWrapper>
+        )
+      }
     </>
   );
 };
