@@ -108,7 +108,7 @@ const ReviewerViewTriple = () => {
     }
   }
 
-  
+
   return (
     <div>
       <PageHeader subText="Triples" pageTitleText={id} />
@@ -174,6 +174,7 @@ const ReviewerViewTriple = () => {
               chipContent={item.code}
               setTripleChecked={(e) => handleChecked(e, item)}
               checked={checkedTriples.id === item.id}
+              hideCommentBox={true}
             >
               <TripleCollapseContainer>
                 <TripleBlock chipContent={contextValues} code={item.code} />
