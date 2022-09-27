@@ -121,7 +121,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
   }, [currentOptions])
 
   const invalidAddition = (element, validFunction) => {
-    if (element?.trim()?.length < 0) {
+    if (element?.value.trim()?.length < 0) {
       setAlertMessage("please select a value before you add next element");
       setShowAlert(true);
     } else {
@@ -145,12 +145,12 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
     invalidAddition(element, () => { addObjectRight(element, index, innerIndex) });
   };
 
-  const onRemoveFromMultipleSubjectType = (i) => {
-    removeSubject(i, SUBJECT_LEFT);
+  const onRemoveFromMultipleSubjectType = (i,type) => {
+    removeSubject(i, type);
   };
 
-  const onRemoveFromMultipleObjectType = (i) => {
-    removeObject(i, SUBJECT_LEFT);
+  const onRemoveFromMultipleObjectType = (i,type) => {
+    removeObject(i, type);
   };
 
   const contextValuesStructuring = (result) => {
@@ -223,7 +223,6 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
 
   const objectValueUpdate = (value, innerIndex) => {
     onObjectValueUpdate(value, index, innerIndex);
-
   }
 
   const dataNormalization = (item) => {
@@ -239,7 +238,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
     }
   }
 
-  
+
 
   return (
     <>
@@ -309,7 +308,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
                   <React.Fragment key={subjectType.id}>
                     <ExtendableSubjectTypeForm
                       isRoot={false}
-                      data={dataNormalization(subjectType)}
+                      data={dataNormalization(subjectType.value)}
                       index={index}
                       valueUpdate={subjectValueUpdate}
                       setInFocusIndex={setInFocusIndex}
@@ -329,7 +328,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
                       onRemove={
                         data.subject.length > 1
                           ? () => {
-                            onRemoveFromMultipleSubjectType(index);
+                            onRemoveFromMultipleSubjectType(index,subjectType.type);
                           }
                           : undefined
                       }
@@ -353,10 +352,10 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
             </MultiFormContainer>
             <MultiFormContainer onClick={() => setInFocusType(OBJECT)}>
               {data?.object?.map((objectType, index) => (
-                <React.Fragment key={objectType.id}>
+                <React.Fragment key={objectType.value}>
                   <ExtendableSubjectTypeForm
                     isRoot={objectType.type === ROOT}
-                    data={dataNormalization(objectType)}
+                    data={dataNormalization(objectType.value)}
                     valueUpdate={objectValueUpdate}
                     setInFocusIndex={setInFocusIndex}
                     index={index}
@@ -376,7 +375,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
                     onRemove={
                       data.object.length > 1
                         ? () => {
-                          onRemoveFromMultipleObjectType(index);
+                          onRemoveFromMultipleObjectType(index,objectType.type);
                         }
                         : undefined
                     }

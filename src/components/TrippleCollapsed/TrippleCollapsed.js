@@ -41,6 +41,7 @@ const TrippleCollapsed = ({
   isFlagged,
   addToOpenList,
   deleteFromOpenList,
+  hideCommentBox
 }) => {
   const [open, setOpen] = useState(isOpen);
   const [newComment, setNewComment] = useState("");
@@ -72,7 +73,6 @@ const TrippleCollapsed = ({
       </Grid>
     )
   }
-
 
   return (
     <Box
@@ -187,10 +187,10 @@ const TrippleCollapsed = ({
               justifyContent="flex-start"
               style={{ marginTop: 5 }}
             >
-              {!(addedCommentData?.length && addedCommentData[0].comment_reviewer) ?
+              {!(addedCommentData?.length && addedCommentData[0].comment_reviewer) && !hideCommentBox ?
                 < Grid item xs={4}>
                   <Input isMulti label="Comment" value={newComment} onChange={(e) => setNewComment(e.target.value)} />
-                  {addCommentButton()}
+                {addCommentButton()}
                 </Grid>
                 :
                 null}
@@ -211,7 +211,7 @@ const TrippleCollapsed = ({
                 justifyContent="flex-start"
                 style={{ marginTop: 5 }}
               >
-                {!(addedCommentData?.length && addedCommentData[0].comment_reviewer) ?
+                {!(addedCommentData?.length && addedCommentData[0].comment_reviewer) && !hideCommentBox ?
                   < Grid item xs={4}>
                     <Input isMulti label="Comment" value={newComment} onChange={(e) => setNewComment(e.target.value)} />
                     {addCommentButton()}

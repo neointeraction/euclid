@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { Grid } from "@mui/material";
 
@@ -58,6 +58,7 @@ const EditTriple = () => {
   const [relations, setRelations] = useState([]);
   const [editList, setEditList] = useState([]);
   const [openList, setOpenList] = useState([]);
+  const { id } = useParams();
 
   const relationCallBack = (result) => {
     setRelations(result)
@@ -124,14 +125,14 @@ const EditTriple = () => {
       let subject = temp.subject;
       for (let i = 0; i < subject?.length; i++) {
         if (subject[i]) {
-          if (subRelations.includes(subject[i])) {
+          if (subRelations.includes(subject[i].value)) {
             subjectCode = `${subjectCode} ${subject[i]}`
           } else {
-            let temp = subject[i].split(":");
-            if (subRelations.includes(subject[i + 1]) || subRelations.includes(subject[i - 1])) {
-              subjectCode = `${subjectCode} (${temp[0]}:'${temp[1]}')`
+            let [first, ...rest] = subject[i].value.split(":");
+            if ((subject[i + 1] && subRelations.includes(subject[i + 1]?.value)) || (subject[i - 1] && subRelations.includes(subject[i - 1]?.value))) {
+              subjectCode = `${subjectCode} (${first}:'${rest.join(':')}')`
             } else {
-              subjectCode = `${subjectCode} ${temp[0]}:'${temp[1]}'`
+              subjectCode = `${subjectCode} ${first}:'${rest.join(':')}'`
             }
           }
         }
@@ -145,11 +146,11 @@ const EditTriple = () => {
           if (subRelations.includes(object[i])) {
             objectCode = `${objectCode} ${object[i]}`
           } else {
-            let temp = object[i].split(":");
-            if (subRelations.includes(object[i + 1]) || subRelations.includes(object[i - 1])) {
-              objectCode = `${objectCode} (${temp[0]}:'${temp[1]}')`
+            let [first, ...rest] = object[i].value.split(":");
+            if ((object[i + 1] && subRelations.includes(object[i + 1].value)) || (object[i - 1] && subRelations.includes(object[i - 1].value))) {
+              objectCode = `${objectCode} (${first}:'${rest.join(':')}')`
             } else {
-              objectCode = `${objectCode} ${temp[0]}:'${temp[1]}'`
+              objectCode = `${objectCode} ${first}:'${rest.join(':')}'`
             }
           }
         }
@@ -190,33 +191,24 @@ const EditTriple = () => {
     setData(tempTripleData);
   }
 
-  const findTypeOfNode = (parentType, functionType) => {
-    if (parentType === ROOT) {
-      return functionType;
-    } else {
-      return parentType;
-    }
-  }
-
   const onAddToLeftOfSubjectType = (element, index, innerIndex) => {
-    const entityType = element.split(":");
+    const entityType = element.value.split(":");
     let tempTripleData = { ...data };
     let temp = tempTripleData.codes;
     const newData = temp.subject
     if (subRelations.includes(element)) {
       if (innerIndex === 0) {
-        console.log("zrk2", index);
-        newData.unshift(" ");
+        newData.unshift({ value: "", type: element.type === ROOT ? SUBJECT_LEFT : element.type });
       } else {
-        newData.splice(innerIndex, 0, "");
+        newData.splice(innerIndex, 0, { value: "", type: element.type === ROOT ? SUBJECT_LEFT : element.type });
       }
       setData(tempTripleData);
     } else {
       getEntityLeft(entityType[0], (result) => {
         if (innerIndex === 0) {
-          newData.unshift("");
+          newData.unshift({ value: "", type: element.type === ROOT ? SUBJECT_LEFT : element.type });
         } else {
-          newData.splice(innerIndex, 0, "");
+          newData.splice(innerIndex, 0, { value: "", type: element.type === ROOT ? SUBJECT_LEFT : element.type });
         }
         setData(tempTripleData);
       })
@@ -225,23 +217,23 @@ const EditTriple = () => {
 
   const onAddToLeftOfObjectType = (element, index, innerIndex) => {
     console.log("element to add to", element);
-    const entityType = element.split(":");
+    const entityType = element.value.split(":");
     let tempTripleData = { ...data };
     let temp = tempTripleData.codes;
     const newData = temp.object;
     if (subRelations.includes(element)) {
       if (innerIndex === 0) {
-        newData.unshift("");
+        newData.unshift({ value: "", type: element.type === ROOT ? SUBJECT_LEFT : element.type });
       } else {
-        newData.splice(innerIndex, 0, "");
+        newData.splice(innerIndex, 0, { value: "", type: element.type === ROOT ? SUBJECT_LEFT : element.type });
       }
       setData(tempTripleData);
     } else {
       getEntityLeft(entityType[0], (result) => {
         if (innerIndex === 0) {
-          newData.unshift("");
+          newData.unshift({ value: "", type: element.type === ROOT ? SUBJECT_LEFT : element.type });
         } else {
-          newData.splice(innerIndex, 0, "");
+          newData.splice(innerIndex, 0, { value: "", type: element.type === ROOT ? SUBJECT_LEFT : element.type });
         }
         setData(tempTripleData);
       })
@@ -255,15 +247,15 @@ const EditTriple = () => {
       let tempTripleData = { ...data };
       let temp = tempTripleData.codes;
       const newData = temp.subject
-      newData.splice(innerIndex + 1, 0, "");
+      newData.splice(innerIndex + 1, 0, { value: "", type: element.type === ROOT ? SUBJECT_RIGHT : element.type });
       setData(tempTripleData);
     } else {
-      const entityType = element?.split(":");
+      const entityType = element.value?.split(":");
       getEntityRight(entityType[0], (result) => {
         let tempTripleData = { ...data };
         let temp = tempTripleData.codes;
         const newData = temp.subject
-        newData.splice(innerIndex + 1, 0, "");
+        newData.splice(innerIndex + 1, 0, { value: "", type: element.type === ROOT ? SUBJECT_RIGHT : element.type });
         setData(tempTripleData);
       })
     }
@@ -275,15 +267,15 @@ const EditTriple = () => {
       let tempTripleData = { ...data };
       let temp = tempTripleData.codes;
       const newData = temp.object
-      newData.splice(innerIndex + 1, 0, "");
+      newData.splice(innerIndex + 1, 0, { value: "", type: element.type === ROOT ? SUBJECT_RIGHT : element.type });
       setData(tempTripleData);
     } else {
-      const entityType = element?.split(":");
+      const entityType = element?.value?.split(":");
       getEntityRight(entityType[0], (result) => {
         let tempTripleData = { ...data };
         let temp = tempTripleData.codes;
         const newData = temp.object
-        newData.splice(innerIndex + 1, 0, "");
+        newData.splice(innerIndex + 1, 0, { value: "", type: element.type === ROOT ? SUBJECT_RIGHT : element.type });
         setData(tempTripleData);
       })
     }
@@ -292,7 +284,7 @@ const EditTriple = () => {
   const onSubjectValueUpdate = (value, index, innerIndex) => {
     let tempTripleData = { ...data };
     let temp = tempTripleData.codes;
-    temp.subject[innerIndex] = value?.label;
+    temp.subject[innerIndex] = { ...temp.subject[innerIndex], value: value.label }
     temp.code = createCode(temp);
     temp.evidenceId = data.id;
     setData(tempTripleData);
@@ -301,7 +293,7 @@ const EditTriple = () => {
   const onObjectValueUpdate = (value, index, innerIndex) => {
     let tempTripleData = { ...data };
     let temp = tempTripleData.codes;
-    temp.object[innerIndex] = value.label
+    temp.object[innerIndex] = { ...temp.object[innerIndex], value: value.label }
     temp.code = createCode(temp);
     temp.evidenceId = data.id;
     setData(tempTripleData);
@@ -337,10 +329,14 @@ const EditTriple = () => {
   }
 
   const commitData = () => {
-    reviewerCommitTriples(data, (result) => {
+    const commitData = {
+      ...data, pubid: id
+    }
+    reviewerCommitTriples(commitData, (result) => {
       setAlertType("success");
       setAlertMessage("Committed Triples successfully");
       setShowAlert(true);
+      navigate(-1);
     }, (error) => {
       setAlertType("error");
       setAlertMessage(error);
@@ -354,7 +350,6 @@ const EditTriple = () => {
       <Section>
         <Box bordered>
           <BodyText dangerouslySetInnerHTML={data?.text ? { __html: data.text } : { __html: "<div></div>" }} />
-
           {/* Popover grid compnent  */}
           <PopoverGrid
             anchorEl={anchorEl}

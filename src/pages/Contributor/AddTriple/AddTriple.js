@@ -143,7 +143,11 @@ const AddTriple = () => {
     setAnchorEl(null);
   };
 
-  const getSnippets = (result) => {
+  const getSnippets = (res) => {
+    let result = {};
+    if (res?.length) {
+      result = res[0];
+    }
     if (result?.evidences?.length) {
       setTripleData({
         pubid: result.pubid,
@@ -434,11 +438,11 @@ const AddTriple = () => {
           if (subRelations.includes(subject[i].selectedValue)) {
             subjectCode = `${subjectCode} ${subject[i].selectedValue}`
           } else {
-            let temp = subject[i].selectedValue.split(":");
+            let [first, ...rest] = subject[i].selectedValue.split(":");
             if (subRelations.includes(subject[i + 1]?.selectedValue) || subRelations.includes(subject[i - 1]?.selectedValue)) {
-              subjectCode = `${subjectCode} (${temp[0]}:'${temp[1]}')`
+              subjectCode = `${subjectCode} (${first}:'${rest.join(':')}')`
             } else {
-              subjectCode = `${subjectCode} ${temp[0]}:'${temp[1]}'`
+              subjectCode = `${subjectCode} ${first}:'${rest.join(':')}'`
             }
           }
         }
@@ -452,11 +456,11 @@ const AddTriple = () => {
           if (subRelations.includes(object[i].selectedValue)) {
             objectCode = `${objectCode} ${object[i].selectedValue}`
           } else {
-            let temp = object[i].selectedValue.split(":");
+            let [first, ...rest] = object[i].selectedValue.split(":");
             if (subRelations.includes(object[i + 1]?.selectedValue) || subRelations.includes(object[i - 1]?.selectedValue)) {
-              objectCode = `${objectCode} (${temp[0]}:'${temp[1]}')`
+              objectCode = `${objectCode} (${first}:'${rest.join(':')}')`
             } else {
-              objectCode = `${objectCode} ${temp[0]}:'${temp[1]}'`
+              objectCode = `${objectCode} ${first}:'${rest.join(':')}'`
             }
           }
         }
@@ -615,8 +619,8 @@ const AddTriple = () => {
             codeData = {
               id: `${element.evidenceId}_${index + 1}`,
               context: contextObject,
-              subject: element.subjectData.map((data) => data.selectedValue),
-              object: element.objectData.map((data) => data.selectedValue),
+              subject: element.subjectData.map((data) => { return { value: data.selectedValue, type: data.type } }),
+              object: element.objectData.map((data) => { return { value: data.selectedValue, type: data.type } }),
               flagged: true,
               comment: element.comment,
               relation: element.relation,
@@ -626,8 +630,8 @@ const AddTriple = () => {
             codeData = {
               id: `${element.evidenceId}_${index + 1}`,
               context: contextObject,
-              subject: element.subjectData.map((data) => data.selectedValue),
-              object: element.objectData.map((data) => data.selectedValue),
+              subject: element.subjectData.map((data) => { return { value: data.selectedValue, type: data.type } }),
+              object: element.objectData.map((data) => { return { value: data.selectedValue, type: data.type } }),
               code: element.code,
               relation: element.relation
             }
@@ -703,41 +707,19 @@ const AddTriple = () => {
                 }
                 return {
                   subjectData: element?.subject?.map((data, index) => {
-                    const typeAssign = (i, datas) => {
-                      let totalCount = datas?.length;
-                      let rootIndex = Math.round(totalCount / 2);
-                      if (rootIndex === i) {
-                        return ROOT
-                      } else if (rootIndex > i) {
-                        return SUBJECT_LEFT
-                      } else {
-                        return SUBJECT_RIGHT
-                      }
-                    }
                     return {
                       id: uuidv4(), // todo: use unique id. eg uuid library
-                      selectedValue: data,
+                      selectedValue: data.value,
                       options: [],
-                      type: typeAssign(index, element.subject)
+                      type: data.type
                     }
                   }),
                   objectData: element?.object?.map((data, index) => {
-                    const typeAssign = (i, datas) => {
-                      let totalCount = datas?.length;
-                      let rootIndex = Math.round(totalCount / 2);
-                      if (rootIndex === i) {
-                        return ROOT;
-                      } else if (rootIndex > i) {
-                        return SUBJECT_LEFT;
-                      } else {
-                        return SUBJECT_RIGHT;
-                      }
-                    }
                     return {
                       id: uuidv4(), // todo: use unique id. eg uuid library
-                      selectedValue: data,
+                      selectedValue: data.value,
                       options: [],
-                      type: typeAssign(index, element.object)
+                      type: data.type
                     }
                   }),
                   relation: element.relation,
@@ -782,8 +764,6 @@ const AddTriple = () => {
     setOpenList(temp);
   }
 
-  console.log("zrk1",editList);
-  console.log("zrk2",openList);
   return (
     <div>
       <a className="link-without-decoration" target="_blank" href={snippets?.url} rel="noreferrer">
@@ -869,28 +849,29 @@ const AddTriple = () => {
       <Section>
         {tripleData?.evidences?.length &&
           tripleData?.evidences[snippetIndex]?.codes?.length > 1 ? (
-          tripleData?.evidences[snippetIndex]?.codes?.map((item, i) => (
-            <TrippleCollapsed
-              deleteTriple={deleteTriple}
-              duplicateTriple={duplicateTriple}
-              index={i}
-              key={i}
-              chipContent={item.code}
-              addToEditList={() => handleEdit("edit", item.id)}
-              deleteFromEditList={() => handleEdit("readOnly", item.id)}
-              addToOpenList={() => handleOpen("open", item.id)}
-              deleteFromOpenList={() => handleOpen("close", item.id)}
-              isNew={item.isNew}
-              isOpen={openList?.includes(item.id)}
-              isFlagged={item.flagged}
-            >
-              <TripleCollapseContainer>
-                <TripleForm addContext={addContext} removeContext={removeContext} addFlagAndComment={addFlagAndComment} removeObject={removeObject} removeSubject={removeSubject} handleRelationSelect={handleRelationSelect} addSubjectLeft={onAddToLeftOfSubjectType} addSubjectRight={onAddToRightOfSubjectType} addObjectLeft={onAddToLeftOfObjectType} addObjectRight={onAddToRightOfObjectType} onSubjectValueUpdate={onSubjectValueUpdate} onObjectValueUpdate={onObjectValueUpdate} data={item} addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={i} relations={relations} tripleDataUpdate={tripleDataUpdate} isEdit={editList.includes(item.id)} deleteFromOpenList={() => handleOpen("close", item.id)}
-                  deleteFromEditList={() => handleEdit("readOnly", item.id)} />
-              </TripleCollapseContainer>
-            </TrippleCollapsed>
-          ))
-        ) : (
+          tripleData?.evidences[snippetIndex]?.codes?.map((item, i) => {
+            return (
+              <TrippleCollapsed
+                deleteTriple={deleteTriple}
+                duplicateTriple={duplicateTriple}
+                index={i}
+                key={i}
+                chipContent={item.code}
+                addToEditList={() => handleEdit("edit", item.id)}
+                deleteFromEditList={() => handleEdit("readOnly", item.id)}
+                addToOpenList={() => handleOpen("open", item.id)}
+                deleteFromOpenList={() => handleOpen("close", item.id)}
+                isNew={item.isNew}
+                isOpen={openList?.includes(item.id)}
+                isFlagged={item.flagged}
+              >
+                <TripleCollapseContainer>
+                  <TripleForm addContext={addContext} removeContext={removeContext} addFlagAndComment={addFlagAndComment} removeObject={removeObject} removeSubject={removeSubject} handleRelationSelect={handleRelationSelect} addSubjectLeft={onAddToLeftOfSubjectType} addSubjectRight={onAddToRightOfSubjectType} addObjectLeft={onAddToLeftOfObjectType} addObjectRight={onAddToRightOfObjectType} onSubjectValueUpdate={onSubjectValueUpdate} onObjectValueUpdate={onObjectValueUpdate} data={item} addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={i} relations={relations} tripleDataUpdate={tripleDataUpdate} isEdit={editList.includes(item.id)} deleteFromOpenList={() => handleOpen("close", item.id)}
+                    deleteFromEditList={() => handleEdit("readOnly", item.id)} />
+                </TripleCollapseContainer>
+              </TrippleCollapsed>
+            )
+          })) : (
           tripleData?.evidences?.length &&
           tripleData.evidences[snippetIndex].codes.map((item, i) => (
             <TripleForm addContext={addContext} removeContext={removeContext} removeObject={removeObject} addFlagAndComment={addFlagAndComment} removeSubject={removeSubject} handleRelationSelect={handleRelationSelect} addSubjectLeft={onAddToLeftOfSubjectType} addSubjectRight={onAddToRightOfSubjectType} addObjectLeft={onAddToLeftOfObjectType} addObjectRight={onAddToRightOfObjectType} onObjectValueUpdate={onObjectValueUpdate} onSubjectValueUpdate={onSubjectValueUpdate} data={item} key={i} addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={0} relations={relations} tripleDataUpdate={tripleDataUpdate} isEdit={true} deleteFromOpenList={() => handleOpen("close", item.id)} />
