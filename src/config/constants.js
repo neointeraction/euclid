@@ -28,4 +28,6 @@ export const INVALID = "invalid";
 export const REVERTED = "reverted";
 export const FLAGGED = "flagged";
 
+export const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 
