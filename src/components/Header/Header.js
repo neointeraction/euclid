@@ -35,7 +35,7 @@ import {
 } from "./header.styles";
 import { webAuth } from "config/auth-config";
 import { UserContext } from "layout/MainLayout/MainLayout";
-import { appUrl } from "config/constants";
+import { appUrl, monthNames } from "config/constants";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -72,6 +72,7 @@ const Header = () => {
   // Menu func
   const [userType, setUseType] = useState("");
   const [menuRoutes, setMenuRoutes] = useState([]);
+  const [lastLogin, setLastLogin] = useState("");
 
   // Demo code -  can be removed during implementation
   let data = localStorage.user;
@@ -81,6 +82,8 @@ const Header = () => {
 
   useEffect(() => {
     if (userDetails) {
+      const date = new Date(userDetails.updated_at);
+      setLastLogin(`${date.getDay()} ${monthNames[date.getMonth() + 1]}  ${date.getHours()}:${date.getMinutes()}`);
       userDetails.userRoles[0] === "Customer"
         ? setMenuRoutes(customerRoutes)
         : userDetails.userRoles[0] === "Reviewer"
@@ -124,7 +127,7 @@ const Header = () => {
         ))}
       </LeftMenuBlock>
       <RightMenuBlock>
-        <LastLoginText>Last Login : 2 May 20:23</LastLoginText>
+        <LastLoginText>Last Login : {lastLogin}</LastLoginText>
         <ProfileBlock>
           <ProfileSection onClick={handleClick}>
             <Avatar src={userDetails?.picture} />
