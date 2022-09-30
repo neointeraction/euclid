@@ -14,7 +14,7 @@ export const CardContainer = styled.div`
             ? "#DAEAF3"
             : props.color === "orange"
               ? "rgba(250, 173, 20, 0.15)"
-              : "#ccc"};
+              : (props.color ?? "#ccc")};
   border: ${(props) =>
     props.color === "purple"
       ? "1px solid #7e57c2"
@@ -31,6 +31,27 @@ export const CardContainer = styled.div`
   border-radius: 8px;
 `;
 
+export const NormalCardContainer = styled.div`
+  height:93px;
+  cursor: pointer;
+  padding: 12px 20px;
+  background: "#F9F9F9";
+  border: ${(props) =>
+    props.color === "purple"
+      ? "1px solid #7e57c2"
+      : props.color === "green"
+        ? "1px solid #16A034"
+        : props.color === "red"
+          ? "1px solid #FF6870"
+          : props.color === "blue"
+            ? "1px solid #005585"
+            : props.color === "orange"
+              ? "1px solid #FAAD14"
+              : (props.color ? `2px solid ${props.color}` : "1px solid #aaa")};
+  box-shadow: 6px 6px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 3px;
+`;
+
 export const CardContainerWithOutClick = styled.div`
   padding: 12px 20px;
   background: ${(props) =>
@@ -44,7 +65,7 @@ export const CardContainerWithOutClick = styled.div`
             ? "#DAEAF3"
             : props.color === "orange"
               ? "rgba(250, 173, 20, 0.15)"
-              : "#ccc"};
+              : (props.color ?? "#ccc")};
   border: ${(props) =>
     props.color === "purple"
       ? "1px solid #7e57c2"
@@ -56,7 +77,7 @@ export const CardContainerWithOutClick = styled.div`
             ? "1px solid #005585"
             : props.color === "orange"
               ? "1px solid #FAAD14"
-              : "1px solid #aaa"};
+              : (props.color ?? "1px solid #aaa")};
   box-shadow: 6px 6px 24px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
 `;

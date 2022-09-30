@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Grid } from "@mui/material";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 
-import { PageHeader, Tooltip, IconButton, Button, Chip } from "components";
+import { PageHeader, Tooltip, IconButton, Button, Chip, Card } from "components";
 import { BarGraphChart } from "components/Charts";
 
 import {
@@ -180,8 +180,28 @@ const SearchResult = () => {
 
       <Section>
         <Box>
-          <SectionTitle>Evidence supporting each Triple:</SectionTitle>
-          <BarGraphChart height={430} data={triplesAndEvidencesGraph} layout="vertical" />
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              <SectionTitle>Evidence supporting each Triple:</SectionTitle>
+              <BarGraphChart height={660} barSize={30} data={triplesAndEvidencesGraph} layout="vertical" />
+            </Grid>
+            <Grid item xs={4}>
+              <Grid container spacing={2} alignItems="baseline">
+                {triplesAndEvidencesGraph?.map((item) => {
+                  return (
+                    <Grid item xs={6}>
+                      <Card
+                        count={100}
+                        title={item.text}
+                        color={item.fill}
+                        height={"50px"}
+                      />
+                    </Grid>
+                  )
+                })}
+              </Grid>
+            </Grid>
+          </Grid>
         </Box>
       </Section>
     </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -8,9 +8,29 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Cell,
 } from "recharts";
 
-const BarGraphChart = ({ data, layout, height }) => {
+const BarGraphChart = ({ data, layout, height, barSize }) => {
+  const [graphColors, setGraphColors] = useState([]);
+
+  useEffect(() => {
+    if (data[0]?.fill) {
+      setGraphColors(data.map((item) => item.fill));
+    }
+  }, [data])
+
+  const getBarSize = (propSize) => {
+    if (propSize) {
+      return propSize;
+    }
+    if (layout === "vertical") {
+      return 14;
+    } else {
+      return 30;
+    }
+  }
+
   return (
     <div>
       <ResponsiveContainer width="100%" height={height ?? 300}>
@@ -53,8 +73,14 @@ const BarGraphChart = ({ data, layout, height }) => {
           <Bar
             dataKey="count"
             fill="#FCBF5C" //004C7C
-            barSize={layout === "vertical" ? 14 : 30}
-          />
+            barSize={getBarSize(barSize)}
+          >
+            {data.map((item, i) => {
+              return (
+                <Cell key={`cell-${i}`} fill={graphColors[i % 20] ?? "#FCBF5C"} />
+              )
+            })}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>
