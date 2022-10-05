@@ -31,8 +31,6 @@ const RecentActivityTable = ({
     setViewValidatedEvidence(false);
   }
 
-  
-
   const handleOnClick = (status, id) => {
     switch (status) {
       case INVALID:

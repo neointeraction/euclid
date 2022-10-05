@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { Grid } from "@mui/material";
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
@@ -11,8 +11,9 @@ import {
   Alert,
   PopoverGrid,
   ConfirmationModal,
-  TrippleCollapsed,
 } from "components";
+
+import TrippleCollapsed from '../AddTriple/components/TrippleCollapsed';
 
 import EvidenceModalContent from "./components/EvidenceModalContent";
 
@@ -76,6 +77,12 @@ const AddTriple = () => {
   const [openList, setOpenList] = useState([]);
 
   const [tripleDataToCommit, setTripleDataToCommit] = useState({});
+
+  const ref = useRef(null);
+
+  const handleScrollToNew = () => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const [tripleData, setTripleData] = useState({
     pubid: snippets.pubid, evidences: [{
@@ -256,9 +263,11 @@ const AddTriple = () => {
 
   const addNewTriple = () => {
     let temp = { ...tripleData }
-    let id = uuidv4();
+    const tempId = uuidv4();
+    setOpenList([tempId]);
+    setEditList([tempId]);
     temp.evidences[snippetIndex].codes.push({
-      id,
+      id: tempId,
       subjectData: [{
         id: 0, // todo: use unique id. eg uuid library
         selectedValue: "",
@@ -272,22 +281,18 @@ const AddTriple = () => {
         type: ROOT
       }], relation: "", code: "", contextList: [], evidenceId: "", isNew: true
     })
-    setEditList([...editList, id]);
     setTripleData(temp);
-    handleOpen("open", id);
+    handleScrollToNew();
     fadeOutFunction();
   }
 
   const duplicateTriple = (index) => {
     let tempTripleData = { ...tripleData };
-    const previousId = tempTripleData.evidences[snippetIndex].codes[index].id
     const id = uuidv4();
+    setOpenList([id]);
+    setEditList([id]);
     let temp = tempTripleData.evidences[snippetIndex].codes;
     temp.splice(index + 1, 0, { ...temp[index], id, isNew: true });
-    handleOpen("open", id);
-    handleOpen("close", previousId);
-    handleEdit("edit", id);
-    handleEdit("close", previousId);
     setTripleData(tempTripleData);
     fadeOutFunction();
   }
@@ -852,6 +857,7 @@ const AddTriple = () => {
           tripleData?.evidences[snippetIndex]?.codes?.map((item, i) => {
             return (
               <TrippleCollapsed
+                ref={item.isNew ? ref : null}
                 deleteTriple={deleteTriple}
                 duplicateTriple={duplicateTriple}
                 index={i}
@@ -862,19 +868,19 @@ const AddTriple = () => {
                 addToOpenList={() => handleOpen("open", item.id)}
                 deleteFromOpenList={() => handleOpen("close", item.id)}
                 isNew={item.isNew}
-                isOpen={openList?.includes(item.id)}
+                open={openList?.includes(item.id)}
                 isFlagged={item.flagged}
               >
                 <TripleCollapseContainer>
                   <TripleForm addContext={addContext} removeContext={removeContext} addFlagAndComment={addFlagAndComment} removeObject={removeObject} removeSubject={removeSubject} handleRelationSelect={handleRelationSelect} addSubjectLeft={onAddToLeftOfSubjectType} addSubjectRight={onAddToRightOfSubjectType} addObjectLeft={onAddToLeftOfObjectType} addObjectRight={onAddToRightOfObjectType} onSubjectValueUpdate={onSubjectValueUpdate} onObjectValueUpdate={onObjectValueUpdate} data={item} addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={i} relations={relations} tripleDataUpdate={tripleDataUpdate} isEdit={editList.includes(item.id)} deleteFromOpenList={() => handleOpen("close", item.id)}
-                    deleteFromEditList={() => handleEdit("readOnly", item.id)} />
+                    deleteFromEditList={() => handleEdit("readOnly", item.id)} addToEditList={() => handleEdit("edit", item.id)} />
                 </TripleCollapseContainer>
               </TrippleCollapsed>
             )
           })) : (
           tripleData?.evidences?.length &&
           tripleData.evidences[snippetIndex].codes.map((item, i) => (
-            <TripleForm addContext={addContext} removeContext={removeContext} removeObject={removeObject} addFlagAndComment={addFlagAndComment} removeSubject={removeSubject} handleRelationSelect={handleRelationSelect} addSubjectLeft={onAddToLeftOfSubjectType} addSubjectRight={onAddToRightOfSubjectType} addObjectLeft={onAddToLeftOfObjectType} addObjectRight={onAddToRightOfObjectType} onObjectValueUpdate={onObjectValueUpdate} onSubjectValueUpdate={onSubjectValueUpdate} data={item} key={i} addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} index={0} relations={relations} tripleDataUpdate={tripleDataUpdate} isEdit={true} deleteFromOpenList={() => handleOpen("close", item.id)} />
+            <TripleForm addContext={addContext} removeContext={removeContext} removeObject={removeObject} addFlagAndComment={addFlagAndComment} removeSubject={removeSubject} handleRelationSelect={handleRelationSelect} addSubjectLeft={onAddToLeftOfSubjectType} addSubjectRight={onAddToRightOfSubjectType} addObjectLeft={onAddToLeftOfObjectType} addObjectRight={onAddToRightOfObjectType} onObjectValueUpdate={onObjectValueUpdate} onSubjectValueUpdate={onSubjectValueUpdate} data={item} key={i} addNewTriple={addNewTriple} duplicateTriple={duplicateTriple} relations={relations} tripleDataUpdate={tripleDataUpdate} isEdit={true} deleteFromOpenList={() => handleOpen("close", item.id)} index={null} />
           ))
         )}
         <ActionBox>

@@ -6,9 +6,9 @@ export const PieContainer = styled.div`
   .recharts-surface,
   .recharts-responsive-container,
   .recharts-wrapper {
-    width: 2000px;
-    width: 100% !important;
-    height: 100% !important;
+  //   // width: 2000px;
+  //   width: 100% !important;
+    height: 800px !important;
   }
   .recharts-layer {
     cursor: pointer;

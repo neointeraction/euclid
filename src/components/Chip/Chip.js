@@ -3,7 +3,7 @@ import React from "react";
 
 const CustomChip = ({ content, isSingleString, ...rest }) => {
   return (
-    <div>
+    <div style={{margin:"2px"}}>
       {!isSingleString ?
         <Chip
           label={content.map(({ labelKey, labelValue }) => (
