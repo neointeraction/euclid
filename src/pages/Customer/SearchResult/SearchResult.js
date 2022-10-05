@@ -85,64 +85,85 @@ const SearchResult = () => {
           <Grid item xs={12} textAlign="right">
             <Grid
               container
+              spacing={2}
+              alignItems="center"
+              justifyContent="flex-start"
+            >
+              <Grid item xs={5.9} textAlign="left">
+                <Box>
+                  <div>
+                    <SectionTitle>Search Data:</SectionTitle>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", minHeight: "120px" }}>
+                    {searchData.map((item, i) => {
+                      return (
+                        <>
+                          {
+                            <Chip
+                              content={[{ labelKey: item, labelValue: location.state.searchData[item] }]}
+                            />
+                          }
+                        </>
+                      )
+                    })
+                    }
+                  </div>
+                </Box>
+              </Grid>
+              <Grid item xs={6} textAlign="left">
+                <Box>
+                  <div>
+                    <SectionTitle>Context Data:</SectionTitle>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", marginLeft: "2px", minHeight: "120px" }}>
+                    {location.state.context.map((item, i) => {
+                      return (
+                        <>
+                          {typeof (item) === "string" ?
+                            <Chip
+                              isSingleString={true}
+                              content={item}
+                            />
+                            :
+                            <Chip
+                              content={[{ labelKey: item.context, labelValue: item.contextValue }]}
+                            />
+                          }
+                        </>
+                      )
+                    })
+                    }
+                    {location.state.entities.map((item, i) => {
+                      return (
+                        <>
+                          {typeof (item) === "string" ?
+                            <Chip
+                              isSingleString={true}
+                              content={item}
+                            />
+                            :
+                            <Chip
+                              content={[{ labelKey: item.entityType, labelValue: item.entityValue }]}
+                            />
+                          }
+                        </>
+                      )
+                    })
+                    }
+                  </div>
+                </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} textAlign="right">
+            <Grid
+              container
               spacing={1}
               alignItems="center"
               justifyContent="flex-end"
+              marginY={"1px"}
+              marginRight={0}
             >
-              <Grid item xs={5} textAlign="left">
-                <ChipsContainer >
-                  {searchData.map((item, i) => {
-                    return (
-                      <>
-                        {
-                          <Chip
-                            content={[{ labelKey: item, labelValue: location.state.searchData[item] }]}
-                          />
-                        }
-                      </>
-                    )
-                  })
-                  }
-                </ChipsContainer>
-              </Grid>
-              <Grid item xs={6} textAlign="right">
-                <ChipsContainer moMargin>
-                  {location.state.context.map((item, i) => {
-                    return (
-                      <>
-                        {typeof (item) === "string" ?
-                          <Chip
-                            isSingleString={true}
-                            content={item}
-                          />
-                          :
-                          <Chip
-                            content={[{ labelKey: item.context, labelValue: item.contextValue }]}
-                          />
-                        }
-                      </>
-                    )
-                  })
-                  }
-                  {location.state.entities.map((item, i) => {
-                    return (
-                      <>
-                        {typeof (item) === "string" ?
-                          <Chip
-                            isSingleString={true}
-                            content={item}
-                          />
-                          :
-                          <Chip
-                            content={[{ labelKey: item.entityType, labelValue: item.entityValue }]}
-                          />
-                        }
-                      </>
-                    )
-                  })
-                  }
-                </ChipsContainer>
-              </Grid>
               <Grid item xs={1} textAlign="right">
                 <Button
                   btnText="Modify"
@@ -204,7 +225,7 @@ const SearchResult = () => {
           </Grid>
         </Box>
       </Section>
-    </div>
+    </div >
   );
 };
 

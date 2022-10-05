@@ -15,6 +15,7 @@ export const Box = styled.div`
     props.bordered ? "1px solid #005585" : "1px solid #E5E5E5"};
   box-shadow: ${(props) =>
     props.bordered ? "0px 4px 24px rgba(0, 0, 0, 0.08)" : "none"};
+  overflow-wrap: break-word;
 `;
 
 export const SectionTitle = styled.h1`
@@ -238,13 +239,17 @@ export const ActionFlexTitle = styled.div`
 `;
 
 export const ChipsContainer = styled.div`
-  display: flex;
-  justify-content: ${(props) => (props.moMargin ? "flex-end" : "flex-start")};
-  align-items: center;
-  margin: ${(props) => (props.moMargin ? "0" : "20px 0 0 0")};
-  > div {
-    margin-right: 20px;
-  }
+  display: flex;  
+  flex-direction:"row";
+  flex-wrap: wrap;
+
+  
+  // justify-content: ${(props) => (props.moMargin ? "flex-end" : "flex-start")};
+  // align-items: center;
+  // margin: ${(props) => (props.moMargin ? "0" : "20px 0 0 0")};
+  // > div {
+  //   margin-right: 20px;
+  // }
 `;
 
 export const TableMore = styled.div`

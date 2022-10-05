@@ -15,6 +15,7 @@ import {
 } from "assets/styles/main.styles";
 import { getCustomerContext, getCustomerContextValues, getCustomerEntities, getCustomerEntityTypes, searchTriples } from "config/api.service";
 import { ResetTv } from "@mui/icons-material";
+import { operations } from "config/constants";
 
 const QueryTriple = () => {
   const [context, setContext] = useState([]);
@@ -118,13 +119,10 @@ const QueryTriple = () => {
     if (type === "ADD") {
       temp.push(state);
     } else if (type === "AND") {
-      temp.push(state);
       temp.push("AND");
     } else if (type === "OR") {
-      temp.push(state);
       temp.push("OR");
     } else if (type === "NOT") {
-      temp.push(state);
       temp.push("NOT");
     }
     setSelectedContexts(temp);
@@ -136,13 +134,10 @@ const QueryTriple = () => {
     if (type === "ADD") {
       temp.push(entityState);
     } else if (type === "AND") {
-      temp.push(entityState);
       temp.push("AND");
     } else if (type === "OR") {
-      temp.push(entityState);
       temp.push("OR");
     } else if (type === "NOT") {
-      temp.push(entityState);
       temp.push("NOT");
     }
     setSelectedEntities(temp);
@@ -197,8 +192,8 @@ const QueryTriple = () => {
   const reset = () => {
     setSelectedContexts([]);
     setSelectedEntities([]);
-    setState({context: "",contextValue: ""});
-    setEntityState({entityType: "",entityValue: ""});
+    setState({ context: "", contextValue: "" });
+    setEntityState({ entityType: "", entityValue: "" });
   }
 
   return (
@@ -232,8 +227,21 @@ const QueryTriple = () => {
                 aria-controls={openContext ? "context-menu" : undefined}
                 aria-haspopup="true"
                 aria-expanded={openContext ? "true" : undefined}
+                onClick={() => handleContextOperations("ADD")}
+                disabled={typeof (selectedContexts[selectedContexts.length - 1]) === "object"}
+
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                btnText="OPERATIONS"
+                variant="contained"
+                aria-controls={openContext ? "context-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={openContext ? "true" : undefined}
                 onClick={handleClickContext}
                 endIcon={<KeyboardArrowDownOutlinedIcon />}
+                disabled={(selectedContexts.length === 0 || typeof (selectedContexts[selectedContexts.length - 1]) === "string")}
               />
               <Menu
                 id="context-menu"
@@ -249,7 +257,6 @@ const QueryTriple = () => {
                   },
                 }}
               >
-                <MenuItem onClick={() => handleContextOperations("ADD")}>ADD</MenuItem>
                 <MenuItem onClick={() => handleContextOperations("AND")}>AND</MenuItem>
                 <MenuItem onClick={() => handleContextOperations("OR")}>OR</MenuItem>
                 <MenuItem onClick={() => handleContextOperations("NOT")}>NOT</MenuItem>
@@ -304,19 +311,38 @@ const QueryTriple = () => {
               <Button
                 btnText="ADD"
                 variant="contained"
-                aria-controls={openEntity ? "entity-menu" : undefined}
+                aria-controls={openEntity ? "context-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={openEntity ? "true" : undefined}
+                onClick={() => handleEntityOperations("ADD")}
+                disabled={typeof (selectedEntities[selectedEntities.length - 1]) === "object"}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                btnText="OPERATIONS"
+                variant="contained"
+                aria-controls={openEntity ? "context-menu" : undefined}
                 aria-haspopup="true"
                 aria-expanded={openEntity ? "true" : undefined}
                 onClick={handleClickEntity}
                 endIcon={<KeyboardArrowDownOutlinedIcon />}
+                disabled={(selectedEntities.length === 0 || typeof (selectedEntities[selectedEntities.length - 1]) === "string")}
               />
               <Menu
-                id="entity-menu"
+                id="context-menu"
                 anchorEl={anchorElEntity}
                 open={openEntity}
                 onClose={handleCloseEntity}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.10))",
+                    mt: 0,
+                  },
+                }}
               >
-                <MenuItem onClick={() => handleEntityOperations("ADD")}>ADD</MenuItem>
                 <MenuItem onClick={() => handleEntityOperations("AND")}>AND</MenuItem>
                 <MenuItem onClick={() => handleEntityOperations("OR")}>OR</MenuItem>
                 <MenuItem onClick={() => handleEntityOperations("NOT")}>NOT</MenuItem>
@@ -369,6 +395,7 @@ const QueryTriple = () => {
               </Grid>
               <Grid item xs={3} textAlign="right">
                 <Button
+                  disabled={(selectedEntities.length === 0) || (typeof (selectedEntities[selectedEntities.length - 1]) === "string") || (typeof (selectedContexts[selectedContexts.length - 1]) === "string")}
                   btnText="Search"
                   variant="contained"
                   onClick={() => {

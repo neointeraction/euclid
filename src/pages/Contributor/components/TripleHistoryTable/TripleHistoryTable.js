@@ -20,9 +20,16 @@ const TripleHistoryTable = ({
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 });
+  const [selectedId, setSelectedId] = useState(0);
+
 
   const handlePagination = (pagination) => {
     setPagination(pagination);
+  }
+
+  const handleOnClick = (id) => {
+    setSelectedId(id);
+    setOpenModal(true);
   }
 
   const columns = React.useMemo(
@@ -32,7 +39,7 @@ const TripleHistoryTable = ({
         accessor: "pmid",
         Cell: (row) => {
           return (
-            <div role={"button"} >
+            <div className="table-nav-link" onClick={() => handleOnClick(row.row.original.pmid)} >
               {`${row.row.original.pmid} (${row.row.original.n_evidences ?? 0} Evidences, ${row.row.original.n_triples ?? 0} Triples)`}
             </div>
           );
@@ -91,7 +98,7 @@ const TripleHistoryTable = ({
         size="lg"
         open={openModal}
         close={handleClose}
-        children={<ViewTripleModal handleClose={handleClose} />}
+        children={<ViewTripleModal handleClose={handleClose} id={selectedId} />}
       />
     </div>
   );

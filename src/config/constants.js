@@ -21,7 +21,7 @@ export const ROOT = "root";
 export const INFINITE_SCROLL = "infiniteScroll";
 export const NORMAL_SCROLL = "normalScroll";
 
-export const subRelations = ["bindsWith", "coocco- occursWith", "synergizesWith", "internalizes", "secretes"];
+export const subRelations = ["bindsWith", "co-occursWith", "synergizesWith", "internalizes", "secretes"];
 
 export const VALIDATED = "valid";
 export const INVALID = "invalid";
@@ -29,5 +29,7 @@ export const REVERTED = "reverted";
 export const FLAGGED = "flagged";
 
 export const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+export const operations = ["AND","OR","NOT"];
 
 

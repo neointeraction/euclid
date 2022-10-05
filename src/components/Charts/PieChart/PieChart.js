@@ -18,30 +18,20 @@ const PieChart = ({ data, onClickHandler, levelId, setLevelId }) => {
   };
   return (
     <PieContainer>
-      {/* {levelId !== null && levelId !== undefined && (
-        <ButtonBackContainer>
-          <Button
-            startIcon={<ChevronLeftOutlinedIcon />}
-            btnText="Back"
-            onClick={handleBack}
-          />
-        </ButtonBackContainer>
-      )} */}
-
-      <ResponsiveContainer width={420} height={420} aspect={2}>
+      <ResponsiveContainer width={"100%"} height={"1000px"} aspect={3}>
         <RechartPieChart>
           <Pie
             dataKey="value"
             data={data}
-            innerRadius={40}
-            outerRadius={100}
+            innerRadius={200}
+            outerRadius={400}
             onClick={(e) => onClickHandler(e)}
           >
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.fill} />
             ))}
           </Pie>
-          <Tooltip />
+          <Tooltip cursor={{ fill: "#DAEAF3" }} />
         </RechartPieChart>
       </ResponsiveContainer>
     </PieContainer>

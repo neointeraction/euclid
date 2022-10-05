@@ -37,21 +37,16 @@ const TrippleCollapsed = ({
   addToEditList,
   deleteFromEditList,
   isNew,
-  isOpen,
+  open,
   isFlagged,
   addToOpenList,
   deleteFromOpenList,
   hideCommentBox
 }) => {
-  const [open, setOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
   const handleChange = (event) => {
     setTripleChecked(event.target.checked);
   };
-
-  useEffect(() => {
-    isOpen && setOpen(isOpen);
-  }, [isOpen]);
 
   const addCommentButton = () => {
     return (
@@ -99,10 +94,9 @@ const TrippleCollapsed = ({
           )}
           <IconButton
             onClick={() => {
-              setOpen((prevState) => !prevState)
               if (!hideActions) {
                 deleteFromEditList();
-                !!open ? addToOpenList() : deleteFromOpenList();
+                open === false ? addToOpenList() : deleteFromOpenList();
               }
             }}
             style={{ marginRight: "6px" }}
@@ -156,7 +150,7 @@ const TrippleCollapsed = ({
                 <IconButton
                   icon={<EditOutlinedIcon fontSize="small" />}
                   onClick={() => {
-                    setOpen((prevState) => !prevState)
+                    addToOpenList();
                     addToEditList();
                   }}
                 />

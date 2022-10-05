@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Grid } from "@mui/material";
 import {
   Button,
@@ -17,6 +17,8 @@ import CommentModalContent from "../CommentModalContent";
 import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import AddIcon from "@mui/icons-material/Add";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+
 
 import {
   Box,
@@ -31,10 +33,12 @@ import { getContext, getContextValues, getEntityWithOutType } from "config/api.s
 import { INFINITE_SCROLL, OBJECT, RELATION, ROOT, SUBJECT } from "config/constants";
 import { v4 as uuidv4 } from 'uuid';
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
+import PreviewIcon from '@mui/icons-material/Preview';
 
 
 
-const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onSubjectValueUpdate, onObjectValueUpdate, addSubjectLeft, addObjectLeft, addSubjectRight, addObjectRight, handleRelationSelect, removeObject, removeSubject, addFlagAndComment, addContext, removeContext, isEdit, setEditList, deleteFromOpenList }) => {
+
+const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onSubjectValueUpdate, onObjectValueUpdate, addSubjectLeft, addObjectLeft, addSubjectRight, addObjectRight, handleRelationSelect, removeObject, removeSubject, addFlagAndComment, addContext, removeContext, isEdit, setEditList, deleteFromOpenList, addToEditList, deleteFromEditList }) => {
   // CONFIRM MODAL
   const [openModalComment, setOpenModalComment] = useState(false);
   const { userDetails } = useContext(UserContext);
@@ -406,7 +410,6 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
                       />
                     </Tooltip> : null}
                 </>
-
               }
             </Grid>
             <Grid item xs={3}>
@@ -416,6 +419,35 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
                 alignItems="center"
                 justifyContent="flex-end"
               >
+                {index === null ?
+                  null :
+                  <>
+                    {
+                      isEdit ?
+                        <Grid item textAlign="right">
+                          < Tooltip message="View" position="top">
+                            <IconButton
+                              icon={<PreviewIcon fontSize="small" />}
+                              onClick={() => {
+                                deleteFromEditList()
+                              }}
+                            />
+                          </Tooltip>
+                        </Grid>
+                        :
+                        <Grid item textAlign="right">
+                          <Tooltip message="Edit" position="top">
+                            <IconButton
+                              icon={<EditOutlinedIcon fontSize="small" />}
+                              onClick={() => {
+                                addToEditList();
+                              }}
+                            />
+                          </Tooltip>
+                        </Grid>
+                    }
+                  </>
+                }
                 <Grid item xs={2} textAlign="right">
                   <Tooltip message="Flag and Comment" position="top">
                     <IconButton
@@ -430,7 +462,6 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
                       icon={<ContentCopyOutlinedIcon fontSize="small" />}
                       onClick={() => {
                         duplicateTriple(index);
-                        deleteFromOpenList();
                       }}
                     />
                   </Tooltip>
@@ -441,7 +472,6 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
                       icon={<AddIcon fontSize="medium" />}
                       onClick={() => {
                         addNewTriple();
-                        deleteFromOpenList();
                       }}
                     />
                   </Tooltip>
@@ -449,15 +479,15 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
               </Grid>
             </Grid>
           </Grid>
-        </InfoWithActions>
-      </Box>
+        </InfoWithActions >
+      </Box >
       {/* Flag and Comment  */}
-      <Modal
+      < Modal
         size="sm"
         open={openModalComment}
         close={handleCloseComment}
         title="Flag and Comment"
-        children={<CommentModalContent onChange={addComments} handleClose={handleCloseComment} />}
+        children={< CommentModalContent onChange={addComments} handleClose={handleCloseComment} />}
       />
       {
         showAlert && (
