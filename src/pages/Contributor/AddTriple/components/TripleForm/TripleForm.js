@@ -133,24 +133,24 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
   }
 
   const onAddToLeftOfSubjectType = (element, innerIndex) => {
-    invalidAddition(element, () => { addSubjectLeft(element, index, innerIndex) });
+    invalidAddition(element, () => { addSubjectLeft(element, index ?? 0, innerIndex) });
   };
 
   const onAddToLeftOfObjectType = (element, innerIndex) => {
-    invalidAddition(element, () => { addObjectLeft(element, index, innerIndex) });
+    invalidAddition(element, () => { addObjectLeft(element, index ?? 0, innerIndex) });
   };
 
   const onAddToRightOfSubjectType = (element, innerIndex) => {
-    invalidAddition(element, () => { addSubjectRight(element, index, innerIndex) });
+    invalidAddition(element, () => { addSubjectRight(element, index ?? 0, innerIndex) });
   };
 
   const onAddToRightOfObjectType = (element, innerIndex) => {
-    invalidAddition(element, () => { addObjectRight(element, index, innerIndex) });
+    invalidAddition(element, () => { addObjectRight(element, index ?? 0, innerIndex) });
   };
 
   const onRemoveFromMultipleSubjectType = (element) => {
     if (element.type !== ROOT) {
-      removeSubject(element.id, index, element.type);
+      removeSubject(element.id, index ?? 0, element.type);
     } else {
       setAlertMessage("You can't Delete Root Node")
       setShowAlert(true);
@@ -159,7 +159,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
 
   const onRemoveFromMultipleObjectType = (element) => {
     if (element.type !== ROOT) {
-      removeObject(element.id, index, element.type);
+      removeObject(element.id, index ?? 0, element.type);
     } else {
       setAlertMessage("You can't Delete Root Node")
       setShowAlert(true);
@@ -191,7 +191,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
   }
 
   const addComments = (value) => {
-    addFlagAndComment(value, index);
+    addFlagAndComment(value, index ?? 0);
   }
 
   useEffect(() => {
@@ -201,7 +201,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
   }, [userDetails]);
 
   const handleContextAdd = () => {
-    addContext(index, state);
+    addContext(index ?? 0, state);
   }
 
   const handleContextOption = (value) => {
@@ -213,7 +213,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
   }
 
   const deleteAddedContext = (innerIndex) => {
-    removeContext(index, innerIndex);
+    removeContext(index ?? 0, innerIndex);
   }
 
   useEffect(() => {
@@ -227,17 +227,18 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
   }, [relations])
 
   const handleRelation = (value) => {
-    handleRelationSelect(value?.label, index);
+    handleRelationSelect(value?.label, index ?? 0);
   }
 
   const subjectValueUpdate = (value, innerIndex) => {
-    onSubjectValueUpdate(value, index, innerIndex);
+    onSubjectValueUpdate(value, index ?? 0, innerIndex);
   }
 
   const objectValueUpdate = (value, innerIndex) => {
-    onObjectValueUpdate(value, index, innerIndex);
+    onObjectValueUpdate(value, index ?? 0, innerIndex);
   }
 
+  
   return (
     <>
       <Box>
