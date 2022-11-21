@@ -326,7 +326,6 @@ const AddTriple = () => {
   const onSubjectValueUpdate = (value, index, innerIndex) => {
     let tempTripleData = { ...tripleData };
     let temp = tempTripleData.evidences[snippetIndex].codes;
-    console.log("zrk", index);
     temp[index].subjectData[innerIndex] = { ...temp[index].subjectData[innerIndex], selectedValue: value?.label }
     temp[index].code = createCode(temp, index);
     temp[index].evidenceId = Object.keys(snippets?.evidences[snippetIndex])[0];
@@ -774,8 +773,6 @@ const AddTriple = () => {
     setOpenList(temp);
   }
 
-
-  console.log("zrk", tripleData);
   return (
     <div>
       <a className="link-without-decoration" target="_blank" href={snippets?.url} rel="noreferrer">

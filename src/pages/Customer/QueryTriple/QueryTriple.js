@@ -29,7 +29,6 @@ const QueryTriple = () => {
   const { state } = useLocation();
 
   const preloadQuery = (res) => {
-    console.log("zrk", res);
     if (res?.contexts?.length) {
       let tempSelectedContext = []
       for (let tempContext of res.contexts) {
