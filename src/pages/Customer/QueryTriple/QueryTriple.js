@@ -13,9 +13,9 @@ import {
   ChipsContainer,
   ActionBox,
 } from "assets/styles/main.styles";
-import { getCustomerContext, getCustomerContextValues, getCustomerEntities, getCustomerEntityTypes, searchTriples } from "config/api.service";
+import { getCustomerContext, getCustomerContextValues, getCustomerEntities, getCustomerEntityTypes, getQueryDetails, searchTriples } from "config/api.service";
 import { ResetTv } from "@mui/icons-material";
-import { operations } from "config/constants";
+import { operations, operator } from "config/constants";
 
 const QueryTriple = () => {
   const [context, setContext] = useState([]);
@@ -26,8 +26,50 @@ const QueryTriple = () => {
   const [selectedEntities, setSelectedEntities] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
+  const { state } = useLocation();
+
+  const preloadQuery = (res) => {
+    console.log("zrk", res);
+    if (res?.contexts?.length) {
+      let tempSelectedContext = []
+      for (let tempContext of res.contexts) {
+        if (tempContext.type === operator) {
+          tempSelectedContext.push(tempContext.value);
+        } else if (tempContext.type === "context") {
+          const tempValues = tempContext.value.split(":");
+          tempSelectedContext.push({
+            context: tempValues[0],
+            contextValue: tempValues[1]
+          })
+        }
+      }
+      setSelectedContexts(tempSelectedContext);
+    }
+    if (res?.entities?.length) {
+      let tempSelectedEntities = []
+      for (let tempEntities of res.entities) {
+        if (tempEntities.type === operator) {
+          tempSelectedEntities.push(tempEntities.value);
+        } else if (tempEntities.type === "entity") {
+          const tempValues = tempEntities.value.split(":");
+          tempSelectedEntities.push({
+            entityType: tempValues[0],
+            entityValue: tempValues[1]
+          })
+        }
+      }
+      setSelectedEntities(tempSelectedEntities);
+    }
+  }
+
+  useEffect(() => {
+    if (state?.id) {
+      getQueryDetails(state.id, preloadQuery);
+    }
+  }, [])
+
   // Forms
-  const [state, setState] = useState({
+  const [contextState, setContextState] = useState({
     context: "",
     contextValue: ""
   });
@@ -38,7 +80,7 @@ const QueryTriple = () => {
   });
 
   const handleContextChange = (event) => {
-    setState({ context: event.target.value });
+    setContextState({ context: event.target.value });
     getCustomerContextValues(event.target.value, handleContextValues);
   };
 
@@ -117,7 +159,11 @@ const QueryTriple = () => {
   const handleContextOperations = (type) => {
     let temp = [...selectedContexts]
     if (type === "ADD") {
-      temp.push(state);
+      temp.push(contextState);
+      setContextState({
+        context: "",
+        contextValue: ""
+      })
     } else if (type === "AND") {
       temp.push("AND");
     } else if (type === "OR") {
@@ -133,6 +179,10 @@ const QueryTriple = () => {
     let temp = [...selectedEntities]
     if (type === "ADD") {
       temp.push(entityState);
+      setEntityState({
+        entityType: "",
+        entityValue: ""
+      });
     } else if (type === "AND") {
       temp.push("AND");
     } else if (type === "OR") {
@@ -192,7 +242,7 @@ const QueryTriple = () => {
   const reset = () => {
     setSelectedContexts([]);
     setSelectedEntities([]);
-    setState({ context: "", contextValue: "" });
+    setContextState({ context: "", contextValue: "" });
     setEntityState({ entityType: "", entityValue: "" });
   }
 
@@ -207,7 +257,7 @@ const QueryTriple = () => {
               <Dropdown
                 label="Select context"
                 onChange={handleContextChange}
-                value={state.context}
+                value={contextState.context}
                 options={context}
               />
             </Grid>
@@ -216,8 +266,8 @@ const QueryTriple = () => {
                 label="Search or enter items"
                 placeholder="Enter here..."
                 options={contextOptions}
-                onChange={(value) => setState({ ...state, contextValue: value.label ?? value })}
-                value={state.contextValue}
+                onChange={(value) => setContextState({ ...contextState, contextValue: value.label ?? value })}
+                value={contextState.contextValue}
               />
             </Grid>
             <Grid item xs={1}>
@@ -263,7 +313,7 @@ const QueryTriple = () => {
               </Menu>
             </Grid>
           </Grid>
-          <ChipsContainer>
+          <ChipsContainer >
             {selectedContexts.map((item, i) => {
               return (
                 <>

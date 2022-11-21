@@ -32,4 +32,8 @@ export const monthNames = ["January", "February", "March", "April", "May", "June
 
 export const operations = ["AND","OR","NOT"];
 
+export const operator = "operator";
+export const context = "context";
+export const entity = "entity";
+
 

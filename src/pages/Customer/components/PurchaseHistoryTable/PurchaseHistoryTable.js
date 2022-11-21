@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Table } from "components";
 import { getCompletePurchaseDetails, getLastPurchaseDetails } from "config/api.service";
+import { useNavigate } from "react-router-dom";
 // import { TableTagContainer } from "assets/styles/main.styles";
 // import { Link } from "react-router-dom";
 
@@ -20,6 +21,8 @@ const PurchaseHistoryTable = ({
   const [loading, setLoading] = useState(false);
   const [purchaseDetails, setPurchaseDetails] = useState([]);
   const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 });
+  const navigate = useNavigate(); 
+
 
   const handlePagination = (pagination) => {
     setPagination(pagination);
@@ -28,7 +31,7 @@ const PurchaseHistoryTable = ({
   useEffect(() => {
     setLoading(true);
     isCompleteList ?
-      getCompletePurchaseDetails(pagination,(result) => {
+      getCompletePurchaseDetails(pagination, (result) => {
         setPurchaseDetails(result);
         setLoading(false);
       })
@@ -39,6 +42,10 @@ const PurchaseHistoryTable = ({
       })
   }, [pagination]);
 
+  const handleRedirect = (id) =>{
+    navigate("/query-triple",{state:{id}});
+  }
+
   const columns = React.useMemo(
     () => [
       {
@@ -46,6 +53,13 @@ const PurchaseHistoryTable = ({
         accessor: "query",
         maxWidth: isCompleteList ? 600 : 300,
         minWidth: isCompleteList ? 250 : 200,
+        Cell: (row) => {
+          return (
+            <div className="table-nav-link" onClick={()=>handleRedirect(row.row.original.query_id)} >
+              {row.row.original.query}
+            </div>
+          );
+        },
       },
       {
         Header: "Date and time",

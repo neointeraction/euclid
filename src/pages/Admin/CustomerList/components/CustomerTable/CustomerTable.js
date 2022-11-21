@@ -139,7 +139,7 @@ const CustomerTable = ({ setSelectedRow, filter, hideSearch, hideFilter }) => {
         columns={columns}
         data={data}
         isLoading={loading}
-        hidePagination={false}
+        hidePagination={true}
         defaultFilter={filter}
         hideSearch={hideSearch}
         hideFilter={hideFilter}

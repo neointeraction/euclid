@@ -299,7 +299,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
         {isEdit ?
           <TypesBlock>
             <MultiFormContainer onClick={() => setInFocusType(SUBJECT)}>
-              {data.subjectData.map((subjectType, index) => (
+              {data?.subjectData?.map((subjectType, index) => (
                 <React.Fragment key={subjectType.id}>
                   <ExtendableSubjectTypeForm
                     isRoot={subjectType.type === ROOT}
@@ -345,7 +345,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
               </React.Fragment>
             </MultiFormContainer>
             <MultiFormContainer onClick={() => setInFocusType(OBJECT)}>
-              {data.objectData.map((objectType, index) => (
+              {data?.objectData?.map((objectType, index) => (
                 <React.Fragment key={objectType.id}>
                   <ExtendableSubjectTypeForm
                     isRoot={objectType.type === ROOT}
@@ -381,7 +381,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
         <InfoWithActions>
           <Grid container spacing={2} alignItems="flex-start">
             <Grid item xs={9}>
-              {data.code.trim() !== "" ?
+              {data?.code?.trim() !== "" ?
                 <ChipsContainer>
                   {!isEdit ?
                     <h3>Code:</h3>

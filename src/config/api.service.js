@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { baseUrl, SUCCESS } from "./constants";
 
 export function getHeaders() {
@@ -790,6 +791,21 @@ export function getTriplesAndEvidencesGraph(successCallback) {
         method: "POST",
         headers: getHeaders(),
         data: { last: 10 }
+    })
+        .then((response) => {
+            if (response.data.result === SUCCESS) successCallback(response.data.message);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function getQueryDetails(queryId, successCallback) {
+    axios({
+        url: baseUrl + "customer/get_query_values",
+        method: "POST",
+        headers: getHeaders(),
+        data: { "query_id": queryId }
     })
         .then((response) => {
             if (response.data.result === SUCCESS) successCallback(response.data.message);

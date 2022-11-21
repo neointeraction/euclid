@@ -288,6 +288,9 @@ const AddTriple = () => {
   }
 
   const duplicateTriple = (index) => {
+    if (index === null) {
+      index = 0
+    }
     let tempTripleData = { ...tripleData };
     const id = uuidv4();
     setOpenList([id]);
