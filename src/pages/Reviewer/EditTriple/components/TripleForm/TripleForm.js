@@ -30,11 +30,10 @@ import { UserContext } from "layout/MainLayout/MainLayout";
 import { getContext, getContextValues, getEntityWithOutType } from "config/api.service";
 import { INFINITE_SCROLL, OBJECT, RELATION, ROOT, SUBJECT, SUBJECT_LEFT, subRelations } from "config/constants";
 import { v4 as uuidv4 } from 'uuid';
-import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 
 
 
-const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onSubjectValueUpdate, onObjectValueUpdate, addSubjectLeft, addObjectLeft, addSubjectRight, addObjectRight, handleRelationSelect, removeObject, removeSubject, addFlagAndComment, addContext, removeContext, setEditList, deleteFromOpenList }) => {
+const TripleForm = ({ index, relations, data, onSubjectValueUpdate, onObjectValueUpdate, addSubjectLeft, addObjectLeft, addSubjectRight, addObjectRight, handleRelationSelect, removeObject, removeSubject, addFlagAndComment, addContext, removeContext, setEditList, deleteFromOpenList }) => {
   // CONFIRM MODAL
   const [openModalComment, setOpenModalComment] = useState(false);
   const { userDetails } = useContext(UserContext);
@@ -145,11 +144,11 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
     invalidAddition(element, () => { addObjectRight(element, index, innerIndex) });
   };
 
-  const onRemoveFromMultipleSubjectType = (i,type) => {
+  const onRemoveFromMultipleSubjectType = (i, type) => {
     removeSubject(i, type);
   };
 
-  const onRemoveFromMultipleObjectType = (i,type) => {
+  const onRemoveFromMultipleObjectType = (i, type) => {
     removeObject(i, type);
   };
 
@@ -239,7 +238,6 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
   }
 
 
-
   return (
     <>
       <Box>
@@ -307,7 +305,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
                 return (
                   <React.Fragment key={subjectType.id}>
                     <ExtendableSubjectTypeForm
-                      isRoot={false}
+                      isRoot={subjectType.type === ROOT}
                       data={dataNormalization(subjectType.value)}
                       index={index}
                       valueUpdate={subjectValueUpdate}
@@ -328,7 +326,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
                       onRemove={
                         data.subject.length > 1
                           ? () => {
-                            onRemoveFromMultipleSubjectType(index,subjectType.type);
+                            onRemoveFromMultipleSubjectType(index, subjectType.type);
                           }
                           : undefined
                       }
@@ -375,7 +373,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
                     onRemove={
                       data.object.length > 1
                         ? () => {
-                          onRemoveFromMultipleObjectType(index,objectType.type);
+                          onRemoveFromMultipleObjectType(index, objectType.type);
                         }
                         : undefined
                     }

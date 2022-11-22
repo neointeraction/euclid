@@ -126,7 +126,7 @@ const EditTriple = () => {
       for (let i = 0; i < subject?.length; i++) {
         if (subject[i]) {
           if (subRelations.includes(subject[i].value)) {
-            subjectCode = `${subjectCode} ${subject[i]}`
+            subjectCode = `${subjectCode} ${subject[i].value}`
           } else {
             let [first, ...rest] = subject[i].value.split(":");
             if ((subject[i + 1] && subRelations.includes(subject[i + 1]?.value)) || (subject[i - 1] && subRelations.includes(subject[i - 1]?.value))) {
@@ -144,7 +144,7 @@ const EditTriple = () => {
       for (let i = 0; i < object?.length; i++) {
         if (object[i]) {
           if (subRelations.includes(object[i])) {
-            objectCode = `${objectCode} ${object[i]}`
+            objectCode = `${objectCode} ${object[i].value}`
           } else {
             let [first, ...rest] = object[i].value.split(":");
             if ((object[i + 1] && subRelations.includes(object[i + 1].value)) || (object[i - 1] && subRelations.includes(object[i - 1].value))) {
@@ -156,7 +156,7 @@ const EditTriple = () => {
         }
       }
     }
-    return `${subjectCode ? `(${subjectCode})` : ""} ${temp.relation} ${objectCode ? `(${objectCode})` : ""}`;
+    return `${subjectCode ? `(${subjectCode})` : ""} ${temp.relation} ${objectCode ? `(${objectCode})` : ""}`
   }
 
   const removeObject = (index, type) => {
@@ -196,7 +196,7 @@ const EditTriple = () => {
     let tempTripleData = { ...data };
     let temp = tempTripleData.codes;
     const newData = temp.subject
-    if (subRelations.includes(element)) {
+    if (subRelations.includes(element.value)) {
       if (innerIndex === 0) {
         newData.unshift({ value: "", type: element.type === ROOT ? SUBJECT_LEFT : element.type });
       } else {
@@ -221,7 +221,7 @@ const EditTriple = () => {
     let tempTripleData = { ...data };
     let temp = tempTripleData.codes;
     const newData = temp.object;
-    if (subRelations.includes(element)) {
+    if (subRelations.includes(element.value)) {
       if (innerIndex === 0) {
         newData.unshift({ value: "", type: element.type === ROOT ? SUBJECT_LEFT : element.type });
       } else {
@@ -243,7 +243,7 @@ const EditTriple = () => {
 
   const onAddToRightOfSubjectType = (element, index, innerIndex) => {
     console.log("element to add to", element);
-    if (subRelations.includes(element)) {
+    if (subRelations.includes(element.value)) {
       let tempTripleData = { ...data };
       let temp = tempTripleData.codes;
       const newData = temp.subject
@@ -263,7 +263,7 @@ const EditTriple = () => {
 
   const onAddToRightOfObjectType = (element, index, innerIndex) => {
     console.log("element to add to", element);
-    if (subRelations.includes(element)) {
+    if (subRelations.includes(element.value)) {
       let tempTripleData = { ...data };
       let temp = tempTripleData.codes;
       const newData = temp.object
