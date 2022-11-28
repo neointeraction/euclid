@@ -26,34 +26,17 @@ const data1 = [
     value: "Human beings",
   },
 ];
+;
 
-// Dummy popover data
-
-function createData(curie, subcurie, prefferedLabel) {
-  return { curie, subcurie, prefferedLabel };
-}
-
-const rows = [
-  createData("SWISSPROT-GRN_HUMAN", "GSK3 beta", "SWISSPROT-GRN_HUMAN"),
-  createData("HGNC:4601", "GSK3 beta", "HGNC:4601"),
-  createData("SWISSPROT-GRN_HUMAN 2", "GSK3 beta", "SWISSPROT-GRN_HUMAN 2"),
-];
-
-const ViewTripleModal = ({ id }) => {
-  // PopoverGrid
-  const [anchorEl, setAnchorEl] = useState(null);
+const ViewTripleModal = ({ id, status, shouldShowAllData }) => {
   const [data, setData] = useState([]);
-
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
   const handleData = (result) => {
-    setData(result?.evidences?.filter((item) => item.status === VALIDATED));
+    let tempData = [];
+    shouldShowAllData ?
+      tempData = result?.evidences
+      :
+      tempData = result?.evidences?.filter((item) => item.status === VALIDATED)
+    setData(tempData);
   }
 
   useEffect(() => {
@@ -65,7 +48,7 @@ const ViewTripleModal = ({ id }) => {
       <PageHeader
         isStartAlign
         pageTitleText={id}
-        rightSideContent={<Tag label="Approved" type="approved" />}
+        rightSideContent={<Tag label={status ?? "Approved"} type={status ? status.toLowerCase() : "approved"} />}
       />
       {data?.map((item) => {
         return (
@@ -73,12 +56,6 @@ const ViewTripleModal = ({ id }) => {
             <Section>
               <Box bordered>
                 <BodyText dangerouslySetInnerHTML={{ __html: item?.text }} />
-                {/* Popover grid compnent  */}
-                <PopoverGrid
-                  anchorEl={anchorEl}
-                  handlePopoverClose={handlePopoverClose}
-                  data={rows}
-                />
               </Box>
             </Section>
             {item?.codes?.map((element, index) => {

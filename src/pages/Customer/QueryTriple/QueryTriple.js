@@ -269,18 +269,6 @@ const QueryTriple = () => {
                 value={contextState.contextValue}
               />
             </Grid>
-            <Grid item xs={1}>
-              <Button
-                btnText="ADD"
-                variant="contained"
-                aria-controls={openContext ? "context-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={openContext ? "true" : undefined}
-                onClick={() => handleContextOperations("ADD")}
-                disabled={typeof (selectedContexts[selectedContexts.length - 1]) === "object"}
-
-              />
-            </Grid>
             <Grid item xs={2}>
               <Button
                 btnText="OPERATIONS"
@@ -310,6 +298,18 @@ const QueryTriple = () => {
                 <MenuItem onClick={() => handleContextOperations("OR")}>OR</MenuItem>
                 <MenuItem onClick={() => handleContextOperations("NOT")}>NOT</MenuItem>
               </Menu>
+            </Grid>
+            <Grid item xs={1}>
+              <Button
+                btnText="ADD"
+                variant="contained"
+                aria-controls={openContext ? "context-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={openContext ? "true" : undefined}
+                onClick={() => handleContextOperations("ADD")}
+                disabled={typeof (selectedContexts[selectedContexts.length - 1]) === "object"}
+
+              />
             </Grid>
           </Grid>
           <ChipsContainer >
@@ -356,17 +356,6 @@ const QueryTriple = () => {
                 value={entityState.entityValue}
               />
             </Grid>
-            <Grid item xs={1}>
-              <Button
-                btnText="ADD"
-                variant="contained"
-                aria-controls={openEntity ? "context-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={openEntity ? "true" : undefined}
-                onClick={() => handleEntityOperations("ADD")}
-                disabled={typeof (selectedEntities[selectedEntities.length - 1]) === "object"}
-              />
-            </Grid>
             <Grid item xs={2}>
               <Button
                 btnText="OPERATIONS"
@@ -397,7 +386,19 @@ const QueryTriple = () => {
                 <MenuItem onClick={() => handleEntityOperations("NOT")}>NOT</MenuItem>
               </Menu>
             </Grid>
+            <Grid item xs={1}>
+              <Button
+                btnText="ADD"
+                variant="contained"
+                aria-controls={openEntity ? "context-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={openEntity ? "true" : undefined}
+                onClick={() => handleEntityOperations("ADD")}
+                disabled={typeof (selectedEntities[selectedEntities.length - 1]) === "object"}
+              />
+            </Grid>
           </Grid>
+
           <ChipsContainer>
             {selectedEntities.map((item, i) => {
               return (

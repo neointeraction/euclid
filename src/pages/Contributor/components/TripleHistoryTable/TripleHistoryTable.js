@@ -21,14 +21,16 @@ const TripleHistoryTable = ({
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({ page_num: 0, page_size: 10 });
   const [selectedId, setSelectedId] = useState(0);
+  const [selectedTripleStatus, setSelectedTripleStatus] = useState("")
 
 
   const handlePagination = (pagination) => {
     setPagination(pagination);
   }
 
-  const handleOnClick = (id) => {
+  const handleOnClick = (id, status) => {
     setSelectedId(id);
+    setSelectedTripleStatus(status);
     setOpenModal(true);
   }
 
@@ -39,7 +41,7 @@ const TripleHistoryTable = ({
         accessor: "pmid",
         Cell: (row) => {
           return (
-            <div className="table-nav-link" onClick={() => handleOnClick(row.row.original.pmid)} >
+            <div className="table-nav-link" onClick={() => handleOnClick(row.row.original.pmid, row.row.original.status)} >
               {`${row.row.original.pmid} (${row.row.original.n_evidences ?? 0} Evidences, ${row.row.original.n_triples ?? 0} Triples)`}
             </div>
           );
@@ -94,12 +96,13 @@ const TripleHistoryTable = ({
         hideFilter
         handlePagination={handlePagination}
       />
-      <Modal
-        size="lg"
-        open={openModal}
-        close={handleClose}
-        children={<ViewTripleModal handleClose={handleClose} id={selectedId} />}
-      />
+      {openModal &&
+        <Modal
+          size="lg"
+          open={openModal}
+          close={handleClose}
+          children={<ViewTripleModal handleClose={handleClose} id={selectedId} status={selectedTripleStatus} shouldShowAllData={true} />}
+        />}
     </div>
   );
 };

@@ -188,6 +188,10 @@ const TripleForm = ({ index, relations, data, onSubjectValueUpdate, onObjectValu
 
   const handleContextAdd = () => {
     addContext(state);
+    setState({
+      context: "",
+      contextValue: ""
+    })
   }
 
   const handleContextOption = (value) => {
@@ -255,6 +259,7 @@ const TripleForm = ({ index, relations, data, onSubjectValueUpdate, onObjectValu
               <AutoComplete
                 label="Search or enter items"
                 placeholder="Enter here..."
+                value={state.contextValue}
                 options={contextOptions ?? []}
                 onChange={handleContextOption}
                 type={INFINITE_SCROLL}

@@ -202,6 +202,10 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
 
   const handleContextAdd = () => {
     addContext(index ?? 0, state);
+    setState({
+      context: "",
+      contextValue: ""
+    })
   }
 
   const handleContextOption = (value) => {
@@ -238,7 +242,6 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
     onObjectValueUpdate(value, index ?? 0, innerIndex);
   }
 
-  
   return (
     <>
       <Box>
@@ -255,6 +258,7 @@ const TripleForm = ({ addNewTriple, duplicateTriple, index, relations, data, onS
             <Grid item xs={5}>
               <AutoComplete
                 label="Search or enter items"
+                value={state.contextValue}
                 placeholder="Enter here..."
                 options={contextOptions ?? []}
                 onChange={handleContextOption}

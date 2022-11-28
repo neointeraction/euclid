@@ -44,61 +44,34 @@ const ReviewerDashboard = () => {
         <Grid container spacing={2} alignItems="baseline">
           <Grid item xs={3}>
             <Card
+              isNotClickable={true}
               count={summaryCounts?.invalid_evidence ?? 0}
               title="Invalid Evidences"
               color="blue"
-              onClick={() =>
-                navigate("/recent-activity", {
-                  state: {
-                    filter: "Invalid Evidence",
-                  },
-                })
-              }
-            // onClick={() => navigate("/evidences")}
             />
           </Grid>
           <Grid item xs={3}>
             <Card
+              isNotClickable={true}
               count={summaryCounts?.triples_validated ?? 0}
               title="Triples Validated"
               color="green"
-              onClick={() =>
-                navigate("/recent-activity", {
-                  state: {
-                    filter: "Triples Validated",
-                  },
-                })
-              }
             />
           </Grid>
           <Grid item xs={3}>
             <Card
+              isNotClickable={true}
               count={summaryCounts?.triples_reverted ?? 0}
               title="Triples Reverted"
               color="red"
-              onClick={() =>
-                navigate("/recent-activity", {
-                  state: {
-                    filter: "Triples Reverted",
-                  },
-                })
-              }
-            // onClick={() => navigate("/triple-view")}
             />
           </Grid>
           <Grid item xs={3}>
             <Card
+              isNotClickable={true}
               count={summaryCounts?.triples_flagged ?? 0}
               title="Triples Flagged"
               color="orange"
-              onClick={() =>
-                navigate("/recent-activity", {
-                  state: {
-                    filter: "Triples Flagged",
-                  },
-                })
-              }
-            // onClick={() => navigate("/triple-view")}
             />
           </Grid>
         </Grid>
@@ -106,7 +79,7 @@ const ReviewerDashboard = () => {
       <Section>
         <Box>
           <SectionTitle>Recent Activities</SectionTitle>
-          <TripleHistoryTable hideSearch dataList={recentHistory} setSelectedFilter={setSelectedFilter}/>
+          <TripleHistoryTable hideSearch dataList={recentHistory} setSelectedFilter={setSelectedFilter} />
           <ViewAllBtn>
             <Button
               btnText="See All"

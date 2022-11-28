@@ -3,55 +3,37 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 
 export const PrivateRouteComponent = ({ child, roles, shouldAuthenticate }) => {
-    const {userDetails} = useContext(UserContext);
-    const [isAuthorized, setIsAuthorized] = useState(false);
+    const { userDetails } = useContext(UserContext);
+    const [isAuthorized, setIsAuthorized] = useState(null);
+
 
     useEffect(() => {
         if (userDetails?.userRoles?.length && roles?.length) {
             setIsAuthorized(roles.includes(userDetails?.userRoles[0]));
+        } else {
+            setIsAuthorized(false);
         }
     }, [roles, userDetails])
 
+
+
     const checkAuthorities = () =>
-        isAuthorized ? (
+        isAuthorized === true ? (
             child
-        ) : (
+        ) : isAuthorized === false ? (
             <div className="insufficient-authority">
                 <div className="alert alert-danger">
                     You are not authorized to access this page.
                 </div>
             </div>
+        ) : (
+            <div>
+                Loading...
+            </div>
         );
-
-    // const renderRedirect = props => {
-    //     if (!sessionHasBeenFetched) {
-    //         return <div></div>;
-    //     } else {
-    //         return isAuthenticated ? (
-    //             checkAuthorities(props)
-    //         ) : (
-    //             <Redirect
-    //                 to={{
-    //                     pathname: '/',
-    //                     search: props.location.search,
-    //                     state: { from: props.location },
-    //                 }}
-    //             />
-    //         );
-    //     }
-    // };
 
     return <>{checkAuthorities()}</>
 };
 
-// export const hasAnyAuthority = (authorities: string[], hasAnyAuthorities: string[]) => {
-//     if (authorities && authorities.length !== 0) {
-//         if (hasAnyAuthorities.length === 0) {
-//             return true;
-//         }
-//         return hasAnyAuthorities.some(auth => authorities.includes(auth));
-//     }
-//     return false;
-// };
 
 export default PrivateRouteComponent;
