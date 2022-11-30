@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const PieContainer = styled.div`
   margin: 0;
+  display: flex;
   position: relative;
   .recharts-surface,
   .recharts-responsive-container,

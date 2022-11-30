@@ -3,7 +3,14 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Grid } from "@mui/material";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 
-import { PageHeader, Tooltip, IconButton, Button, Chip, Card } from "components";
+import {
+  PageHeader,
+  Tooltip,
+  IconButton,
+  Button,
+  Chip,
+  Card,
+} from "components";
 import { BarGraphChart } from "components/Charts";
 
 import {
@@ -14,20 +21,27 @@ import {
   Box,
   SectionTitle,
   TempImage,
+  ChartBox,
+  TextLight,
 } from "assets/styles/main.styles";
 
 import Chart1 from "assets/images/temp/chart1.png";
-import { getDonutChart, getTop10EntitiesGraph, getTriplesAndEvidencesGraph } from "config/api.service";
+import {
+  getDonutChart,
+  getTop10EntitiesGraph,
+  getTriplesAndEvidencesGraph,
+} from "config/api.service";
 import PieChart from "components/Charts/PieChart";
 // import Chart2 from "assets/images/temp/chart2.png";
 // import Chart3 from "assets/images/temp/chart3.png";
 // import Chart4 from "assets/images/temp/chart4.png";
 
-
 const SearchResult = () => {
   const navigate = useNavigate();
   const [top10EntitiesGraphData, setTop10EntitiesGraphData] = useState([]);
-  const [triplesAndEvidencesGraph, setTriplesAndEvidencesGraphData] = useState([]);
+  const [triplesAndEvidencesGraph, setTriplesAndEvidencesGraphData] = useState(
+    []
+  );
   const [donutGraphDatas, setDonutGraphDatas] = useState([]);
   const [innerDonutGraphDatas, setInnerDonutGraphDatas] = useState([]);
   const location = useLocation();
@@ -35,9 +49,11 @@ const SearchResult = () => {
 
   useEffect(() => {
     getTop10EntitiesGraph((result) => setTop10EntitiesGraphData(result));
-    getTriplesAndEvidencesGraph((result) => setTriplesAndEvidencesGraphData(result));
+    getTriplesAndEvidencesGraph((result) =>
+      setTriplesAndEvidencesGraphData(result)
+    );
     getDonutChart((result) => setDonutGraphDatas(result));
-  }, [])
+  }, []);
 
   const [levelId, setLevelId] = useState(1);
 
@@ -62,14 +78,14 @@ const SearchResult = () => {
               <IconButton
                 disabled
                 secondary
-                onClick={() => { }}
+                onClick={() => {}}
                 icon={<AddShoppingCartOutlinedIcon fontSize="small" />}
               />
             </Tooltip>
             <Button
               btnText="Buy now for $200"
               variant="contained"
-              onClick={() => { }}
+              onClick={() => {}}
               disabled
             />
           </ActionFlexTitle>
@@ -94,19 +110,30 @@ const SearchResult = () => {
                   <div>
                     <SectionTitle>Search Data:</SectionTitle>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", minHeight: "120px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      minHeight: "120px",
+                    }}
+                  >
                     {searchData.map((item, i) => {
                       return (
                         <>
                           {
                             <Chip
-                              content={[{ labelKey: item, labelValue: location.state.searchData[item] }]}
+                              content={[
+                                {
+                                  labelKey: item,
+                                  labelValue: location.state.searchData[item],
+                                },
+                              ]}
                             />
                           }
                         </>
-                      )
-                    })
-                    }
+                      );
+                    })}
                   </div>
                 </Box>
               </Grid>
@@ -115,41 +142,51 @@ const SearchResult = () => {
                   <div>
                     <SectionTitle>Context Data:</SectionTitle>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", marginLeft: "2px", minHeight: "120px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      marginLeft: "2px",
+                      minHeight: "120px",
+                    }}
+                  >
                     {location.state.context.map((item, i) => {
                       return (
                         <>
-                          {typeof (item) === "string" ?
+                          {typeof item === "string" ? (
+                            <Chip isSingleString={true} content={item} />
+                          ) : (
                             <Chip
-                              isSingleString={true}
-                              content={item}
+                              content={[
+                                {
+                                  labelKey: item.context,
+                                  labelValue: item.contextValue,
+                                },
+                              ]}
                             />
-                            :
-                            <Chip
-                              content={[{ labelKey: item.context, labelValue: item.contextValue }]}
-                            />
-                          }
+                          )}
                         </>
-                      )
-                    })
-                    }
+                      );
+                    })}
                     {location.state.entities.map((item, i) => {
                       return (
                         <>
-                          {typeof (item) === "string" ?
+                          {typeof item === "string" ? (
+                            <Chip isSingleString={true} content={item} />
+                          ) : (
                             <Chip
-                              isSingleString={true}
-                              content={item}
+                              content={[
+                                {
+                                  labelKey: item.entityType,
+                                  labelValue: item.entityValue,
+                                },
+                              ]}
                             />
-                            :
-                            <Chip
-                              content={[{ labelKey: item.entityType, labelValue: item.entityValue }]}
-                            />
-                          }
+                          )}
                         </>
-                      )
-                    })
-                    }
+                      );
+                    })}
                   </div>
                 </Box>
               </Grid>
@@ -168,7 +205,14 @@ const SearchResult = () => {
                 <Button
                   btnText="Modify"
                   variant="outlined"
-                  onClick={() => navigate("/query-triple", { state: { context: location.state.context, entities: location.state.entities } })}
+                  onClick={() =>
+                    navigate("/query-triple", {
+                      state: {
+                        context: location.state.context,
+                        entities: location.state.entities,
+                      },
+                    })
+                  }
                 />
               </Grid>
             </Grid>
@@ -178,12 +222,12 @@ const SearchResult = () => {
       <Section>
         <Box>
           <SectionTitle>Types of Entities:</SectionTitle>
-          <PieChart
-            data={levelId === 1 ? donutGraphDatas : innerDonutGraphDatas}
-            onClickHandler={handleChartLevel}
-            levelId={levelId}
-            setLevelId={setLevelId}
-          />
+            <PieChart
+              data={levelId === 1 ? donutGraphDatas : innerDonutGraphDatas}
+              onClickHandler={handleChartLevel}
+              levelId={levelId}
+              setLevelId={setLevelId}
+            />
         </Box>
       </Section>
       <Grid container spacing={2} alignItems="baseline">
@@ -204,7 +248,12 @@ const SearchResult = () => {
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <SectionTitle>Evidence supporting each Triple:</SectionTitle>
-              <BarGraphChart height={660} barSize={30} data={triplesAndEvidencesGraph} layout="vertical" />
+              <BarGraphChart
+                height={660}
+                barSize={30}
+                data={triplesAndEvidencesGraph}
+                layout="vertical"
+              />
             </Grid>
             <Grid item xs={4}>
               <Grid container spacing={2} alignItems="baseline">
@@ -218,14 +267,14 @@ const SearchResult = () => {
                         height={"50px"}
                       />
                     </Grid>
-                  )
+                  );
                 })}
               </Grid>
             </Grid>
           </Grid>
         </Box>
       </Section>
-    </div >
+    </div>
   );
 };
 
