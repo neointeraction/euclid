@@ -4,6 +4,11 @@ import LoginBg from "../images/login-bg.png";
 
 export const Section = styled.div`
   padding: 10px 0;
+  max-height: ${(props) => props.maxHeight ?? "auto"};
+  overflow: ${(props) => (props.maxHeight ? "scroll" : "auto")};
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const Box = styled.div`
@@ -317,4 +322,3 @@ export const TextLight = styled.p`
   color: #8c8c8c;
   margin: 3px;
 `;
-

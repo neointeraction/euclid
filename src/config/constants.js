@@ -7,7 +7,7 @@ export const ADMIN = "Admin";
 export const CONTRIBUTOR = "Contributor";
 export const CUSTOMER = "Customer";
 export const REVIEWER = "Reviewer";
-export const SUCCESS = "success";
+export const SUCCESS = "success"
 
 export const SUBJECT = "subject";
 export const OBJECT = "object";
@@ -27,6 +27,8 @@ export const VALIDATED = "valid";
 export const INVALID = "invalid";
 export const REVERTED = "reverted";
 export const FLAGGED = "flagged";
+export const DRAFT = "draft";
+
 
 export const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
