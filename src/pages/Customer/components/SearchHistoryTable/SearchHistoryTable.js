@@ -3,14 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Table } from "components";
 import { getCompleteSearchDetails, getLastSearchDetails } from "config/api.service";
 import { useNavigate } from "react-router-dom";
-// import { TableTagContainer } from "assets/styles/main.styles";
-// import { Link } from "react-router-dom";
-
-// import Menu from "@mui/material/Menu";
-// import MenuItem from "@mui/material/MenuItem";
-// import EditIcon from "../../../../assets/images/icons/edit.svg";
-// import DeleteIcon from "../../../../assets/images/icons/delete.svg";
-// import More from "../../../../assets/images/icons/more.svg";
 
 const SearchHistoryTable = ({
   isCompleteList,

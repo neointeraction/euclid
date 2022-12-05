@@ -855,7 +855,7 @@ const AddTriple = () => {
           </Grid>
         </ActionBox>
       </Section>
-      <Section>
+      <Section maxHeight={"500px"}>
         {tripleData?.evidences?.length &&
           tripleData?.evidences[snippetIndex]?.codes?.length > 1 ? (
           tripleData?.evidences[snippetIndex]?.codes?.map((item, i) => {
@@ -920,6 +920,40 @@ const AddTriple = () => {
           </Grid>
         </ActionBox>
       </Section>
+      {/* <Section>
+      <ActionBox>
+          <Grid
+            container
+            spacing={0}
+            alignItems="center"
+            justifyContent="flex-end"
+          >
+            <Grid item xs={6} textAlign="right">
+              <Grid
+                container
+                spacing={2}
+                alignItems="center"
+                justifyContent="flex-end"
+              >
+                <Grid item xs={3} textAlign="right">
+                  <Button
+                    btnText="Save"
+                    variant="outlined"
+                    onClick={() => commitAndSave("SAVE")}
+                  />
+                </Grid>
+                <Grid item xs={3} textAlign="right">
+                  <Button
+                    btnText="Commit"
+                    variant="contained"
+                    onClick={() => commitAndSave("COMMIT")}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </ActionBox>
+      </Section> */}
       {/* Add Evidence  */}
       <Modal
         size="sm"

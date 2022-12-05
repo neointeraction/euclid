@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 
-import { PageHeader, Tag, PopoverGrid, Chip } from "components";
+import { PageHeader, Tag, PopoverGrid, Chip, Button } from "components";
 
 import {
   ProvideEvidenceModalBoxContainer,
@@ -15,6 +15,7 @@ import {
 } from "assets/styles/main.styles";
 import { getEvidence } from "config/api.service";
 import { VALIDATED } from "config/constants";
+import { useNavigate } from "react-router-dom";
 
 const data1 = [
   {
@@ -26,29 +27,45 @@ const data1 = [
     value: "Human beings",
   },
 ];
-;
-
 const ViewTripleModal = ({ id, status, shouldShowAllData }) => {
   const [data, setData] = useState([]);
   const handleData = (result) => {
     let tempData = [];
-    shouldShowAllData ?
-      tempData = result?.evidences
-      :
-      tempData = result?.evidences?.filter((item) => item.status === VALIDATED)
+    shouldShowAllData
+      ? (tempData = result?.evidences)
+      : (tempData = result?.evidences?.filter(
+          (item) => item.status === VALIDATED
+        ));
     setData(tempData);
-  }
+  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     getEvidence(id, handleData);
   }, [id]);
+
+  const onEditClick = () =>{
+    navigate("/add-triple")
+  }
 
   return (
     <ProvideEvidenceModalBoxContainer>
       <PageHeader
         isStartAlign
         pageTitleText={id}
-        rightSideContent={<Tag label={status ?? "Approved"} type={status ? status.toLowerCase() : "approved"} />}
+        rightSideContent={
+          <>
+            <Tag
+              label={status ?? "Approved"}
+              type={status ? status.toLowerCase() : "approved"}
+            />{" "}
+            {status === "draft" &&
+              <Button
+              btnText="Edit"
+              onClick={onEditClick}
+            />}
+          </>
+        }
       />
       {data?.map((item) => {
         return (
@@ -67,30 +84,31 @@ const ViewTripleModal = ({ id, status, shouldShowAllData }) => {
                       <Grid item xs={2} key={index}>
                         <PlainTypesItem noBg noMb>
                           <Chip
-                            content={[{ labelKey: value, labelValue: element.context[value] }]}
+                            content={[
+                              {
+                                labelKey: value,
+                                labelValue: element.context[value],
+                              },
+                            ]}
                           />
                         </PlainTypesItem>
                       </Grid>
-                    ))
-                    }
+                    ))}
                   </Grid>
                   <InfoWithActions>
                     <Grid container spacing={1} alignItems="flex-start">
                       <Grid item xs={9}>
-                        <Chip
-                          content={element.code}
-                          isSingleString={true}
-                        />
+                        <Chip content={element.code} isSingleString={true} />
                       </Grid>
                     </Grid>
                   </InfoWithActions>
-                </Box>)
+                </Box>
+              );
             })}
           </div>
-        )
-      })
-      }
-    </ProvideEvidenceModalBoxContainer >
+        );
+      })}
+    </ProvideEvidenceModalBoxContainer>
   );
 };
 
