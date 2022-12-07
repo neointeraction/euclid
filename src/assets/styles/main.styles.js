@@ -15,6 +15,11 @@ export const Box = styled.div`
   background: #ffffff;
   border: 1px solid #e5e5e5;
   border-radius: 8px;
+  max-height: ${(props) => props.maxHeight ?? "auto"};
+  overflow: ${(props) => (props.maxHeight ? "scroll" : "auto")};
+  ::-webkit-scrollbar {
+    display: none;
+  }
   padding: ${(props) => (props.noPadding ? 0 : "24px")};
   border: ${(props) =>
     props.bordered ? "1px solid #005585" : "1px solid #E5E5E5"};

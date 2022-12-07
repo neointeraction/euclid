@@ -779,7 +779,7 @@ const AddTriple = () => {
         <PageHeader pageTitleText={snippets?.pubid} />
       </a>
       <Section>
-        <Box bordered>
+        <Box bordered maxHeight={"8vh"}>
           {loading ?
             <Loading />
             :
@@ -855,7 +855,7 @@ const AddTriple = () => {
           </Grid>
         </ActionBox>
       </Section>
-      <Section maxHeight={"500px"}>
+      <Section maxHeight={"42vh"}>
         {tripleData?.evidences?.length &&
           tripleData?.evidences[snippetIndex]?.codes?.length > 1 ? (
           tripleData?.evidences[snippetIndex]?.codes?.map((item, i) => {
