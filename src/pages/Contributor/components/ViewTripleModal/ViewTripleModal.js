@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 
-import { PageHeader, Tag, PopoverGrid, Chip, Button } from "components";
+import { PageHeader, Tag, Chip, Button } from "components";
 
 import {
   ProvideEvidenceModalBoxContainer,
   Section,
   Box,
   BodyText,
-  HighlightText,
-  BodyTextLight,
   PlainTypesItem,
   InfoWithActions,
 } from "assets/styles/main.styles";

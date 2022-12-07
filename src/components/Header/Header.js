@@ -98,7 +98,8 @@ const Header = () => {
     localStorage.clear();
     webAuth.logout({
       redirectUri: appUrl,
-      realm: "Username-Password-Authentication"
+      realm: "Username-Password-Authentication",
+      returnTo:appUrl
     }, (err, result) => {
       if (err) {
         console.log("failed to logout");
