@@ -1,14 +1,14 @@
 
 export const baseUrl = "http://44.195.196.106:8001/api/";
 // export const appUrl = "http://local.auth:3000";
-export const appUrl = "http://43.205.193.88";
-// export const appUrl = "http://44.195.196.106"
+// export const appUrl = "http://43.205.193.88";
+export const appUrl = "http://44.195.196.106";
 
 export const ADMIN = "Admin";
 export const CONTRIBUTOR = "Contributor";
 export const CUSTOMER = "Customer";
 export const REVIEWER = "Reviewer";
-export const SUCCESS = "success"
+export const SUCCESS = "success";
 
 export const SUBJECT = "subject";
 export const OBJECT = "object";
