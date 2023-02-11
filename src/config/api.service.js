@@ -6,7 +6,7 @@ export function getHeaders() {
     return {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem('idToken')}`,
         userId: localStorage.getItem('userId')
     };
 }

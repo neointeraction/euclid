@@ -68,18 +68,12 @@ function App() {
             <Route path="/search-result" element={<SearchResult />} />
             {/* <Route path="/search-result" element={<PrivateRouteComponent roles={[CUSTOMER]} shouldAuthenticate={true} child={<SearchResult />} />} /> */}
             {/* Reviewer  */}
-            {/* <Route path="/reviewer-dashboard" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<ReviewerDashboard />} />} />
+            <Route path="/reviewer-dashboard" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<ReviewerDashboard />} />} />
             <Route path="/recent-activity" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<RecentActivity />} />} />
             <Route path="/evidences" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<Evidences />} />} />
             <Route path="/triple-view" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<ReviewerViewTriple />} />} />
             <Route path="/edit-triple" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<EditTriple />} />} />
-            <Route path="/flagged-triple" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<FlaggedTriple />} />} /> */}
-            <Route path="/reviewer-dashboard" element={<ReviewerDashboard />} />
-            <Route path="/recent-activity" element={<RecentActivity />} />
-            <Route path="/evidences/:id" element={<Evidences />} />
-            <Route path="/triple-view/:id" element={<ReviewerViewTriple />} />
-            <Route path="/edit-triple/:id" element={<EditTriple />} />
-            <Route path="/flagged-triple/:id" element={<FlaggedTriple />} />
+            <Route path="/flagged-triple" element={<PrivateRouteComponent roles={[REVIEWER]} shouldAuthenticate={true} child={<FlaggedTriple />} />} />
             {/* Admin  */}
             <Route path="/admin-dashboard" element={<PrivateRouteComponent roles={[ADMIN]} shouldAuthenticate={true} child={<AdminDashboard />} />} />
             <Route path="/users" element={<PrivateRouteComponent roles={[ADMIN]} shouldAuthenticate={true} child={<UserList />} />} />

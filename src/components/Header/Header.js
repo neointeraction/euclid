@@ -83,30 +83,37 @@ const Header = () => {
   useEffect(() => {
     if (userDetails) {
       const date = new Date(userDetails.updated_at);
-      setLastLogin(`${date.getDay()} ${monthNames[date.getMonth() + 1]}  ${date.getHours()}:${date.getMinutes()}`);
+      setLastLogin(
+        `${date.getDay()} ${
+          monthNames[date.getMonth() + 1]
+        }  ${date.getHours()}:${date.getMinutes()}`
+      );
       userDetails.userRoles[0] === "Customer"
         ? setMenuRoutes(customerRoutes)
         : userDetails.userRoles[0] === "Reviewer"
-          ? setMenuRoutes(reviewerRoutes)
-          : userDetails.userRoles[0] === "Admin"
-            ? setMenuRoutes(adminRoutes)
-            : setMenuRoutes(contributorRoutes);
+        ? setMenuRoutes(reviewerRoutes)
+        : userDetails.userRoles[0] === "Admin"
+        ? setMenuRoutes(adminRoutes)
+        : setMenuRoutes(contributorRoutes);
     }
   }, [userDetails]);
 
   const logOut = () => {
     localStorage.clear();
-    webAuth.logout({
-      redirectUri: appUrl,
-      realm: "Username-Password-Authentication",
-      returnTo:appUrl
-    }, (err, result) => {
-      if (err) {
-        console.log("failed to logout");
-        return
+    webAuth.logout(
+      {
+        redirectUri: appUrl,
+        realm: "Username-Password-Authentication",
+        returnTo: appUrl,
+      },
+      (err, result) => {
+        if (err) {
+          console.log("failed to logout");
+          return;
+        }
+        navigate("/");
       }
-      navigate("/")
-    })
+    );
   };
 
   return (
