@@ -72,7 +72,7 @@ const Login = () => {
       username: email,
       password: password,
       redirectUri: appUrl,
-      responseType: "token",
+      responseType: "token id_token",
       realm: "Username-Password-Authentication",
       scope: "openid profile email offline_access"
     }, (err, result) => {

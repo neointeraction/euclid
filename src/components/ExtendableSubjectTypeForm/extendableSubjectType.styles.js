@@ -43,6 +43,9 @@ export const ExtendableSubjectTypeContainer = styled.div`
       transition: 0.3s all ease-in-out;
       & img {
         cursor: pointer;
+      };
+      & svg {
+        cursor: pointer
       }
     }
   }
@@ -58,6 +61,10 @@ export const ExtendableSubjectTypeFormContainer = styled.div`
 
   & img {
     cursor: pointer;
+  };
+
+  & svg {
+    cursor: pointer
   }
 `;
 
